@@ -1,0 +1,2 @@
+KERNEL=="eth*", ACTION=="add", RUN+="/usr/local/kobocloud/udev_program.sh"
+KERNEL=="wlan*", ACTION=="add", RUN+="/usr/local/kobocloud/udev_program.sh"
