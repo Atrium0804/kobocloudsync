@@ -1,8 +1,6 @@
 #!/bin/sh
 
 # initialisation of work dirs and config file
-#
-# mount as SD-card disabled as we don't want to use this funtionality
 
 #load config
 . $(dirname $0)/config.sh
@@ -17,15 +15,12 @@ if [ ! -e $UserConfig ]; then
   if [ -e $ConfigFile ]; then
     cp $ConfigFile $UserConfig
   else
-    echo "# Add your URLs to this file" > $UserConfig
+    echo "# Add your URL to this file" > $UserConfig
+    echo "URL=" > $UserConfig
+    echo "username=" > $UserConfig
+    echo "password=" > $UserConfig
+    
     echo "# Remove the # from the following line to uninstall KoboCloud" >> $UserConfig
     echo "#UNINSTALL" >> $UserConfig
   fi
 fi
-
-#bind mount to subfolder of SD card on reboot
-# mountpoint -q "$SD"
-# if [ $? -ne 0 ]; then
-#   mount --bind "$Lib" "$SD"
-#   echo sd add /dev/mmcblk1p1 >> /tmp/nickel-hardware-status
-# fi
