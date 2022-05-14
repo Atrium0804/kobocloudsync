@@ -1,2 +1,3 @@
 src/usr/local/KoboNextcloudSync/kobocloudrc.tmpl
 Pruts/test_credentials.sh
+Pruts/test_list.sh

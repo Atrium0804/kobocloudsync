@@ -5,7 +5,7 @@
 
 # KC_HOME = locatoin where script is located
 KC_HOME=$(dirname $0)
-ConfigFile=$KC_HOME/kobocloudrc.tmpl
+ConfigFile=$KC_HOME/KoboNextcloudSync.conf.tmpl
 
 if uname -a | grep -q 'x86\|Darwin'
 then

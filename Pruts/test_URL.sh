@@ -12,6 +12,8 @@
 cyan='\033[0;36m'
 NC='\033[0m'
 KC_HOME=$(dirname $0)
+CURL=/usr/bin/curl
+
 
 # https://myserver.com/s/shareLink
 # https://myserver.com/nextcloud/s/sharelink

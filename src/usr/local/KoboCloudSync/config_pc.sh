@@ -3,9 +3,9 @@
 # This file contains locations (on the dev-machine)
 # as wel as some general configurations
 
-Logs=/tmp/KoboCloud
-Lib=/tmp/KoboCloud/Library
-UserConfig=/tmp/KoboCloud/kobocloudrc
+Logs=/tmp/KoboCloudSync
+Lib=/tmp/KoboCloudSync/Library
+UserConfig=/tmp/KoboCloudSync/KoboCloudSync.conf
 Dt="date +%Y-%m-%d_%H:%M:%S"
 CURL=/usr/bin/curl
 Device=dev
