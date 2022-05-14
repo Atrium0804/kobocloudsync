@@ -21,8 +21,7 @@
 # name the arguments
 davServer="$1"
 user="$2"
-passwd="$3"
-
+pwd="$3"
 
 #load config
 . $(dirname $0)/config.sh
@@ -32,6 +31,6 @@ echo '<?xml version="1.0"?>
 <a:propfind xmlns:a="DAV:">
 <a:prop><a:resourcetype/></a:prop>
 </a:propfind>' |
-$CURL -k --silent -i -X PROPFIND -u $user:$passwd $davServer/public.php/webdav --upload-file - -H "Depth: infinity" | # get the listing
-grep -Eo '<d:href>[^<]*[^/]</d:href>' | # get the links without the folders
+$CURL -k --silent -i -X PROPFIND -u $user:$pwd $davServer/public.php/webdav --upload-file - -H "Depth: infinity" | 
+grep -Eo '<d:href>[^<]*[^/]</d:href>' | 
 sed 's@</*d:href>@@g'

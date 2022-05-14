@@ -5,7 +5,7 @@ TEST=$1
 
 #load config
 . $(dirname $0)/config.sh
-
+echo "${cyan}################## Main ##################${NC}"
 # Read the configfile and 
 # check if Kobocloud contains the line "UNINSTALL"
 if grep -q '^UNINSTALL$' $UserConfig; then
@@ -17,7 +17,7 @@ fi
 # Read the config file and check if Remove_deleted is set, 
 # in that case, save the current file list
 if grep -q "^REMOVE_DELETED$" $UserConfig; then
-	echo "$Lib/filesList.log" > "$Lib/filesList.log"
+	echo "$WorkDir/filesList.log" > "$WorkDir/filesList.log"
 fi
 
 # test if the an internet-connection is available
@@ -42,34 +42,42 @@ fi
 # process the config-file
 IFS=',' #setting comma as delimiter  
 while read line || [ -n "$line" ]; do
-#   echo "Reading $line"
+  echo "Reading $line"
   if echo "$line" | grep -q '^#'; then
-    echo "${cyan}Comment found${NC}"
+    echo "Comment found"
   elif echo "$line" | grep -q "^REMOVE_DELETED$"; then
 	echo "Files deleted on the server will be removed from this device."
   else
     # split the line in DestinationFolder, URL and password
-    echo "${0;34}Processing $line${1,37}"
+    echo "${YELLOW}Reading $line${NC}"
     read -a strarr <<<"$line"
     destFolder=${strarr[0]}
     url=${strarr[1]}  
     pwd=${strarr[2]}
-    echo "Getting $url"
-    if echo $url | grep -q '^https*://www.dropbox.com'; then # dropbox link?
-      $KC_HOME/getDropboxFiles.sh "$url" "$Lib"
-    elif echo $url | grep -q '^DropboxApp:'; then # dropbox token
-      token=`echo $url | sed -e 's/^DropboxApp://' -e 's/[[:space:]]*$//'`
-      $KC_HOME/getDropboxAppFiles.sh "$token" "$Lib"
-    elif echo $url | grep -q '^https*://filedn.com'; then
-      $KC_HOME/getpCloudFiles.sh "$url" "$Lib"
-    elif echo $url | grep -q '^https*://[^/]*pcloud'; then
-      $KC_HOME/getpCloudFiles.sh "$url" "$Lib"
-    elif echo $url | grep -q '^https*://drive.google.com'; then
-      $KC_HOME/getGDriveFiles.sh "$url" "$Lib"
-    elif echo $url | grep -q '^https*://app.box.com'; then
-      $KC_HOME/getBoxFiles.sh "$url" "$Lib"
-    else
-      $KC_HOME/getOwncloudFiles.sh "$url" "$Lib"
-    fi
+    outDir="$DocumentRoot/$destFolder"
+    echo "Processing: $url"
+    # Get Files for specified URL
+    $KC_HOME/getNextcloudFiles.sh "$url" "$outDir" "$pwd"
   fi
 done < $UserConfig
+
+
+# # function to purge deleted files recursively
+# purgeDeletedFiles() {
+# for item in *; do
+# 	if [ -d "$item" ]; then 
+# 		(cd -- "$item" && purgeDeletedFiles)
+# 	elif grep -Fq "$item" "$Lib/filesList.log"; then
+# 		echo "$item found"
+# 	else
+# 		echo "$item not found, deleting"
+# 		rm "$item"
+# 	fi
+# done
+# }
+# # purge files deleted from server
+# if grep -q "^REMOVE_DELETED$" $UserConfig; then
+# 	cd "$Lib"
+# 	echo "Matching remote server"
+# 	purgeDeletedFiles
+# fi

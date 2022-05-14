@@ -7,13 +7,12 @@
 
 #create work dirs if not exist
 [ ! -e "$Logs" ] && mkdir -p "$Logs" >/dev/null 2>&1
-[ ! -e "$Lib" ] && mkdir -p "$Lib" >/dev/null 2>&1
-[ ! -e "$SD" ] && mkdir -p "$SD" >/dev/null 2>&1
+[ ! -e "$WorkDir" ] && mkdir -p "$Lib" >/dev/null 2>&1
 
 # copy config file from template if exists, else create from 
 if [ ! -e $UserConfig ]; then
-  if [ -e $ConfigFile ]; then
-    cp $ConfigFile $UserConfig
+  if [ -e $ConfigTemplate ]; then
+       cp $ConfigTemplate $UserConfig
   else
     echo  "# Remove the # from the following line to uninstall KoboCloudSync" >> $UserConfig
     echo  "#UNINSTALL" >> $UserConfig

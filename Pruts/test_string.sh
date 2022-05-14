@@ -5,6 +5,5 @@ sentence="https://cloud.famstieltjes.nl/s/yjCPQpa5m6HaTpN      password"
   
 IFS=' ' #setting comma as delimiter  
 read -a strarr <<<"$sentence"
-  
 echo "URL:     ${strarr[0]} "  
 echo "Passwd : ${strarr[1]} " 
