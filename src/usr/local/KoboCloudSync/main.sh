@@ -43,26 +43,23 @@ fi
 IFS=',' #setting comma as delimiter  
 while read line || [ -n "$line" ]; do
 #   echo "Reading $line"
-  if [ 1 -e 0 ] then echo "placeholder"
-  elif echo "$line" | grep -q '^#'; then
-    echo "${cyan}Comment found${NC}"
->>>>>>> 7ea70a903c10f653d3b7b977116e6645be17b62c
+  if echo "$line" | grep -q '^#'; then
+    echo "${cyan}Processing config file: Comment found${NC}"
   elif echo "$line" | grep -q "^REMOVE_DELETED$"; then
 	  echo "Files deleted on the server will be removed from this device."
   else
     # split the line in DestinationFolder, URL and password
-<<<<<<< HEAD
     echo "${YELLOW}Reading $line${NC}"
     read -a strarr <<<"$line"
     destFolder=${strarr[0]}
     url=${strarr[1]}  
     pwd=${strarr[2]}
-<<<<<<< HEAD
+    # strip leading/trailing spaces
+    pwd="$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'<<<"${pwd}")"
+    # echo "$GREEN -${pwd}-"
     outDir="$DocumentRoot/$destFolder"
-    echo "Processing: $url"
     # Get Files for specified URL
     $KC_HOME/getNextcloudFiles.sh "$url" "$outDir" "$pwd"
-=======
   fi
 done < $UserConfig
 

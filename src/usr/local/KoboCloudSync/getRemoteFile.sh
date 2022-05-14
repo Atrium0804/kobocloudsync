@@ -21,7 +21,7 @@ linkLine="$1"
 localFile="$2"
 user="$3"
 dropboxPath="$4"
-pwd = "$5"
+pwd="$5"
 outputFileTmp="/tmp/kobo-remote-file-tmp.log"
 
 # add the epub extension to kepub files
@@ -36,7 +36,7 @@ fi
 # compose curl-command - add username/password if specified
 curlCommand="$CURL"
 if [ ! -z "$user" ] && [ "$user" != "-" ]; then
-    echo "User: $user"
+    # echo "User: $user"
     curlCommand="$curlCommand -u $user:$pwd "
 fi
 
@@ -45,14 +45,29 @@ if [ ! -z "$dropboxPath" ] && [ "$dropboxPath" != "-" ]; then
     curlCommand="$CURL -X POST --header \"Authorization: Bearer $user\" --header \"Dropbox-API-Arg: {\\\"path\\\": \\\"$dropboxPath\\\"}\""
 fi
 
-# compose, execute command and evaluate exitcode 
-# writing the output to file
-echo "Download:" $curlCommand -k --silent -C - -L --create-dirs -o \"$localFile\" \"$linkLine\" -v
-            eval $curlCommand -k --silent -C - -L --create-dirs -o \"$localFile\" \"$linkLine\" -v 2>$outputFileTmp
-status=$?
-echo "Status: $status"
-echo "Output: "
-# cat $outputFileTmp
+Hierzo: als het bestand al bestaat en de grootte is veranderd
+of als het bestand nog niet bestaat: downloaden
+
+# Check if file is already downloaded
+if [ -f "$localFile" ]; then
+    echo "$CYAN File exists, checking size/date $NC"
+    echo "$CYAN $curlCommand -k -sLI "$linkLine" $NC"
+    contentLength=$(eval $curlCommand -k -sLI "$linkLine" | grep -i 'Content-Length'  |  sed 's/[^0-9]*//g' )
+    echo "contentLength:    $contentLength"
+    # existingLength=`stat --printf="%s" "$localFile"`
+    localLength=$(eval wc -c $localFile |   sed 's/[^0-9]*//g') 
+    echo "Remote length: $localLength"
+    # echo "Local length: $existingLength"
+else         
+    # compose, execute command and evaluate exitcode 
+    # writing the output to file
+    #  echo "$GREEN Download:$NC" $curlCommand -k --silent -C - -L --create-dirs -o \"$localFile\" \"$linkLine\" -v
+    eval $curlCommand -k --silent -C - -L --create-dirs -o \"$localFile\" \"$linkLine\" -v 2>$outputFileTmp
+    status=$?
+    echo "Status: $status"
+     echo "Output: "
+     cat $outputFileTmp
+fi
 
 statusCode=`grep 'HTTP/' "$outputFileTmp" | tail -n 1 | cut -d' ' -f3`
 grep -q "Cannot resume" "$outputFileTmp"
@@ -92,9 +107,10 @@ if echo "$statusCode" | grep -q "50.*"; then
     fi
 fi
 
+# append filename to the list of remote files
 if grep -q "^REMOVE_DELETED" $UserConfig; then
 	echo "$localFile" >> "$Lib/filesList.log"
 	echo "Appended $localFile to filesList"
 fi
-echo "getRemoteFile ended"
+# echo "getRemoteFile ended"
 

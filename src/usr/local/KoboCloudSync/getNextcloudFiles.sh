@@ -8,7 +8,6 @@ pwd="$3"
 
 #load config
 . $(dirname $0)/config.sh
-echo "${cyan}################## GetNextcloudFiles.sh ##################${NC}"
 
 # webdav implementation
 # https://myserver.com/s/shareLink
@@ -24,9 +23,9 @@ davServerWithOwncloudPath=`echo $baseURL | sed -e 's@.*\(http.*\)/s/[^/ ]*$@\1@'
 # Remove the path to get the protocol and main domain only (used with the relative paths which are a result of "getOwncloudList.sh".)
 davServer=$(echo $1 | sed -e s,/$path,,g)
 
-echo "shareID:                   $shareID"
-echo "davServer:                 $davServer"
-echo "davServerWithOwncloudPath: $davServerWithOwncloudPath"
+# echo "shareID:                   $shareID"
+# echo "davServer:                 $davServer"
+# echo "davServerWithOwncloudPath: $davServerWithOwncloudPath"
 
 # get directory listing (relative filepaths on the server)
 $KC_HOME/getNextcloudFilelist.sh $davServerWithOwncloudPath $shareID $pwd |
@@ -37,9 +36,9 @@ do
   linkLine=$davServer$relativeLink
   localFile="$outDir/$outFileName"
 
-  echo "${cyan}linkline: $linkLine  -> $localFile ${NC}"
+  echo "${ORANGE}getRemoteFile: $linkLine  -> $localFile ${NC}"
   # get remote file
-  $KC_HOME/getRemoteFile.sh "$linkLine" "$localFile" $shareID "" "$pwd"
+  $KC_HOME/getRemoteFile.sh "$linkLine" "$localFile" $shareID "-" "$pwd"
   if [ $? -ne 0 ] ; then
       echo "Having problems contacting Owncloud. Try again in a couple of minutes."
       exit
