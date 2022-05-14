@@ -43,33 +43,34 @@ fi
 IFS=',' #setting comma as delimiter  
 while read line || [ -n "$line" ]; do
 #   echo "Reading $line"
-  if echo "$line" | grep -q '^#'; then
+  if [ 1 -e 0 ] then echo "placeholder"
+  elif echo "$line" | grep -q '^#'; then
     echo "${cyan}Comment found${NC}"
   elif echo "$line" | grep -q "^REMOVE_DELETED$"; then
-	echo "Files deleted on the server will be removed from this device."
+	  echo "Files deleted on the server will be removed from this device."
   else
     # split the line in DestinationFolder, URL and password
-    echo "${0;34}Processing $line${1,37}"
+    echo "${cyan}Processing $line${NC}"
     read -a strarr <<<"$line"
     destFolder=${strarr[0]}
     url=${strarr[1]}  
     pwd=${strarr[2]}
-    echo "Getting $url"
-    if echo $url | grep -q '^https*://www.dropbox.com'; then # dropbox link?
-      $KC_HOME/getDropboxFiles.sh "$url" "$Lib"
-    elif echo $url | grep -q '^DropboxApp:'; then # dropbox token
-      token=`echo $url | sed -e 's/^DropboxApp://' -e 's/[[:space:]]*$//'`
-      $KC_HOME/getDropboxAppFiles.sh "$token" "$Lib"
-    elif echo $url | grep -q '^https*://filedn.com'; then
-      $KC_HOME/getpCloudFiles.sh "$url" "$Lib"
-    elif echo $url | grep -q '^https*://[^/]*pcloud'; then
-      $KC_HOME/getpCloudFiles.sh "$url" "$Lib"
-    elif echo $url | grep -q '^https*://drive.google.com'; then
-      $KC_HOME/getGDriveFiles.sh "$url" "$Lib"
-    elif echo $url | grep -q '^https*://app.box.com'; then
-      $KC_HOME/getBoxFiles.sh "$url" "$Lib"
-    else
-      $KC_HOME/getOwncloudFiles.sh "$url" "$Lib"
-    fi
+    echo "Syncing $url to $destFolder"
+    # if echo $url | grep -q '^https*://www.dropbox.com'; then # dropbox link?
+    #   $KC_HOME/getDropboxFiles.sh "$url" "$Lib"
+    # elif echo $url | grep -q '^DropboxApp:'; then # dropbox token
+    #   token=`echo $url | sed -e 's/^DropboxApp://' -e 's/[[:space:]]*$//'`
+    #   $KC_HOME/getDropboxAppFiles.sh "$token" "$Lib"
+    # elif echo $url | grep -q '^https*://filedn.com'; then
+    #   $KC_HOME/getpCloudFiles.sh "$url" "$Lib"
+    # elif echo $url | grep -q '^https*://[^/]*pcloud'; then
+    #   $KC_HOME/getpCloudFiles.sh "$url" "$Lib"
+    # elif echo $url | grep -q '^https*://drive.google.com'; then
+    #   $KC_HOME/getGDriveFiles.sh "$url" "$Lib"
+    # elif echo $url | grep -q '^https*://app.box.com'; then
+    #   $KC_HOME/getBoxFiles.sh "$url" "$Lib"
+    # else
+    #   $KC_HOME/getOwncloudFiles.sh "$url" "$Lib"
+    # fi
   fi
 done < $UserConfig
