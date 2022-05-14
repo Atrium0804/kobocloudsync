@@ -42,11 +42,6 @@ fi
 # process the config-file
 IFS=',' #setting comma as delimiter  
 while read line || [ -n "$line" ]; do
-<<<<<<< HEAD
-  echo "Reading $line"
-  if echo "$line" | grep -q '^#'; then
-    echo "Comment found"
-=======
 #   echo "Reading $line"
   if [ 1 -e 0 ] then echo "placeholder"
   elif echo "$line" | grep -q '^#'; then
@@ -58,9 +53,6 @@ while read line || [ -n "$line" ]; do
     # split the line in DestinationFolder, URL and password
 <<<<<<< HEAD
     echo "${YELLOW}Reading $line${NC}"
-=======
-    echo "${cyan}Processing $line${NC}"
->>>>>>> 7ea70a903c10f653d3b7b977116e6645be17b62c
     read -a strarr <<<"$line"
     destFolder=${strarr[0]}
     url=${strarr[1]}  
@@ -71,24 +63,6 @@ while read line || [ -n "$line" ]; do
     # Get Files for specified URL
     $KC_HOME/getNextcloudFiles.sh "$url" "$outDir" "$pwd"
 =======
-    echo "Syncing $url to $destFolder"
-    # if echo $url | grep -q '^https*://www.dropbox.com'; then # dropbox link?
-    #   $KC_HOME/getDropboxFiles.sh "$url" "$Lib"
-    # elif echo $url | grep -q '^DropboxApp:'; then # dropbox token
-    #   token=`echo $url | sed -e 's/^DropboxApp://' -e 's/[[:space:]]*$//'`
-    #   $KC_HOME/getDropboxAppFiles.sh "$token" "$Lib"
-    # elif echo $url | grep -q '^https*://filedn.com'; then
-    #   $KC_HOME/getpCloudFiles.sh "$url" "$Lib"
-    # elif echo $url | grep -q '^https*://[^/]*pcloud'; then
-    #   $KC_HOME/getpCloudFiles.sh "$url" "$Lib"
-    # elif echo $url | grep -q '^https*://drive.google.com'; then
-    #   $KC_HOME/getGDriveFiles.sh "$url" "$Lib"
-    # elif echo $url | grep -q '^https*://app.box.com'; then
-    #   $KC_HOME/getBoxFiles.sh "$url" "$Lib"
-    # else
-    #   $KC_HOME/getOwncloudFiles.sh "$url" "$Lib"
-    # fi
->>>>>>> 7ea70a903c10f653d3b7b977116e6645be17b62c
   fi
 done < $UserConfig
 
