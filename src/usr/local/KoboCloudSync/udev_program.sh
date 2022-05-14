@@ -26,4 +26,4 @@
 [ ! -e "$Lib" ] && mkdir -p "$Lib" >/dev/null 2>&1
 
 # call main script, output to log
- $KC_HOME/main.sh > $Logs/KoboNextcloudSync.log 2>&1 &
+ $KC_HOME/main.sh > $Logs/KoboCloudSync.log 2>&1 &

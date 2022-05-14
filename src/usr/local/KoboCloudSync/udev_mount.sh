@@ -19,7 +19,7 @@ if [ ! -e $UserConfig ]; then
     echo  "#UNINSTALL" >> $UserConfig
     echo  "# Remove the # from the following line to delete files when they are no longer on the remote server" >> $UserConfig
     echo  "#REMOVE_DELETED" >> $UserConfig
-    echo  "" >> $UserConfig
+    echo  "#" >> $UserConfig
     echo  "# URL's to syncronize. Use the following format, separated by comma:" >> $UserConfig
     echo  "# Destination Folder, URL, Passwod (optional)" >> $UserConfig
   fi
