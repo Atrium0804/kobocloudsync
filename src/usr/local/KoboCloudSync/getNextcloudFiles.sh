@@ -36,8 +36,10 @@ do
   linkLine=$davServer$relativeLink
   localFile="$outDir/$outFileName"
 
-  echo "${ORANGE}getRemoteFile: $linkLine  -> $localFile ${NC}"
-  # get remote file
+  # append file to filesList in order to detect deleted remote-files
+  echo "$localFile" >> "$RemoteFileList"
+
+    # get remote file
   $KC_HOME/getRemoteFile.sh "$linkLine" "$localFile" $shareID "-" "$pwd"
   if [ $? -ne 0 ] ; then
       echo "Having problems contacting Owncloud. Try again in a couple of minutes."

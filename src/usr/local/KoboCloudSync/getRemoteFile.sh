@@ -51,7 +51,7 @@ fi
 
 # Check if file is already downloaded
 if [ -f "$localFile" ]; then
-    echo "  File $localFile exists, skipping download"
+    echo "  Existing file, skipping:$localFile"
     exit 0
 fi
 
@@ -59,21 +59,24 @@ fi
 #  compose, execute command and evaluate exitcode 
 #  writing the output to file
 #  echo "$GREEN Download:$NC" $curlCommand -k --silent -C - -L --create-dirs -o \"$localFile\" \"$linkLine\" -v
+echo "  Downloading file: $localFile"
 eval $curlCommand -k --silent -C - -L --create-dirs -o \"$localFile\" \"$linkLine\" -v 2>$outputFileTmp
 status=$?
-echo "  Status: $status"
+# echo "  Status: $status"
 # echo "  Output: "
 # cat $outputFileTmp
 
 statusCode=`grep 'HTTP/' "$outputFileTmp" | tail -n 1 | cut -d' ' -f3`
-grep -q "${RED}Cannot resume" "$outputFileTmp${NC}"
+grep -q "Cannot resume" "$outputFileTmp"
 errorResume=$?
 rm $outputFileTmp
 
-echo "Remote file information:"
-echo "  Status code: $statusCode"
+# echo "Remote file information:"
+# echo "  Status code: $statusCode"
 case $statusCode in
-    "200") echo "Status:OK";;
+    "200") exec
+        #    echo "Status:OK"
+           ;;
     "401") echo "${RED}Error: Unauthorized${NC}" 
             # exit 2 
             ;;
@@ -85,7 +88,7 @@ case $statusCode in
             ;;
     *)
         if echo "$statusCode" | grep -q "50.*"; then
-        echo "${RED}Error: Server error${NC}"
+        echo "${RED}Error: Server error, statuscode $statusCode ${NC}"
         if [ $errorResume ] && [ "$retry" = "TRUE" ]
         then
             echo "Can't resume. Checking size"
@@ -120,11 +123,8 @@ esac;
 #     exit 2
 # fi
 
-
 # append filename to the list of remote files
 if grep -q "^REMOVE_DELETED" $UserConfig; then
-	echo "$localFile" >> "$Lib/filesList.log"
-	echo "Appended $localFile to filesList"
+	echo "$localFile" >> "$RemoteFileList"
+	# echo "Appended $localFile to filesList"
 fi
-# echo "getRemoteFile ended"
-
