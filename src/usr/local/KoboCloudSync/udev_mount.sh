@@ -7,7 +7,7 @@
 
 #create work dirs if not exist
 [ ! -e "$Logs" ] && mkdir -p "$Logs" >/dev/null 2>&1
-[ ! -e "$WorkDir" ] && mkdir -p "$Lib" >/dev/null 2>&1
+[ ! -e "$WorkDir" ] && mkdir -p "$WorkDir" >/dev/null 2>&1
 
 # copy config file from template if exists, else create from 
 if [ ! -e $UserConfig ]; then
