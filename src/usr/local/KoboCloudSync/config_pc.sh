@@ -6,6 +6,7 @@
 WorkDir=/tmp/KoboCloudSync
 DocumentRoot=/tmp/KoboCloudSync/Documents
 UserConfig=$WorkDir/KoboCloudSync.conf
+Logs=$WorkDir/log
 Dt="date +%Y-%m-%d_%H:%M:%S"
 CURL=/usr/bin/curl
 Device=dev
