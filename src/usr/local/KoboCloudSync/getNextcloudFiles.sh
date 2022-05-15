@@ -27,6 +27,13 @@ davServer=$(echo $1 | sed -e s,/$path,,g)
 # echo "davServer:                 $davServer"
 # echo "davServerWithOwncloudPath: $davServerWithOwncloudPath"
 
+  # test authentication
+AuthMessage=$($KC_HOME/validateCredentials.sh.sh "$shareID" "$pwd" "$davServerWithOwncloudPath")
+if [ "$AuthMessage" ]; then
+  echo "$RED Authentication Error: $AuthMessage"
+  exit
+fi
+    # Get Files for specified URL
 # get directory listing (relative filepaths on the server)
 $KC_HOME/getNextcloudFilelist.sh $davServerWithOwncloudPath $shareID $pwd |
 while read relativeLink
@@ -46,3 +53,4 @@ do
       exit
   fi
 done
+

@@ -44,7 +44,7 @@ IFS=',' #setting comma as delimiter
 while read line || [ -n "$line" ]; do
 #   echo "Reading $line"
   if echo "$line" | grep -q '^#'; then
-    echo "${cyan}Processing config file: Comment found${NC}"
+   exec # comment found, do nothing
   elif echo "$line" | grep -q "^REMOVE_DELETED$"; then
 	  echo "Files deleted on the server will be removed from this device."
   else
@@ -58,7 +58,7 @@ while read line || [ -n "$line" ]; do
     pwd="$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'<<<"${pwd}")"
     # echo "$GREEN -${pwd}-"
     destFolderAbsolute="$DocumentRoot/$destFolder"
-    # Get Files for specified URL
+
     $KC_HOME/getNextcloudFiles.sh "$url" "$destFolderAbsolute" "$pwd"
   fi
 done < $UserConfig
