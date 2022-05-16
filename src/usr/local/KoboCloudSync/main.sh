@@ -54,18 +54,16 @@ while read line || [ -n "$line" ]; do
   elif echo "$line" | grep -q "^REMOVE_DELETED$"; then
 	  echo "Files deleted on the server will be removed from this device."
   else
+    echo "$YELLOW processing: $line $NC"
     # split the line in DestinationFolder, URL and password
-    echo "${YELLOW}Reading $line${NC}"
-    read -a strarr <<<"$line"
-    destFolder=${strarr[0]} # relative path
-    url=${strarr[1]}  
-    pwd=${strarr[2]}
-    # strip leading/trailing spaces
-    pwd="$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'<<<"${pwd}")"
-    # echo "$GREEN -${pwd}-"
+ 	  destFolder=$(echo "$line" | cut -d, -f1)
+	  url=$(echo "$line" | cut -d, -f2)
+	  pwd=$(echo "$line" | cut -d, -f3-)   
+    pwd=$(echo "$pwd" | tr -d [:blank:]) # trim spacees
+    # echo "-${pwd}-"
     destFolderAbsolute="$DocumentRoot/$destFolder"
 
-    $KC_HOME/getNextcloudFiles.sh "$url" "$destFolderAbsolute" "$pwd"
+    # $KC_HOME/getNextcloudFiles.sh "$url" "$destFolderAbsolute" "$pwd"
   fi
 done < $UserConfig
 
