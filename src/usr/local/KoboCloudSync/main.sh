@@ -22,22 +22,28 @@ fi
 
 # test if the an internet-connection is available
 # by pinging aws.amazon.com
+case $device in
+  "kobo") waitparm='-w' ;;
+       *) waitparm='-i' ;;
+esac
+
 if [ "$TEST" = "" ]
 then
     echo "`$Dt` waiting for internet connection"
     r=1;i=0
     while [ $r != 0 ]; do
     if [ $i -gt 60 ]; then
-        ping -c 1 -w 3 aws.amazon.com >/dev/null 2>&1
+        ping -c 1 $waitparm 3 aws.amazon.com #>/dev/null 2>&1
         echo "`$Dt` error! no connection detected" 
         exit 1
     fi
-    ping -c 1 -w 3 aws.amazon.com >/dev/null 2>&1
+    ping -c 1 $waitparm 3 aws.amazon.com #>/dev/null 2>&1
     r=$? # get the exit-status of the previous cmd, 0=successful
     if [ $r != 0 ]; then sleep 1; fi
     i=$(($i + 1))
     done
 fi
+
 
 # process the config-file
 IFS=',' #setting comma as delimiter  

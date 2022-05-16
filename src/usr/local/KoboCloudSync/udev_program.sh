@@ -15,7 +15,7 @@
 # run shell in new session as udev kills slow scripts
 # $0 - script location
 # $@ - all parameters passed to the script
- if [[ "$SETSID" != "1" ]] & [[ "$Device" == "Kobo" ]]
+ if [[ "$SETSID" != "1" ]] & [[ "$device" == "Kobo" ]]
  then
      SETSID=1 setsid "$0" "$@" &
      exit

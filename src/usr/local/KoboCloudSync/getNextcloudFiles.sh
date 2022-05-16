@@ -28,7 +28,7 @@ davServer=$(echo $1 | sed -e s,/$path,,g)
 # echo "davServerWithOwncloudPath: $davServerWithOwncloudPath"
 
   # test authentication
-AuthMessage=$($KC_HOME/validateCredentials.sh.sh "$shareID" "$pwd" "$davServerWithOwncloudPath")
+AuthMessage=$($KC_HOME/validateCredentials.sh "$shareID" "$pwd" "$davServerWithOwncloudPath")
 if [ "$AuthMessage" ]; then
   echo "$RED Authentication Error: $AuthMessage"
   exit
