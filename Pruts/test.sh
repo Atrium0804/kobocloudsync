@@ -1,6 +1,7 @@
-echo '<?xml version="1.0"?>
-<a:propfind xmlns:a="DAV:">
-<a:prop><a:resourcetype/></a:prop>
-</a:propfind>' |
-/usr/bin/curl -k --silent -i -X PROPFIND -u w7cr6AZSBGPS6Yn:wrongpassword https://cloud.famstieltjes.nl/public.php/webdav --upload-file - -H Depth: infinity |
-grep -Eo '<s:exception>[^<]*[^/]</s:exeption>'
+
+#!/bin/sh
+while IFS=',' read -ra ADDR; do
+  for i in "${ADDR[@]}"; do
+     echo "$i"
+  done
+done <<< "Arg1, Arg2, Arg3"
