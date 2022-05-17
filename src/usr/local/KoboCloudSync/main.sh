@@ -2,6 +2,8 @@
 
 TEST=$1
 
+# v2 cut ipv <<<
+
 #load config
 . $(dirname $0)/config.sh
 echo "${cyan}################## Main ##################${NC}"
