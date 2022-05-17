@@ -9,13 +9,14 @@ pwd="$3"
 #load config
 . $(dirname $0)/config.sh
 
+
 # webdav implementation
 # https://myserver.com/s/shareLink
 # or
 # https://myserver.com/nextcloud/s/sharelink
 
+# get the shareID
 shareID=`echo $baseURL | sed -e 's@.*s/\([^/ ]*\)$@\1@'`
-
 # Extract the path.
 path="$(echo $baseURL | grep / | cut -d/ -f4-)"
 # Get the servername with path, used to get the file listing. (e.g. if the server uses domain.name/nextcloud, the nextcloud is kept as well.)
@@ -27,15 +28,17 @@ davServer=$(echo $1 | sed -e s,/$path,,g)
 # echo "davServer:                 $davServer"
 # echo "davServerWithOwncloudPath: $davServerWithOwncloudPath"
 
-  # test authentication
+  # check credentials
 AuthMessage=$($KC_HOME/validateCredentials.sh "$shareID" "$pwd" "$davServerWithOwncloudPath")
 if [ "$AuthMessage" ]; then
   echo "$RED Authentication Error: $AuthMessage"
   exit
 fi
-    # Get Files for specified URL
-# get directory listing (relative filepaths on the server)
-$KC_HOME/getNextcloudFilelist.sh $davServerWithOwncloudPath $shareID $pwd |
+
+# Get Files for specified URL,
+# > filter compatible extensions only
+# > exclude Calibre's cover.jpg
+$KC_HOME/getNextcloudFilelist.sh $davServerWithOwncloudPath $shareID $pwd | grep -i -f $ExtensionPatterns | grep -v '/cover.jpg' |
 while read relativeLink
 do
   # process line 

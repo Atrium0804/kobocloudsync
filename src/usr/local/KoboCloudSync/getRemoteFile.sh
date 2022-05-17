@@ -105,6 +105,7 @@ case $statusCode in
                 $0 NORETRY "$@"
             fi
         else
+            echo "exit 3"
             exit 3
         fi
     fi
@@ -122,9 +123,3 @@ esac;
 #     echo "${RED}Error: Forbidden${NC}"
 #     exit 2
 # fi
-
-# append filename to the list of remote files
-if grep -q "^REMOVE_DELETED" $UserConfig; then
-	echo "$localFile" >> "$RemoteFileList"
-	# echo "Appended $localFile to filesList"
-fi

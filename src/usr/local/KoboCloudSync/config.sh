@@ -19,4 +19,4 @@ fi
 UserConfig=$WorkDir/KoboCloudSync.conf
 Logs=$WorkDir/log
 RemoteFileList=$WorkDir/RemoteFilelist.txt
-
+ExtensionPatterns=$KC_HOME/CompatibleExtensionPatterns.txt

@@ -63,7 +63,7 @@ while read line || [ -n "$line" ]; do
     # echo "-${pwd}-"
     destFolderAbsolute="$DocumentRoot/$destFolder"
 
-    # $KC_HOME/getNextcloudFiles.sh "$url" "$destFolderAbsolute" "$pwd"
+    $KC_HOME/getNextcloudFiles.sh "$url" "$destFolderAbsolute" "$pwd"
   fi
 done < $UserConfig
 
