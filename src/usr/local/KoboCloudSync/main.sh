@@ -56,6 +56,7 @@ while read line || [ -n "$line" ]; do
   else
     echo "$YELLOW processing: $line $NC"
     # split the line in DestinationFolder, URL and password
+    echo "echo "$line" | cut -d, -f1"
  	  destFolder=$(echo "$line" | cut -d, -f1)
 	  url=$(echo "$line" | cut -d, -f2)
 	  pwd=$(echo "$line" | cut -d, -f3-)   
