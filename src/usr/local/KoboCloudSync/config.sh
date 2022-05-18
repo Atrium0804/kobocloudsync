@@ -16,6 +16,7 @@ then
     covergen=covergen-darwin-arm64
     . $KC_HOME/config_dev.sh
 elif uname -a | grep -q 'Darwin.*X86_64'  # mac intel
+then
     kepubify=kepubify-darwin-arm
     seriesmeta=seriesmeta-darwin-arm
     covergen=covergen-darwin-arm
