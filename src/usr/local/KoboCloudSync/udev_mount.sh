@@ -9,8 +9,9 @@
 [ ! -e "$Logs" ] && mkdir -p "$Logs" >/dev/null 2>&1
 [ ! -e "$WorkDir" ] && mkdir -p "$WorkDir" >/dev/null 2>&1
 
+echo
 echo "Locations:"
-echo "Logs: $Logs"
+echo "Logs:    $Logs"
 echo "WorkDir: $WorkDir"
 
 # copy config file from template if exists, else create from 
