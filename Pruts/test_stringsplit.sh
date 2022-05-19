@@ -1,17 +1,29 @@
 #!/bin/sh
-filename='testfile.xxx.svg'
-extension=$(echo "filename.xxx.txt" | awk -F '.' '{print $NF}')
-echo "extension of the file $filename: $extension"
-# get last word of string
-# 
+# filename='testfile.xxx.svg'
+filename='ebook.epub'
+extensionfile='/Users/ivostieltjes/git/KoboNextcloudsync/src/usr/local/KoboCloudSync/compatibleFileTypes.md'
 
-theLine="mapX, http://test.nl, x3r54"
-dest=$(echo $theLine | awk -F ',' '{print $1}')
-url=$(echo $theLine | awk -F ',' '{print $2}')
-pwd=$(echo $theLine | awk -F ',' '{print $3}')
-echo "dest: $dest"
-echo "url: $url"
-echo "pwd: $pwd"
+newname=$(sed 's/epub/kepub.epub' <<< $filename)
+echo $newname
+
+# #  $extensionfile
+# if ! grep -i -q 'xxx' $extensionfile  ;
+# then echo "found"
+# else echo "not found"
+# fi
+
+# extension=$(echo "filename.xxx.txt" | awk -F '.' '{print $NF}')
+# echo "extension of the file $filename: $extension"
+# # # get last word of string
+# # # 
+
+# theLine="mapX, http://test.nl, x3r54"
+# dest=$(echo $theLine | awk -F ',' '{print $1}')
+# url=$(echo $theLine | awk -F ',' '{print $2}')
+# pwd=$(echo $theLine | awk -F ',' '{print $3}')
+# echo "dest: $dest"
+# echo "url: $url"
+# echo "pwd: $pwd"
 
 
 # #load config
