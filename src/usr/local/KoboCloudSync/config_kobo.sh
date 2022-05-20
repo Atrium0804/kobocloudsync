@@ -5,6 +5,11 @@
 
 WorkDir=/mnt/onboard/.adds/cloudsync
 DocumentRoot=/mnt/onboard/
+
+kepubify=$KC_HOME/kepubify/kepubify-linux-arm
+covergen=$KC_HOME/kepubify/covergen-darwin-linux-arm
+seriesmeta=$KC_HOME/kepubify/seriesmeta-linux-arm
+
 Dt="date +%Y-%m-%d_%H:%M:%S"
 CURL="$KC_HOME/curl --cacert \"$KC_HOME/ca-bundle.crt\" "
 device=kobo

@@ -49,12 +49,6 @@ if [ ! -z "$dropboxPath" ] && [ "$dropboxPath" != "-" ]; then
     curlCommand="$CURL -X POST --header \"Authorization: Bearer $user\" --header \"Dropbox-API-Arg: {\\\"path\\\": \\\"$dropboxPath\\\"}\""
 fi
 
-# Check if file is already downloaded
-if [ -f "$localFile" ]; then
-    echo "  Existing file, skipping:$localFile"
-    exit 0
-fi
-
 # Download the file:
 #  compose, execute command and evaluate exitcode 
 #  writing the output to file

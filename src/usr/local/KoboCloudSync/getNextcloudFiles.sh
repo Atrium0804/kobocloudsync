@@ -46,14 +46,51 @@ do
   linkLine=$davServer$relativeLink
   localFile="$outDir/$outFileName"
 
-  # append file to filesList in order to detect deleted remote-files
-  echo "$localFile" >> "$RemoteFileList"
+  #  distinguish between
+  #  .kepub.epub -> to be downloaded
+  #  .epub -> to be downloaded and converted
 
-    # get remote file
-  $KC_HOME/getRemoteFile.sh "$linkLine" "$localFile" $shareID "-" "$pwd"
-  if [ $? -ne 0 ] ; then
+  # convert filename to lowercase,  
+  # if file is a epub, convert localFilename to .kepub.epub
+  # mark for conversion
+  oldIFS=$IFS
+  IFS='%'
+  localFile_lc=$(echo "$localFile" | tr '[:upper:]' '[:lower:]')
+  pattern='tolower($0) ~ /^.*\.epub/ && ! /^.*\.kepub.epub/'  
+  if [ $(echo $localFile_lc | awk "$pattern") ]; 
+  then 
+      echo "epub, to be converted"
+      tempfile=$localFile
+      localFile=$(echo "$tempfile" | sed 's/\.epub$/\.kepub\.epub/i')
+      isConvert=1
+  else 
+      # no conversion needed tempfile=localfile
+      echo "kepub.epub or no epub, no conversion"
+      tempfile=$localFile
+      isConvert=0
+  fi
+  IFS=$oldIFS
+  # Check if file is already downloaded
+  if [ -f "$localFile" ]; then
+      echo "  Existing file, skipping: $outFileName"
+      # append to local filelist
+      echo "$localFile" >> "$RemoteFileList"
+      # exit 0
+  else
+    # download the file
+    echo "new file, downloading $outFileName"
+    $KC_HOME/getRemoteFile.sh "$linkLine" "$tempfile" $shareID "-" "$pwd"
+    if [ $? -ne 0 ] ; then
       echo "Having problems contacting Owncloud. Try again in a couple of minutes."
       exit
+    fi
+    if [ isConvert==1 ]; then
+    # convert epub to kepub
+       echo "Converting to kepub: $filename"
+       $kepubify "$tempfile"  -o "$localFile" 
+       echo "$localFile" >> "$RemoteFileList"
+      rm -f "$tempfile"
+    fi
+
   fi
 done
-

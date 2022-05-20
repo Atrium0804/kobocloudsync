@@ -5,13 +5,15 @@
 
 # KC_HOME = locatoin where script is located
 KC_HOME=$(dirname $0)
-ConfigTemplate=$KC_HOME/KoboCloudSync.conf.tmpl
+ConfigTemplate=$KC_HOME/kobocloudsync.conf.tmpl
 
 
-if uname -a | grep -q 'x86\|Darwin'
+if uname -a | grep -q 'Darwin.*ARM64'
+then 
+    . $KC_HOME/config_MacM1.sh
+elif uname -a | grep -q 'Darwin.*X86'
 then
-    #echo "PC detected"
-    . $KC_HOME/config_pc.sh
+    . $KC_HOME/config_MacIntel.sh
 else
     . $KC_HOME/config_kobo.sh
 fi
