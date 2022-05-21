@@ -11,8 +11,8 @@ then
     theArchive="/tmp/KoboRoot.tgz"
 	theExtractFolder="/tmp/kobocloudsync"
 else
-    theArchive="/tmp/KoboRoot.tgz"
-    # theArchive="/mnt/onboard/.Kobo/KoboRoot.tgz"
+    # theArchive="/tmp/KoboRoot.tgz"
+    theArchive="/mnt/onboard/.Kobo/KoboRoot.tgz"
 	theExtractFolder="/" # "" for root /
 fi
 
@@ -23,8 +23,8 @@ wget $theGitHubURL -O $theArchive
 
 
 # # install: extract to root
-if tar -zxvf $theArchive --directory $theExtractFolder ; 
-	then rm -f $theArchive
-fi
+# if tar -zxvf $theArchive --directory $theExtractFolder ; 
+# 	then rm -f $theArchive
+# fi
 # start udev_mount to create required foldres
 . $theExtractFolder/usr/local/KoboCloudSync/udev_mount.sh
