@@ -50,4 +50,6 @@ wget -q $theGitHubURL -O $theArchive
 
 # start udev_mount to create required folders
 echo "Starting udev_mount.sh"
-. $theExtractFolder/usr/local/KoboCloudSync/udev_mount.sh
+. $theExtractFolder/usr/local/KoboCloudSync/udev_mount.sh  >/dev/null 2>&1
+
+echo "Update completed. Perform a sync to start te update."

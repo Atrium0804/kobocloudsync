@@ -14,7 +14,6 @@ echo "Logs:    $Logs"
 echo "WorkDir: $WorkDir"
 
 # copy config file from template if exists, else create from 
-echo "testing $UserConfig"
 if [ ! -e $UserConfig ]; then
   if [ -e $ConfigTemplate ]; then
        echo "copying config-template"
