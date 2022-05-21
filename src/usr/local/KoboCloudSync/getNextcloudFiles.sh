@@ -91,7 +91,7 @@ do
     if [ isConvert==1 ]; then
     # convert epub to kepub
        echo "   Converting to kepub: $outFileName"
-       $kepubify "$tempfile"  -o "$localFile" 
+       $kepubify "$tempfile"  -o "$localFile"  >/dev/null 2>&1
        echo "$localFile" >> "$RemoteFileList"
       # echo "removing $tempfile"
       # echo "rm -f $tempfile"

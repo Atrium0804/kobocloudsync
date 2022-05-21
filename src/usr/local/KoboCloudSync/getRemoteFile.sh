@@ -105,15 +105,3 @@ case $statusCode in
     fi
     ;;
 esac;
-# if echo "$statusCode" | grep -q "200"; then
-#     echo "${RED}Error: Unauthorized${NC}"
-#     exit 2
-# fi
-# if echo "$statusCode" | grep -q "401"; then
-#     echo "${RED}Error: Unauthorized${NC}"
-#     exit 2
-# fi
-# if echo "$statusCode" | grep -q "403"; then
-#     echo "${RED}Error: Forbidden${NC}"
-#     exit 2
-# fi

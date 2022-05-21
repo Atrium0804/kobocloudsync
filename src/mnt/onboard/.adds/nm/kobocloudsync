@@ -1,0 +1,8 @@
+# sync nextcloud
+menu_item     :main     :Cloudsync           :nickel_wifi       :enable
+  chain_success                              :cmd_output        :9999:/usr/local/KoboCloudSync/main.sh
+  chain_success								 :nickel_wifi       :disable
+# update KoboCloudSync
+  menu_item     :main     :Cloudsync           :nickel_wifi       :enable
+  chain_success                              :cmd_output        :9999:/usr/local/KoboCloudSync/update.sh
+  chain_success								 :nickel_wifi       :disable
