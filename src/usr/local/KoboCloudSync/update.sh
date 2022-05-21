@@ -12,6 +12,7 @@ then
 	theExtractFolder="/tmp/kobocloudsync"
 else
     theArchive="/tmp/KoboRoot.tgz"
+    theArchive="/mnt/onboard/.Kobo/KoboRoot.tgz"
 	theExtractFolder="" # "" for root /
 fi
 
