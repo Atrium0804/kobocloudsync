@@ -81,7 +81,7 @@ do
     echo "new file, downloading $outFileName"
     $KC_HOME/getRemoteFile.sh "$linkLine" "$tempfile" $shareID "-" "$pwd"
     if [ $? -ne 0 ] ; then
-      echo "Having problems contacting Owncloud. Try again in a couple of minutes."
+      echo "Having problems contacting Nextcloud. Try again in a couple of minutes."
       exit
     fi
     if [ isConvert==1 ]; then
