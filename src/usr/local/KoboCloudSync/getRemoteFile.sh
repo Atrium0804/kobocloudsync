@@ -40,8 +40,7 @@ fi
 # compose curl-command - add username/password if specified
 curlCommand="$CURL"
 if [ ! -z "$user" ] && [ "$user" != "-" ]; then
-    # echo "User: $user"
-    curlCommand="$curlCommand -u $user:$pwd "
+   curlCommand="$curlCommand -u $user:$pwd "
 fi
 
 # for dropbox: add dropbox-header
@@ -52,21 +51,14 @@ fi
 # Download the file:
 #  compose, execute command and evaluate exitcode 
 #  writing the output to file
-#  echo "$GREEN Download:$NC" $curlCommand -k --silent -C - -L --create-dirs -o \"$localFile\" \"$linkLine\" -v
-# echo "  Downloading file: $localFile"
 eval $curlCommand -k --silent -C - -L --create-dirs -o \"$localFile\" \"$linkLine\" -v 2>$outputFileTmp
 status=$?
-# echo "  Status: $status"
-# echo "  Output: "
-# cat $outputFileTmp
 
 statusCode=`grep 'HTTP/' "$outputFileTmp" | tail -n 1 | cut -d' ' -f3`
 grep -q "Cannot resume" "$outputFileTmp"
 errorResume=$?
 rm $outputFileTmp
 
-# echo "Remote file information:"
-# echo "  Status code: $statusCode"
 case $statusCode in
     "200") exec
         #    echo "Status:OK"
@@ -81,6 +73,7 @@ case $statusCode in
             # exit 2 
             ;;
     *)
+        echo "statuscode: $statusCode"
         if echo "$statusCode" | grep -q "50.*"; then
         echo "${RED}Error: Server error, statuscode $statusCode ${NC}"
         if [ $errorResume ] && [ "$retry" = "TRUE" ]

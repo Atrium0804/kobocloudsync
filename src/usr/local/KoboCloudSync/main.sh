@@ -63,26 +63,12 @@ while read line || [ -n "$line" ]; do
     destFolderAbsolute="$DocumentRoot/$destFolder"
 
     $KC_HOME/getNextcloudFiles.sh "$url" "$destFolderAbsolute" "$pwd"
+    if [ -n "$destFolder" ]; then 
+      # only prune when destFolder is not null, otherwise we are deleting too much...
+      $KC_HOME/pruneFolder.sh "$destFolderAbsolute"
+    fi
   fi
 done < $UserConfig
 
 # generate covers
 $covergen -g $DocumentRoot >/dev/null 2>&1
-
-# function to purge deleted files recursively
-purgeDeletedFiles() {
-for item in *; do
-	if [ -d "$item" ]; then 
-		(cd -- "$item" && purgeDeletedFiles)
-	elif grep -Fq "$item" "$RemoteFileList"; then
-	  echo "$CYAN Keeping $item $NC"
-    exec # do noting
-	else
-		echo " $CYAN  Purging file:     $(eval pwd)/$item $NC"
-		rm "$item" >/dev/null 2>&1
-	fi
-done
-}
-echo "purging $destFolderAbsolute"
-cd "$DocumentRoot"
-purgeDeletedFiles

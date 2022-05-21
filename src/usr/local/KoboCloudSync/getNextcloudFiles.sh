@@ -20,18 +20,11 @@ pwd="$3"
 
 # get the shareID
 shareID=`echo $baseURL | sed -e 's@.*s/\([^/ ]*\)$@\1@'`
-# Extract the path.
 path="$(echo $baseURL | grep / | cut -d/ -f4-)"
-# Get the servername with path, used to get the file listing. (e.g. if the server uses domain.name/nextcloud, the nextcloud is kept as well.)
 davServerWithOwncloudPath=`echo $baseURL | sed -e 's@.*\(http.*\)/s/[^/ ]*$@\1@' -e 's@/index\.php@@'`
-# Remove the path to get the protocol and main domain only (used with the relative paths which are a result of "getOwncloudList.sh".)
 davServer=$(echo $1 | sed -e s,/$path,,g)
 
-# echo "shareID:                   $shareID"
-# echo "davServer:                 $davServer"
-# echo "davServerWithOwncloudPath: $davServerWithOwncloudPath"
-
-  # check credentials
+# check credentials
 AuthMessage=$($KC_HOME/validateCredentials.sh "$shareID" "$pwd" "$davServerWithOwncloudPath")
 if [ "$AuthMessage" ]; then
   echo "$RED Authentication Error: $AuthMessage"
@@ -61,8 +54,6 @@ do
 
   localFile_lc=$(echo "$localFile" | tr '[:upper:]' '[:lower:]')
   pattern='tolower($0) ~ /^.*\.epub/ && ! /^.*\.kepub.epub/'  
-
-
   if [ $(echo $localFile_lc | awk "$pattern") ]; 
   then 
       tempfile=$localFile
@@ -70,34 +61,32 @@ do
       isConvert=1
   else 
       # no conversion needed tempfile=localfile
-      tempfile=$localFile
+      tempfile="$localFile"
       isConvert=0
   fi
+
   IFS=$oldIFS
   # Check if file is already downloaded
   if [ -f "$localFile" ]; then
-      echo "   Skip existing file: $outFileName"
-      # append to local filelist
-      echo "$localFile" >> "$RemoteFileList"
-      # exit 0
+      echo "   Existing: $outFileName"
+     
   else
     # download the file
-    echo "   Downloading new file: $outFileName"
+    echo "   Download $outFileName"
     $KC_HOME/getRemoteFile.sh "$linkLine" "$tempfile" $shareID "-" "$pwd"
     if [ $? -ne 0 ] ; then
       echo "Having problems contacting Nextcloud. Try again in a couple of minutes."
       exit
     fi
-    if [ isConvert==1 ]; then
+    if [ "$isConvert" == "1" ]; then
     # convert epub to kepub
-       echo "   Converting to kepub: $outFileName"
+       echo "   Converting to kepub"
        $kepubify "$tempfile"  -o "$localFile"  >/dev/null 2>&1
-       echo "$localFile" >> "$RemoteFileList"
-      # echo "removing $tempfile"
-      # echo "rm -f $tempfile"
-      rm -f "$tempfile"
+      #  echo "$localFile" >> "$RemoteFileList"
+       rm -f "$tempfile"
     fi
   fi
+  echo "$localFile" >> "$RemoteFileList"
 done
 
 

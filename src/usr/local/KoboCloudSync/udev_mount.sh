@@ -10,8 +10,8 @@
 [ ! -e "$WorkDir" ] && mkdir -p "$WorkDir" >/dev/null 2>&1
 
 # echo "Locations:"
-echo "Logs:    $Logs"
-echo "WorkDir: $WorkDir"
+# echo "Logs:    $Logs"
+# echo "WorkDir: $WorkDir"
 
 # copy config file from template if exists, else create from 
 if [ ! -e $UserConfig ]; then
@@ -19,11 +19,9 @@ if [ ! -e $UserConfig ]; then
        echo "copying config-template"
        cp $ConfigTemplate $UserConfig
   else
-    eco "generating config file"
+    echo "generating config file"
     echo  "# Remove the # from the following line to uninstall KoboCloudSync" >> $UserConfig
     echo  "#UNINSTALL" >> $UserConfig
-    echo  "# Remove the # from the following line to delete files when they are no longer on the remote server" >> $UserConfig
-    echo  "#REMOVE_DELETED" >> $UserConfig
     echo  "#" >> $UserConfig
     echo  "# URL's to syncronize. Use the following format, separated by comma:" >> $UserConfig
     echo  "# Destination Folder, URL, Passwod (optional)" >> $UserConfig
