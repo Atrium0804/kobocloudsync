@@ -75,18 +75,18 @@ for item in *; do
 	if [ -d "$item" ]; then 
 		(cd -- "$item" && purgeDeletedFiles)
 	elif grep -Fq "$item" "$RemoteFileList"; then
-		wait 
-    echo "$CYAN Keeping $item $NC"
+	  echo "$CYAN Keeping $item $NC"
     exec # do noting
 	else
 		echo " $CYAN  Purging file:     $(eval pwd)/$item $NC"
-		rm "$item"
+		rm "$item" >/dev/null 2>&1
 	fi
 done
 }
 echo "purging $destFolderAbsolute"
 cd "$DocumentRoot"
 purgeDeletedFiles
+
 
 # simulate usb connection
 echo usb plug add >> /tmp/nickel-hardware-status
