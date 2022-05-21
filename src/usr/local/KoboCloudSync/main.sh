@@ -15,12 +15,9 @@ if grep -q '^UNINSTALL$' $UserConfig; then
     exit 0
 fi
 
-# Read the config file and check if Remove_deleted is set, 
-# in that case, save the current file list
-# append the file list to prevent deletion when purging
-if grep -q "^REMOVE_DELETED$" $UserConfig; then
-	echo "RemoteFileList" > "RemoteFileList"
-fi
+# Starting new filelist
+# add filelist itself to prevent from pruning
+echo "$RemoteFileList" > "$RemoteFileList"
 
 # test if the an internet-connection is available
 # by pinging aws.amazon.com
@@ -70,7 +67,7 @@ while read line || [ -n "$line" ]; do
 done < $UserConfig
 
 # generate covers
-$covergen -g $DocumentRoot
+$covergen -g $DocumentRoot >/dev/null 2>&1
 
 # function to purge deleted files recursively
 purgeDeletedFiles() {
@@ -79,21 +76,19 @@ for item in *; do
 		(cd -- "$item" && purgeDeletedFiles)
 	elif grep -Fq "$item" "$RemoteFileList"; then
 		wait 
-    # echo "Keeping $item"
+    echo "$CYAN Keeping $item $NC"
     exec # do noting
 	else
-		echo "  Purging file:     $(eval pwd)/$item"
+		echo " $CYAN  Purging file:     $(eval pwd)/$item $NC"
 		rm "$item"
 	fi
 done
 }
-# purge files in the destination folder which are deleted from server
-if grep -q "^REMOVE_DELETED$" $UserConfig; then
-	cd "$destFolderAbsolute"
-	purgeDeletedFiles
-fi
+echo "purging $destFolderAbsolute"
+cd "$DocumentRoot"
+purgeDeletedFiles
 
 # simulate usb connection
 echo usb plug add >> /tmp/nickel-hardware-status
 sleep 5
-echo usb plug remove >> /tmp/nickel-hardware-status
+echo usb plug remove  >> /tmp/nickel-hardware-status  

@@ -53,7 +53,7 @@ fi
 #  compose, execute command and evaluate exitcode 
 #  writing the output to file
 #  echo "$GREEN Download:$NC" $curlCommand -k --silent -C - -L --create-dirs -o \"$localFile\" \"$linkLine\" -v
-echo "  Downloading file: $localFile"
+# echo "  Downloading file: $localFile"
 eval $curlCommand -k --silent -C - -L --create-dirs -o \"$localFile\" \"$linkLine\" -v 2>$outputFileTmp
 status=$?
 # echo "  Status: $status"

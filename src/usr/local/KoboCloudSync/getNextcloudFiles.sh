@@ -55,30 +55,31 @@ do
   # mark for conversion
   oldIFS=$IFS
   IFS='%'
+
   localFile_lc=$(echo "$localFile" | tr '[:upper:]' '[:lower:]')
   pattern='tolower($0) ~ /^.*\.epub/ && ! /^.*\.kepub.epub/'  
+
+
   if [ $(echo $localFile_lc | awk "$pattern") ]; 
   then 
-      echo "epub, to be converted"
       tempfile=$localFile
       localFile=$(echo "$tempfile" | sed 's/\.epub$/\.kepub\.epub/i')
       isConvert=1
   else 
       # no conversion needed tempfile=localfile
-      echo "kepub.epub or no epub, no conversion"
       tempfile=$localFile
       isConvert=0
   fi
   IFS=$oldIFS
   # Check if file is already downloaded
   if [ -f "$localFile" ]; then
-      echo "  Existing file, skipping: $outFileName"
+      echo " Skip existing file: $outFileName"
       # append to local filelist
       echo "$localFile" >> "$RemoteFileList"
       # exit 0
   else
     # download the file
-    echo "new file, downloading $outFileName"
+    echo " Downloading new file: $outFileName"
     $KC_HOME/getRemoteFile.sh "$linkLine" "$tempfile" $shareID "-" "$pwd"
     if [ $? -ne 0 ] ; then
       echo "Having problems contacting Nextcloud. Try again in a couple of minutes."
@@ -86,11 +87,15 @@ do
     fi
     if [ isConvert==1 ]; then
     # convert epub to kepub
-       echo "Converting to kepub: $filename"
+       echo "Converting to kepub: $localFile"
        $kepubify "$tempfile"  -o "$localFile" 
        echo "$localFile" >> "$RemoteFileList"
+      echo "removing $tempfile"
+      echo "rm -f $tempfile"
       rm -f "$tempfile"
     fi
-
   fi
 done
+
+
+
