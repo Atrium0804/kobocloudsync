@@ -3,12 +3,11 @@
 # This file contains locations (on the dev-machine)
 # as wel as some general configurations
 
-WorkDir=/tmp/KoboCloudSync
-DocumentRoot=$WorkDir/Documents
+WorkDir=/tmp/kobocloudsync
+DocumentRoot=$WorkDir/documents
 
 kepubify=~/git/KoboNextcloudsync/DependenciesDev/kepubify-darwin-64bit/kepubify-darwin-64bit
-covergen=$KC_HOME/kepubify-darwin-64bit/covergen-darwin-64bit
-seriesmeta=$KC_HOME/kepubify-darwin-64bit/seriesmeta-darwin-64bit
+covergen=~/git/KoboNextcloudsync/DependenciesDev/kepubify-darwin-64bit/covergen-darwin-64bit
 
 Dt="date +%Y-%m-%d_%H:%M:%S"
 CURL=/usr/bin/curl

@@ -18,7 +18,7 @@ else
     . $KC_HOME/config_kobo.sh
 fi
 
-UserConfig=$WorkDir/KoboCloudSync.conf
+UserConfig=$WorkDir/kobocloudsync.conf
 Logs=$WorkDir
 RemoteFileList=$WorkDir/RemoteFilelist.txt
 ExtensionPatterns=$KC_HOME/CompatibleExtensionPatterns.txt

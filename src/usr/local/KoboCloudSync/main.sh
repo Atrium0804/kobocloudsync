@@ -69,6 +69,9 @@ while read line || [ -n "$line" ]; do
   fi
 done < $UserConfig
 
+# generate covers
+$covergen -g $DocumentRoot
+
 # function to purge deleted files recursively
 purgeDeletedFiles() {
 for item in *; do
@@ -89,3 +92,8 @@ if grep -q "^REMOVE_DELETED$" $UserConfig; then
 	cd "$destFolderAbsolute"
 	purgeDeletedFiles
 fi
+
+# simulate usb connection
+echo usb plug add >> /tmp/nickel-hardware-status
+sleep 5
+echo usb plug remove >> /tmp/nickel-hardware-status

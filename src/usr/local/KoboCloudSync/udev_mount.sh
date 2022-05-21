@@ -14,10 +14,13 @@ echo "Logs:    $Logs"
 echo "WorkDir: $WorkDir"
 
 # copy config file from template if exists, else create from 
+echo "testing $UserConfig"
 if [ ! -e $UserConfig ]; then
   if [ -e $ConfigTemplate ]; then
+       echo "copying config-template"
        cp $ConfigTemplate $UserConfig
   else
+    eco "generating config file"
     echo  "# Remove the # from the following line to uninstall KoboCloudSync" >> $UserConfig
     echo  "#UNINSTALL" >> $UserConfig
     echo  "# Remove the # from the following line to delete files when they are no longer on the remote server" >> $UserConfig
