@@ -1,4 +1,7 @@
 #!/bin/sh
+
+# https://raw.githubusercontent.com/Atrium0804/KoboNextcloudsync/main/src/usr/local/KoboCloudSync/getNextcloudFiles.sh
+
 #function to percent-decode the filename from the OwnCloud URL
 percentDecodeFileName() { printf "%b\n" "$(sed 's/+/ /g; s/%\([0-9a-f][0-9a-f]\)/\\x\1/g;')"; }
 
@@ -73,13 +76,13 @@ do
   IFS=$oldIFS
   # Check if file is already downloaded
   if [ -f "$localFile" ]; then
-      echo " Skip existing file: $outFileName"
+      echo "   Skip existing file: $outFileName"
       # append to local filelist
       echo "$localFile" >> "$RemoteFileList"
       # exit 0
   else
     # download the file
-    echo " Downloading new file: $outFileName"
+    echo "   Downloading new file: $outFileName"
     $KC_HOME/getRemoteFile.sh "$linkLine" "$tempfile" $shareID "-" "$pwd"
     if [ $? -ne 0 ] ; then
       echo "Having problems contacting Nextcloud. Try again in a couple of minutes."
@@ -87,11 +90,11 @@ do
     fi
     if [ isConvert==1 ]; then
     # convert epub to kepub
-       echo "Converting to kepub: $localFile"
+       echo "   Converting to kepub: $outFileName"
        $kepubify "$tempfile"  -o "$localFile" 
        echo "$localFile" >> "$RemoteFileList"
-      echo "removing $tempfile"
-      echo "rm -f $tempfile"
+      # echo "removing $tempfile"
+      # echo "rm -f $tempfile"
       rm -f "$tempfile"
     fi
   fi
