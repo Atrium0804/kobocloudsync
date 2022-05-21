@@ -12,8 +12,8 @@ then
 	theExtractFolder="/tmp/kobocloudsync"
 else
     theArchive="/tmp/KoboRoot.tgz"
-    theArchive="/mnt/onboard/.Kobo/KoboRoot.tgz"
-	theExtractFolder="" # "" for root /
+    # theArchive="/mnt/onboard/.Kobo/KoboRoot.tgz"
+	theExtractFolder="/" # "" for root /
 fi
 
 
@@ -21,14 +21,10 @@ fi
 [ ! -e "$theExtractFolder" ] && mkdir -p "$theExtractFolder" >/dev/null 2>&1
 wget $theGitHubURL -O $theArchive
 
-# simulate usb connection
-echo usb plug add >> /tmp/nickel-hardware-status
-sleep 5
-echo usb plug remove  >> /tmp/nickel-hardware-status  
 
 # # install: extract to root
-# if tar -zxvf $theArchive --directory $theExtractFolder ; 
-# 	then rm -f $theArchive
-# fi
-# # start udev_mount to create required foldres
-# . $theExtractFolder/usr/local/KoboCloudSync/udev_mount.sh
+if tar -zxvf $theArchive --directory $theExtractFolder ; 
+	then rm -f $theArchive
+fi
+# start udev_mount to create required foldres
+. $theExtractFolder/usr/local/KoboCloudSync/udev_mount.sh
