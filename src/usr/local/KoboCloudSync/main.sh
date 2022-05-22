@@ -50,6 +50,8 @@ while read line || [ -n "$line" ]; do
 #   echo "Reading $line"
   if echo "$line" | grep -q '^#'; then
    exec # comment found, do nothing
+  elif [ "$line" = "" ]; then
+    exec # empty line
   elif echo "$line" | grep -q "^REMOVE_DELETED$"; then
 	  echo "Files deleted on the server will be removed from this device."
   else

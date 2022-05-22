@@ -40,7 +40,7 @@ fi
 # compose curl-command - add username/password if specified
 curlCommand="$CURL"
 if [ ! -z "$user" ] && [ "$user" != "-" ]; then
-   curlCommand="$curlCommand -u $user:$pwd "
+   curlCommand="$curlCommand --user $user:$pwd "
 fi
 
 # for dropbox: add dropbox-header
@@ -51,7 +51,7 @@ fi
 # Download the file:
 #  compose, execute command and evaluate exitcode 
 #  writing the output to file
-eval $curlCommand -k --silent -C - -L --create-dirs -o \"$localFile\" \"$linkLine\" -v 2>$outputFileTmp
+eval $curlCommand --insecure --silent --continue-at - --location --create-dirs --output \"$localFile\" \"$linkLine\" -v 2>$outputFileTmp
 status=$?
 
 statusCode=`grep 'HTTP/' "$outputFileTmp" | tail -n 1 | cut -d' ' -f3`
@@ -79,7 +79,7 @@ case $statusCode in
         if [ $errorResume ] && [ "$retry" = "TRUE" ]
         then
             echo "Can't resume. Checking size"
-            contentLength=$(eval $curlCommand -k -sLI "$linkLine" | grep -i 'Content-Length' | sed 's/.*:\s*\([0-9]*\).*/\1/')
+            contentLength=$(eval $curlCommand --insecure -sLI "$linkLine" | grep -i 'Content-Length' | sed 's/.*:\s*\([0-9]*\).*/\1/')
             existingLength=`stat --printf="%s" "$localFile"`
             echo "Remote length: $contentLength"
             echo "Local length: $existingLength"

@@ -37,10 +37,12 @@ fi
 $KC_HOME/getNextcloudFilelist.sh $davServerWithOwncloudPath $shareID $pwd | grep -i -f $ExtensionPatterns | grep -v '/cover.jpg' |
 while read relativeLink
 do
-  # process line 
-  outFileName=`echo $relativeLink | sed 's/.*public.php\/webdav\///' | percentDecodeFileName`
+  # outFileName contains the relative path
+  outFileNameRelative=`echo $relativeLink | sed 's/.*public.php\/webdav\///' | percentDecodeFileName`
+  outFileName=$(echo $outFileNameRelative | awk -F '/' '{print $NF}')
   linkLine=$davServer$relativeLink
-  localFile="$outDir/$outFileName"
+  localFile="$outDir/$outFileNameRelative"
+
 
   #  distinguish between
   #  .kepub.epub -> to be downloaded
@@ -72,7 +74,7 @@ do
      
   else
     # download the file
-    echo "   Download $outFileName"
+    echo "   Download: $outFileName"
     $KC_HOME/getRemoteFile.sh "$linkLine" "$tempfile" $shareID "-" "$pwd"
     if [ $? -ne 0 ] ; then
       echo "Having problems contacting Nextcloud. Try again in a couple of minutes."
@@ -80,7 +82,7 @@ do
     fi
     if [ "$isConvert" == "1" ]; then
     # convert epub to kepub
-       echo "   Converting to kepub"
+       echo "             Converting to kepub"
        $kepubify "$tempfile"  -o "$localFile"  >/dev/null 2>&1
       #  echo "$localFile" >> "$RemoteFileList"
        rm -f "$tempfile"

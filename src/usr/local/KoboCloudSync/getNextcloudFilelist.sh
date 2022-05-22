@@ -31,6 +31,6 @@ echo '<?xml version="1.0"?>
 <a:propfind xmlns:a="DAV:">
 <a:prop><a:resourcetype/></a:prop>
 </a:propfind>' |
-$CURL -k --silent -i -X PROPFIND -u $user:$pwd $davServer/public.php/webdav --upload-file - -H "Depth: infinity" | 
+$CURL --insecure --silent --include --request PROPFIND --user $user:$pwd $davServer/public.php/webdav --upload-file - --header "Depth: infinity" | 
 grep -Eo '<d:href>[^<]*[^/]</d:href>' | 
 sed 's@</*d:href>@@g'
