@@ -24,11 +24,13 @@ case $device in
        *) waitparm='-i' ;;
 esac
     echo "`$Dt` waiting for internet connection"
+    eval "$fbink \"waiting for internet connection\" "
     r=1;i=0
     while [ $r != 0 ]; do
     if [ $i -gt 60 ]; then
         ping -c 1 $waitparm 3 aws.amazon.com >/dev/null 2>&1
         echo "`$Dt` error! no connection detected" 
+        eval "$fbink \"error! no connection detected\" " 
         exit 1
     fi
     ping -c 1 $waitparm 3 aws.amazon.com >/dev/null 2>&1
@@ -39,6 +41,7 @@ esac
 
 # download KoboRoot.tgz from GitHub
 echo "Downloading to $theArchive"
+eval "$fbink \"Downloading update\" "
 [ ! -e "$theExtractFolder" ] && mkdir -p "$theExtractFolder" >/dev/null 2>&1
 wget -q $theGitHubURL -O $theArchive
 
@@ -53,3 +56,4 @@ echo "Starting udev_mount.sh"
 . $theExtractFolder/usr/local/KoboCloudSync/udev_mount.sh  >/dev/null 2>&1
 
 echo "Update completed. Perform a sync to start te update."
+eval "$fbink \"Perform a sync to apply te update.\" "

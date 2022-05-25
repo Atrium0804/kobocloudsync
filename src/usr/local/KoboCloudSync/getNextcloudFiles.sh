@@ -75,6 +75,7 @@ do
   else
     # download the file
     echo "   Download: $outFileName"
+    eval "$fbink \"Downloading: $outFileName\" "
     $KC_HOME/getRemoteFile.sh "$linkLine" "$tempfile" $shareID "-" "$pwd"
     if [ $? -ne 0 ] ; then
       echo "Having problems contacting Nextcloud. Try again in a couple of minutes."
@@ -83,6 +84,7 @@ do
     if [ "$isConvert" == "1" ]; then
     # convert epub to kepub
        echo "             Converting to kepub"
+       eval "$fbink \"Converting to kepub: $outFileName\" "
        $kepubify "$tempfile"  -o "$localFile"  >/dev/null 2>&1
       #  echo "$localFile" >> "$RemoteFileList"
        rm -f "$tempfile"
@@ -90,6 +92,3 @@ do
   fi
   echo "$localFile" >> "$RemoteFileList"
 done
-
-
-

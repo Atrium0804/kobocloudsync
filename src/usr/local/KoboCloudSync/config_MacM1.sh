@@ -8,7 +8,7 @@ DocumentRoot=$WorkDir/documents
 
 kepubify=~/git/KoboNextcloudsync/DependenciesDev/kepubify-darwin-64bit/kepubify-darwin-64bit
 covergen=~/git/KoboNextcloudsync/DependenciesDev/kepubify-darwin-64bit/covergen-darwin-arm64
-
+kfmon=echo
 Dt="date +%Y-%m-%d_%H:%M:%S"
 CURL=/usr/bin/curl
 device=dev

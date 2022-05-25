@@ -29,11 +29,13 @@ esac
 if [ "$TEST" = "" ]
 then
     echo "`$Dt` waiting for internet connection"
+    eval "$fbink \"waiting for internet connection\" "
     r=1;i=0
     while [ $r != 0 ]; do
     if [ $i -gt 60 ]; then
         ping -c 1 $waitparm 3 aws.amazon.com #>/dev/null 2>&1
         echo "`$Dt` error! no connection detected" 
+        "$fbink  \"error! no connection detected\" " 
         exit 1
     fi
     ping -c 1 $waitparm 3 aws.amazon.com #>/dev/null 2>&1
@@ -63,7 +65,7 @@ while read line || [ -n "$line" ]; do
     pwd=$(echo "$pwd" | tr -d [:blank:]) # trim spacees
     # echo "-${pwd}-"
     destFolderAbsolute="$DocumentRoot/$destFolder"
-
+    eval "$fbink \"Processing $destFolder\" " 
     $KC_HOME/getNextcloudFiles.sh "$url" "$destFolderAbsolute" "$pwd"
     if [ -n "$destFolder" ]; then 
       # only prune when destFolder is not null, otherwise we are deleting too much...
@@ -73,4 +75,6 @@ while read line || [ -n "$line" ]; do
 done < $UserConfig
 
 # generate covers
+eval "$fbink \"Generating Covers\" " 
 $covergen -g $DocumentRoot >/dev/null 2>&1
+eval "$fbink \"KoboCloudSync finished\" " 

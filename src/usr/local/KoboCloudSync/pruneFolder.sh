@@ -23,6 +23,6 @@ function pruneFolder(){
 		fi
 	done 
 	# find and remove empty directorie
-	find "$1" -empty -type d -delete
+	find "$1"  -type d -empty -delete
 }
 pruneFolder "$theFolderToPrune"
