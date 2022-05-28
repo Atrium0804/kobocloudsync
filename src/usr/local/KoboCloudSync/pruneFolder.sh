@@ -17,9 +17,9 @@ pruneFolder(){
 	  	if grep -Fq "$item" "$RemoteFileList"; 
 			then 
 				exec # do nothing
-				echo "Keep:    $item"
+				echo "Pruning: Keep:    $item"
 			else 
-				echo "${CYAN}Pruning: $item $NC"
+				echo "Pruning: removing: $item"
 				rm -f "$item"
 		fi
 	done 

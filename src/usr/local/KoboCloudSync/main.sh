@@ -63,12 +63,17 @@ while read line || [ -n "$line" ]; do
 	  url=$(echo "$line" | cut -d, -f2)
 	  pwd=$(echo "$line" | cut -d, -f3-)   
     pwd=$(echo "$pwd" | tr -d [:blank:]) # trim spacees
+    
     # echo "-${pwd}-"
     destFolderAbsolute="$DocumentRoot/$destFolder"
     eval "$fbink \"Processing $destFolder\" " 
+    echo  "Processing $destFolder"
     $KC_HOME/getNextcloudFiles.sh "$url" "$destFolderAbsolute" "$pwd"
     if [ -n "$destFolder" ]; then 
       # only prune when destFolder is not null, otherwise we are deleting too much...
+
+    eval "$fbink \"Removing deleted files\" " 
+    echo "Removing deleted files" 
       $KC_HOME/pruneFolder.sh "$destFolderAbsolute"
     fi
   fi
@@ -76,5 +81,6 @@ done < $UserConfig
 
 # generate covers
 eval "$fbink \"Generating Covers\" " 
+echo "Generating Covers" 
 $covergen -g $DocumentRoot >/dev/null 2>&1
 eval "$fbink \"KoboCloudSync finished\" " 

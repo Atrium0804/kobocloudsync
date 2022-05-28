@@ -24,7 +24,6 @@ case $device in
        *) waitparm='-i' ;;
 esac
     echo "`$Dt` waiting for internet connection"
-    eval "$fbink \"waiting for internet connection\" "
     r=1;i=0
     while [ $r != 0 ]; do
     if [ $i -gt 60 ]; then
@@ -52,8 +51,6 @@ wget -q $theGitHubURL -O $theArchive
 # fi
 
 # start udev_mount to create required folders
-echo "Starting udev_mount.sh"
 . $theExtractFolder/usr/local/KoboCloudSync/udev_mount.sh  >/dev/null 2>&1
 
-echo "Update completed. Perform a sync to start te update."
 eval "$fbink \"Perform a sync to apply te update.\" "
