@@ -18,6 +18,7 @@ else
     . $KC_HOME/config_kobo.sh
 fi
 
+rcloneConfig=$WorkDir/rclone.conf
 UserConfig=$WorkDir/kobocloudsync.conf
 Logs=$WorkDir
 RemoteFileList=$WorkDir/RemoteFilelist.txt

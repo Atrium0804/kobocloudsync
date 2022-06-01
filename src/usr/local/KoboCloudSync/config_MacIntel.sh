@@ -6,12 +6,12 @@
 WorkDir=/tmp/kobocloudsync
 DocumentRoot=$WorkDir/documents
 
-kepubify=~/git/KoboNextcloudsync/DependenciesDev/kepubify-darwin-64bit/kepubify-darwin-64bit
-covergen=~/git/KoboNextcloudsync/DependenciesDev/kepubify-darwin-64bit/covergen-darwin-64bit
+  rclone=$KC_HOME/../../../../Sources_3rdParty/rclone-v1.58.1-osx-amd64/rclone
+kepubify=$KC_HOME/../../../../Sources_3rdParty/kepubify-darwin-64bit/kepubify
+covergen=$KC_HOME/../../../../Sources_3rdParty/kepubify-darwin-64bit/covergen
 kfmon=echo
 
 Dt="date +%Y-%m-%d_%H:%M:%S"
-CURL=/usr/bin/curl
 device=dev
 
 # bash colors
