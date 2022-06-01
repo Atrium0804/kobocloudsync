@@ -3,8 +3,8 @@
 # This file contains locations (on the dev-machine)
 # as wel as some general configurations
 
-WorkDir=/tmp/kobocloudsync
-DocumentRoot=$WorkDir/documents
+WorkDir=~/git/Snippets/rclone
+DocumentRoot=$WorkDir/data
 
   rclone=$KC_HOME/../../../../Sources_3rdParty/rclone-v1.58.1-osx-amd64/rclone
 kepubify=$KC_HOME/../../../../Sources_3rdParty/kepubify-darwin-64bit/kepubify

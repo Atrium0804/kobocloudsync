@@ -4,7 +4,7 @@
 # as wel as some general configurations
 
 WorkDir=/tmp/kobocloudsync
-DocumentRoot=$WorkDir/documents
+DocumentRoot=$WorkDir/data
 
   rclone=$KC_HOME/../../../../Sources_3rdParty/rclone-v1.58.1-osx-arm64/rclone
 kepubify=$KC_HOME/../../../../Sources_3rdParty/kepubify-darwin-arm64/kepubify
