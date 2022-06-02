@@ -20,9 +20,10 @@ fi
 
 rcloneConfig=$WorkDir/rclone.conf
 rcloneLogfile=$WorkDir/rclone.log
-echo "rcloneConfig: $rcloneConfig"
-echo "rcloneLogfile: $rcloneLogfile"
+echo "$CYAN rcloneConfig: $rcloneConfig $NC"
+echo "$CYAN rcloneLogfile: $rcloneLogfile $NC"
 rcloneOptions="--config=$rcloneConfig --log-file=$rcloneLogfile "
+
 UserConfig=$WorkDir/kobocloudsync.conf
 Logs=$WorkDir
 RemoteFileList=$WorkDir/RemoteFilelist.txt

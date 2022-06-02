@@ -9,7 +9,8 @@ DocumentRoot=$WorkDir/data
   rclone=$KC_HOME/../../../../Sources_3rdParty/rclone-v1.58.1-osx-amd64/rclone
 kepubify=$KC_HOME/../../../../Sources_3rdParty/kepubify-darwin-64bit/kepubify
 covergen=$KC_HOME/../../../../Sources_3rdParty/kepubify-darwin-64bit/covergen
-kfmon=echo
+   fbink=echo
+   jq=$KC_HOME/../../../../Sources_3rdParty/jq/jq-osx-amd64
 
 Dt="date +%Y-%m-%d_%H:%M:%S"
 device=dev

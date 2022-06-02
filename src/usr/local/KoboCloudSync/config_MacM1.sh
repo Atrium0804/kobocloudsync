@@ -9,7 +9,7 @@ DocumentRoot=$WorkDir/data
   rclone=$KC_HOME/../../../../Sources_3rdParty/rclone-v1.58.1-osx-arm64/rclone
 kepubify=$KC_HOME/../../../../Sources_3rdParty/kepubify-darwin-arm64/kepubify
 covergen=$KC_HOME/../../../../Sources_3rdParty/kepubify-darwin-arm64/covergen
-kfmon=echo
+   fbink=echo
 
 Dt="date +%Y-%m-%d_%H:%M:%S"
 device=dev
