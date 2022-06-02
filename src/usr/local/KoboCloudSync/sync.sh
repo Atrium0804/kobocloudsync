@@ -35,25 +35,6 @@ echo "`$Dt` start"
 echo "$CYAN get shares $NC"
 shares=`$rclone listremotes $rcloneOptions | sed 's/://' `
 
-echo "$shares" |
-while IFS= read -r currentShare; do
-    destination=$DocumentRoot/$currentShare
-    ## on device conversion, so we can't use a straight sync:
-    # get file list
-    # write filelist with epub ->kepub.epub
-    # for each file
-    #  compare MD5 checksums local vs remote
-    #    download and convert
-    # delete files not on file list 
-
-    echo
-    echo "$YELLOW processing share: $currentShare $NC"    
-    # get all remote objects (files/folders)
-    theJsonListing=`$rclone lsjson -R  $currentShare:/ $rcloneOptions`
-    # filter files only
-    echo "$theJsonListing" | $jq  -c '.[] | select(.IsDir==false).Path' > $RemoteFileList
-    # $rclone sync    $currentShare:/ $destination $rcloneOptions
-done
 
 # rclone sync   - Make source and dest identical, modifying destination only.
 # rclone ls     - List all the objects in the path with size and path.
