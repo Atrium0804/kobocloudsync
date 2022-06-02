@@ -9,20 +9,16 @@
 
 #load config
 . $(dirname $0)/config.sh
-
-kepubRenamePattern='/.kepub.epub"$/! s/\.epub"$/\.kepub\.epub"/i'  
   
 echo "`$Dt` starting createRemoteFileList.sh"
 echo "`$Dt` writing to $RemoteFileList"
-
-# get the share-names
-shares=`$rclone listremotes $rcloneOptions | sed 's/://' `
 
 # prevent file list from being deleted
 echo "$RemoteFileList" > $RemoteFileList
 
 # download file list from shares
 # rename to kepub.epub when required
+shares=`$rclone listremotes $rcloneOptions | sed 's/://' `
 echo "$shares" |
 while IFS= read -r currentShare; do
     destination=$DocumentRoot/$currentShare

@@ -20,11 +20,12 @@ fi
 
 rcloneConfig=$WorkDir/rclone.conf
 rcloneLogfile=$WorkDir/rclone.log
-echo "$CYAN rcloneConfig: $rcloneConfig $NC"
-echo "$CYAN rcloneLogfile: $rcloneLogfile $NC"
 rcloneOptions="--config=$rcloneConfig --log-file=$rcloneLogfile "
 
 UserConfig=$WorkDir/kobocloudsync.conf
 Logs=$WorkDir
 RemoteFileList=$WorkDir/RemoteFilelist.txt
+
+kepubRenamePattern='/.kepub.epub"$/! s/\.epub"$/\.kepub\.epub"/i'  
 ExtensionPatterns=$KC_HOME/CompatibleExtensionPatterns.txt
+
