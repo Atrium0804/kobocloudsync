@@ -26,6 +26,6 @@ UserConfig=$WorkDir/kobocloudsync.conf
 Logs=$WorkDir
 RemoteFileList=$WorkDir/RemoteFilelist.txt
 
-kepubRenamePattern='/.kepub.epub"$/! s/\.epub"$/\.kepub\.epub"/i'  
+kepubRenamePattern='/.kepub.epub$/! s/\.epub$/\.kepub\.epub/i'  
 ExtensionPatterns=$KC_HOME/CompatibleExtensionPatterns.txt
 
