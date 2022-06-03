@@ -7,8 +7,8 @@
       WorkDir=$KC_HOME/../../../../data
  DocumentRoot=$WorkDir/documents
        rclone=$KC_HOME/../../../../Sources_3rdParty/rclone-win-amd64/rclone.exe
-     kepubify=$KC_HOME/../../../../Sources_3rdParty/kepubify_win_amd64/kepubify.exe
-     covergen=$KC_HOME/../../../../Sources_3rdParty/kepubify_win_amd64/covergen.exe
+     kepubify=$KC_HOME/../../../../Sources_3rdParty/kepubify-win-amd64/kepubify.exe
+     covergen=$KC_HOME/../../../../Sources_3rdParty/kepubify-win-amd64/covergen.exe
        fbink=echo
            jq=$KC_HOME/../../../../Sources_3rdParty/jq/jq-win64.exe
 
