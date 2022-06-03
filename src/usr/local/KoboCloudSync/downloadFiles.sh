@@ -24,10 +24,10 @@ while IFS= read -r currentShare; do
 		theLocalFolder=`dirname "$DocumentRoot/$currentShare/$theRemoteFile"`	# the destination folder (including remote subfolders)
 
 		theHashfile="$theLocalFolder/$theTargetFilename.sha1"
-	    echo "$ORANGE theRemoteFilePath:  $theRemoteFile $NC"
-		echo "$CYAN theFilename:       $theFilename $NC"
-		echo "$CYAN theTargetFilename: $theTargetFilename $NC"
-		echo "$CYAN theHashfile:       $theHashfile $NC"
+	    # echo "$ORANGE theRemoteFilePath:  $theRemoteFile $NC"
+		# echo "$CYAN theFilename:       $theFilename $NC"
+		# echo "$CYAN theTargetFilename: $theTargetFilename $NC"
+		# echo "$CYAN theHashfile:       $theHashfile $NC"
 		# echo "$CYAN theHashFilepath:       $theHashFilepath $NC"
 
 		# if the file is not compatible with the device, skip download
@@ -36,26 +36,26 @@ while IFS= read -r currentShare; do
 			# if successfull, download the MD5-hash to file
 		# if the tempfilename is different from the local filename, convert epub to kepub-epub
 		
-		echo "validate local hash"
+		echo
+		echo "processing file: $theFilename"
 # echo		$rclone sha1sum "$currentShare":"$theRemoteFile" --checkfile="$theHashFilepath" $rcloneOptions
-		$rclone sha1sum "$currentShare":"$theRemoteFile" --checkfile="$theHashfile" $rcloneOptions 
+		$rclone sha1sum "$currentShare":"$theRemoteFile" --checkfile="$theHashfile" $rcloneOptions  >/dev/null 2>&1
 		hashcompare=$?
 		# if the hash is different or the local file is missing, download the file
 		if [ $hashcompare -eq 1 ] || [ ! -f "$theLocalFolder/$theTargetFilename" ];
 		 then
-			echo "$ORANGE downloading file and hash $NC"
+			inkscr "download: $theFilename"
 			$rclone sync  "$currentShare":"$theRemoteFile" "$theLocalFolder/" $rcloneOptions
 			$rclone sha1sum "$currentShare":"$theRemoteFile" --output-file="$theHashfile" $rcloneOptions
 			echo "$theHashfile" >> "$RemoteFileList"
 		
 			if [ "$theFilename" != "$theTargetFilename" ]; then 
-				echo "$orange converting to kepub $NC"
-				inkscr "Converting to kepub: $theFilename"
+				inkscr "Convert: $theFilename"
        			$kepubify "$theLocalFolder/$theFilename"  -o "$theLocalFolder/$theTargetFilename"  >/dev/null 2>&1
 				rm -f "$theLocalFolder/$theFilename"
 			fi
 		else
-			echo $CYAN "no file change $NC"
+			echo "no change: $theFilename"
 		fi
 	done
 done
