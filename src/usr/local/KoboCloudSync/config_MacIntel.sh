@@ -3,15 +3,14 @@
 # This file contains locations (on the dev-machine)
 # as wel as some general configurations
 
-WorkDir=~/git/Snippets/rclone
-DocumentRoot=$WorkDir/data
-
-  rclone=$KC_HOME/../../../../Sources_3rdParty/rclone-v1.58.1-osx-amd64/rclone
-kepubify=$KC_HOME/../../../../Sources_3rdParty/kepubify-darwin-64bit/kepubify
-covergen=$KC_HOME/../../../../Sources_3rdParty/kepubify-darwin-64bit/covergen
-   fbink=echo
-   jq=$KC_HOME/../../../../Sources_3rdParty/jq/jq-osx-amd64
-
+     WorkDir=$KC_HOME/../../../../data
+DocumentRoot=$WorkDir/documents
+      rclone=$KC_HOME/../../../../Sources_3rdParty/rclone-osx-amd64/rclone
+    kepubify=$KC_HOME/../../../../Sources_3rdParty/kepubify-osx-64bit/kepubify
+    covergen=$KC_HOME/../../../../Sources_3rdParty/kepubify-osx-64bit/covergen
+          jq=$KC_HOME/../../../../Sources_3rdParty/jq/jq-osx-amd64
+       fbink=echo
+ 
 Dt="date +%Y-%m-%d_%H:%M:%S"
 device=dev
 
