@@ -29,3 +29,15 @@ RemoteFileList=$WorkDir/RemoteFilelist.txt
 kepubRenamePattern='/.kepub.epub$/! s/\.epub$/\.kepub\.epub/i'  
 ExtensionPatterns=$KC_HOME/CompatibleExtensionPatterns.txt
 
+inkscr(){
+  # Prints a line to the screen of the Kobo device
+  # Long strings are truncated to prevent text wrapping
+  TextToPrint="$1"
+  maxchar=30
+  TextToPrint=`echo $TextToPrint | cut -c 1-$maxchar`
+  case $device in
+  "kobo")  /usr/local/kfmon/bin/fbink -pm -q -y -7 "$TextToPrint";;
+  "dev") echo "$TextToPrint" ;;
+      *) echo "inkscr: error";;
+  esac
+}
