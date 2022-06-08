@@ -8,12 +8,8 @@ KC_HOME=$(dirname $0)
 ConfigTemplate=$KC_HOME/kobocloudsync.conf.tmpl
 
 
-if uname -a | grep -q 'Darwin.*ARM64'; then 
-    . $KC_HOME/config_MacM1.sh
-elif uname -a | grep -q 'Darwin.*X86' ; then
-    . $KC_HOME/config_MacIntel.sh
-elif uname -a | grep -q 'W64_NT' ; then
-    . $KC_HOME/config_PC.sh
+if uname -a | grep -q 'Darwin.*ARM64\|Darwin.*X86\|W64_NT'; then 
+    . $KC_HOME/config_dev.sh
 else
     . $KC_HOME/config_kobo.sh
 fi

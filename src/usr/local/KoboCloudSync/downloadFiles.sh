@@ -3,70 +3,62 @@
 #load config
 . $(dirname $0)/config.sh
   
-echo "`$Dt` starting downloadFiles.sh"
+echo "`$Dt` starting downloadFiles.sh for share '$1'"
 
-shares=`$rclone listremotes $rcloneOptions | sed 's/://' `
-echo "$shares" |
-while IFS= read -r currentShare; do
-    echo "$GREEN processing share: $currentShare $NC"    
-    
-	  # get all remote objects (files/folders)
-    theJsonListing=`$rclone lsjson -R  $currentShare:/ $rcloneOptions`
-    # get the list of remote files, remove quotes
-    theRemoteFilepaths=`echo "$theJsonListing" | $jq  -c '.[] | select(.IsDir==false).Path' `
-	theRemoteFilepaths=`echo "$theRemoteFilepaths" | sed "s/\"//g"`
+currentShare=$1
+echo "$GREEN processing share: $currentShare $NC"    
 
-	# Process the files in the current share
-	echo "$theRemoteFilepaths" |
-	while IFS= read -r theRemoteFile; do
-		theFilename=`basename "$theRemoteFile"`									# the original filename without path
-		theTargetFilename=`echo "$theFilename" | sed "$kepubRenamePattern"`		# the target filename with .epub renamed to .kepub.epub
-		theLocalFolder=`dirname "$DocumentRoot/$currentShare/$theRemoteFile"`	# the destination folder (including remote subfolders)
+# get all remote objects (files/folders)
+theJsonListing=`$rclone lsjson -R  $currentShare:/ $rcloneOptions`
+# echo "theJsonListing: $theJsonListing"
+# remove directories
+theRemoteFilepaths=`echo "$theJsonListing" | $jq  -c '.[] | select(.IsDir==false).Path' `
 
-		theHashfile="$theLocalFolder/$theTargetFilename.sha1"
-	    # echo "$ORANGE theRemoteFilePath:  $theRemoteFile $NC"
-		# echo "$CYAN theFilename:       $theFilename $NC"
-		# echo "$CYAN theTargetFilename: $theTargetFilename $NC"
-		# echo "$CYAN theHashfile:       $theHashfile $NC"
-		# echo "$CYAN theHashFilepath:       $theHashFilepath $NC"
+# remove double quotes
+theRemoteFilepaths=`echo "$theRemoteFilepaths" | sed "s/\"//g"`
 
-		# if the file is not compatible with the device, skip download
-		# if the MD5-hash of the local file is differend from the remote file, the file should be downloaded
-			# download the file
-			# if successfull, download the MD5-hash to file
-		# if the tempfilename is different from the local filename, convert epub to kepub-epub
-		
-		echo
-		echo "processing file: $theFilename"
-# echo		$rclone sha1sum "$currentShare":"$theRemoteFile" --checkfile="$theHashFilepath" $rcloneOptions
-		$rclone sha1sum "$currentShare":"$theRemoteFile" --checkfile="$theHashfile" $rcloneOptions  >/dev/null 2>&1
-		hashcompare=$?
-		# if the hash is different or the local file is missing, download the file
-		if [ $hashcompare -eq 1 ] || [ ! -f "$theLocalFolder/$theTargetFilename" ];
-		 then
-			inkscr "download: $theFilename"
-			$rclone sync  "$currentShare":"$theRemoteFile" "$theLocalFolder/" $rcloneOptions
-			$rclone sha1sum "$currentShare":"$theRemoteFile" --output-file="$theHashfile" $rcloneOptions
-			echo "$theHashfile" >> "$RemoteFileList"
-		
-			if [ "$theFilename" != "$theTargetFilename" ]; then 
-				inkscr "Convert: $theFilename"
-       			$kepubify "$theLocalFolder/$theFilename"  -o "$theLocalFolder/$theTargetFilename"  >/dev/null 2>&1
-				rm -f "$theLocalFolder/$theFilename"
-			fi
-		else
-			echo "no change: $theFilename"
+# remove incompatible files
+theRemoteFilepaths=`echo "$theRemoteFilepaths" | grep -i -f $ExtensionPatterns`
+
+# Process the files in the current share
+echo "$theRemoteFilepaths" |
+while IFS= read -r theRemoteFile; do
+	# echo "theRemoteFile: $theRemoteFile"
+	theFilename=`basename "$theRemoteFile"`									# the original filename without path
+	theTargetFilename=`echo "$theFilename" | sed "$kepubRenamePattern"`		# the target filename with .epub renamed to .kepub.epub
+	theLocalFolder=`dirname "$DocumentRoot/$currentShare/$theRemoteFile"`	# the destination folder (including remote subfolders)
+	theHashfile="$theLocalFolder/$theTargetFilename.sha1"
+
+	# if the file is not compatible with the device, skip download
+	# if the MD5-hash of the local file is differend from the remote file, the file should be downloaded
+		# download the file
+		# if successfull, download the MD5-hash to file
+	# if the tempfilename is different from the local filename, convert epub to kepub-epub
+	
+	$rclone sha1sum "$currentShare":"$theRemoteFile" --checkfile="$theHashfile" $rcloneOptions  >/dev/null 2>&1
+	hashcompare=$?
+	
+	echo
+	echo "$CYAN processing $theFilename  $theLocalFolder/$theTargetFilename  $NC"
+	echo "$CYAN hashcompare $hashcompare $NC"
+	theTargegFilepath="$theLocalFolder/$theTargetFilename" 
+	if [ ! -f "$theTargegFilepath" ]; then
+		echo "file does not exist: $theTargegFilepath"
+	fi
+	
+	
+	# if the hash is different or the local file is missing, download the file
+	if [ $hashcompare -eq 1 ] || [ ! -f "$theTargegFilepath" ];
+		then
+		inkscr "Downloading: $theFilename"
+		$rclone sync  "$currentShare":"$theRemoteFile" "$theLocalFolder/" $rcloneOptions
+		$rclone sha1sum "$currentShare":"$theRemoteFile" --output-file="$theHashfile" $rcloneOptions
+		if [ "$theFilename" != "$theTargetFilename" ]; then 
+			inkscr "Converting: $theFilename"
+			$kepubify "$theLocalFolder/$theFilename"  -o "$theTargegFilepath" 
+			rm -f "$theLocalFolder/$theFilename"
 		fi
-	done
+	else
+		echo "no change: $theFilename"
+	fi
 done
-# echo "$CYAN check SHA-file$NC"
-# echo $rclone sha1sum "$currentShare":"$theRemoteFile" $rcloneOptions --checkfile "$theLocalFilepath.sha1 "
-# $rclone sha1sum "$currentShare":"$theRemoteFile" --checkfile "$theLocalFilepath.sha1 $rcloneOptions"
-# if [ './rclone sha1sum $theRemote:$theFile --checkfile $theSHAfile'==0 ]; then
-# 	echo "file change detected"
-# 	# download file
-
-# 	# download sha1-hash
-# 	echo "$CYAN create SHA-file $NC"
-#     # $Rclone sha1sum $theRemote:$theFile --output-file "$theLocalFilepath.sha1"
-# fi
