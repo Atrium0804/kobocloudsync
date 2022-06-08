@@ -23,13 +23,29 @@ echo "$shares" |
 while IFS= read -r currentShare; do
     destination=$DocumentRoot/$currentShare
     echo "$YELLOW processing share: $currentShare $NC"    
+    
     # get all remote objects (files/folders)
     theJsonListing=`$rclone lsjson -R  $currentShare:/ $rcloneOptions`
-    # filter files only
     theFilepaths=`echo "$theJsonListing" | $jq  -c '.[] | select(.IsDir==false).Path' `
-	theFilepaths=`echo "$theFilepaths" | sed "$kepubRenamePattern"`
-	#insert destination 
-	theFilepaths=`echo "$theFilepaths" | sed "s;\";\"$DocumentRoot/$currentShare/;"`
-	echo "$theFilepaths" >>$RemoteFileList
+
+    echo "$theFilepaths" |
+    while IFS= read -r theRemoteFile; do
+        # same code as in downloadFiles.sh
+        theConvertedFilename=`echo "$theRemoteFile" | sed "$kepubRenamePattern"`
+        theLocalFilepath=$DocumentRoot/$currentShare/$theConvertedFilename
+        theHashFilepath=$DocumentRoot/$currentShare/$theConvertedFilename.sha1
+    done
+    # echo "stap aaa: " >>$RemoteFileList
+    # echo $theFilepaths >>$RemoteFileList
+	# theFilepaths=`echo "$theFilepaths" | sed "$kepubRenamePattern"`
+	
+    # # insert destination 
+	# theFilepaths=`echo "$theFilepaths" | sed "s;\";\"$DocumentRoot/$currentShare/;"`
+    #     echo "stap bbb: " >>$RemoteFileList
+	# echo "$theFilepaths" >>$RemoteFileList
+
+    # add hashfiles to file list
+    # theHashFilepaths=`echo "$theFilePaths" | sed 's/\n/\.sha1/'`
+    # echo "$theHashFilepaths" >>$RemoteFileList
 done
 

@@ -35,7 +35,11 @@ echo "`$Dt` start"
 echo "$CYAN get shares $NC"
 shares=`$rclone listremotes $rcloneOptions | sed 's/://' `
 
-
+shares=`$rclone listremotes $rcloneOptions | sed 's/://' `
+echo "$shares" |
+while IFS= read -r currentShare; do
+    ./downloadFiles.sh
+done
 # rclone sync   - Make source and dest identical, modifying destination only.
 # rclone ls     - List all the objects in the path with size and path.
 # rclone rmdirs - Remove any empty directories under the path.
