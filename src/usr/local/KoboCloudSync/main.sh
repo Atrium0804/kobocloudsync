@@ -15,6 +15,13 @@
 
 echo "`$Dt` start" 
 
+# check if Kobocloud contains the line "UNINSTALL"
+if grep -q '^UNINSTALL$' $UserConfig; then
+    echo "Uninstalling kobocloudsync!"
+    $KC_HOME/uninstall.sh
+    exit 0
+fi
+
 # check working network connection
 $KC_HOME/checkNetwork.sh
 hasNetwork=$?
