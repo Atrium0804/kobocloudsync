@@ -1,13 +1,3 @@
-# Kobocloudsync
-Script for syncing a Kobo device with various cloud providers including Nextcloud.
-Syncing is done using rclone, fFor a full list of supported cloud providers, see [the rclone website](https://rclone.org)
-
-## Features:
-- Syncs multiple cloud shares
-- Only downloads new and changed files
-- Only dowloads compatible files
-- Converts epub-files to kobo epub files (.kepub.epub)
-
 ## Installation:
 Installation:
 - Connect your Kobo device via USB
