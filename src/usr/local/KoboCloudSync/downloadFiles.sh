@@ -1,12 +1,23 @@
 #!/bin/sh
 
+# Description:
+#  This script donwloads files for a specified remote location
+#  files will be downloaded when:
+#   - the remote file does not exist locally
+#   - the remote file has been changed (based on SHA1-hash)
+#   - the file is compatible with the kobo e-reader
+#
+#  Upon downloading a .epub-file, it will be converted to a .kepub.epub file.
+#
+# Usage: downloadFiles.sh sharename
+# where sharename as defined in the rclone.conf file
+
 #load config
 . $(dirname $0)/config.sh
   
 echo "`$Dt` starting downloadFiles.sh for share '$1'"
 
 currentShare=$1
-echo "$GREEN processing share: $currentShare $NC"    
 
 # get all remote objects (files/folders)
 theJsonListing=`$rclone lsjson -R  $currentShare:/ $rcloneOptions`
@@ -37,15 +48,11 @@ while IFS= read -r theRemoteFile; do
 	
 	$rclone sha1sum "$currentShare":"$theRemoteFile" --checkfile="$theHashfile" $rcloneOptions  >/dev/null 2>&1
 	hashcompare=$?
-	
-	echo
-	echo "$CYAN processing $theFilename  $theLocalFolder/$theTargetFilename  $NC"
-	echo "$CYAN hashcompare $hashcompare $NC"
+
 	theTargegFilepath="$theLocalFolder/$theTargetFilename" 
 	if [ ! -f "$theTargegFilepath" ]; then
 		echo "file does not exist: $theTargegFilepath"
 	fi
-	
 	
 	# if the hash is different or the local file is missing, download the file
 	if [ $hashcompare -eq 1 ] || [ ! -f "$theTargegFilepath" ];

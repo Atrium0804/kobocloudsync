@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-# checks for a working network-connection
+# checks for a working network-connection by pinging aws.amazon.com
 # exit codes:
 #  0 - network connection available
 #  1 - no network connection found
@@ -9,8 +9,7 @@
 #load config
 . $(dirname $0)/config.sh
 
-# test if the an internet-connection is available
-# by pinging aws.amazon.com
+# set device specific wait-parameter
 case $device in
 "kobo") waitparm='-w' 
         timeout=30
@@ -20,11 +19,11 @@ case $device in
      ;;
 esac
 
-echo "$CYAN `$Dt` waiting for internet connection $NC"
+inkscr "$CYAN `$Dt` waiting for internet connection $NC"
 r=1;i=0
 while [ $r != 0 ]; do
     if [ $i -gt $timeout ]; then
-        echo "$RED `$Dt` error! no connection detected $NC" 
+        inkscr "$RED `$Dt` error! no connection detected $NC" 
         exit 1
     fi
     echo "$CYAN `$Dt` Pinging $NC"    

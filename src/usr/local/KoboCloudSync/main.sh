@@ -1,8 +1,17 @@
 #!/bin/sh
 
+# Description
+# Syncs remote shares as defined in the rclone.conf file to a local destination
+# Deletes local files removed from server
+# Creates covers for downloaded books.
+#
+# uses:
+# kepubify: https://github.com/pgaskin/kepubify
+# jq:       https://github.com/stedolan/jq  
+# rclone:   https://github.com/rclone/rclone
+
 #load config
 . $(dirname $0)/config.sh
-
 
 echo "`$Dt` start" 
 
@@ -11,7 +20,7 @@ $KC_HOME/checkNetwork.sh
 hasNetwork=$?
 if [ $hasNetwork -ne 0 ]; 
 then 
-    echo "$RED No network connection, aborting"
+    inkscr "$RED No network connection, aborting"
     exit 1
 fi
 
@@ -20,6 +29,7 @@ echo "$CYAN get shares $NC"
 shares=`$rclone listremotes $rcloneOptions | sed 's/://' `
 echo "$shares" |
 while IFS= read -r currentShare; do
+    inkscr "processing share $currentShare"
     ./downloadFiles.sh "$currentShare"
 done
 
@@ -30,18 +40,11 @@ $KC_HOME/checkNetwork.sh
 hasNetwork=$?
 if [ $hasNetwork -ne 0 ]; 
 then 
-    echo "$RED No network connection, aborting"
+    incscr "$RED No network connection, aborting"
     exit 1
 fi
 $KC_HOME/pruneFolders.sh
 
 # generate covers
+inkscr "Generating Covers"
 $covergen -g $DocumentRoot
-
-
-# rclone sync   - Make source and dest identical, modifying destination only.
-# rclone ls     - List all the objects in the path with size and path.
-# rclone rmdirs - Remove any empty directories under the path.
-
-# ./rclone ls test:/ --config=rclone.config 
-# ./rclone sync  test:/ ./data --config=rclone.config 

@@ -7,21 +7,22 @@
 KC_HOME=$(dirname $0)
 ConfigTemplate=$KC_HOME/kobocloudsync.conf.tmpl
 
-
 if uname -a | grep -q 'Darwin.*ARM64\|Darwin.*X86\|W64_NT'; then 
     . $KC_HOME/config_dev.sh
 else
     . $KC_HOME/config_kobo.sh
 fi
 
+# rclone parameters
 rcloneConfig=$WorkDir/rclone.conf
 rcloneLogfile=$WorkDir/rclone.log
 rcloneOptions="--config=$rcloneConfig --log-file=$rcloneLogfile "
 
+# file locations
 UserConfig=$WorkDir/kobocloudsync.conf
-Logs=$WorkDir
 RemoteFileList=$WorkDir/RemoteFilelist.txt
 
+# misc
 kepubRenamePattern='/.kepub.epub$/! s/\.epub$/\.kepub\.epub/i'  
 ExtensionPatterns=$KC_HOME/CompatibleExtensionPatterns.txt
 

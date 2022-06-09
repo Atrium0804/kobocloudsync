@@ -7,15 +7,12 @@ theGitHubURL="https://github.com/Atrium0804/KoboNextcloudsync/raw/main/KoboRoot.
 #load config
 . $(dirname $0)/config.sh
 
-if uname -a | grep -q 'Darwin'
+if [ "$device" == "dev"]
 then
-    #echo "MacOS detected"
-    theArchive="/tmp/KoboRoot.tgz"
-	theExtractFolder="/tmp/kobocloudsync"
+     theArchive="$WorkDir/KoboRoot.tgz"
 else
     # theArchive="/tmp/KoboRoot.tgz"
     theArchive="/mnt/onboard/.Kobo/KoboRoot.tgz"
-	theExtractFolder="/" # "" for root /
 fi
 
 # test network connection
@@ -43,12 +40,6 @@ echo "Downloading to $theArchive"
 eval "$fbink \"Downloading update\" "
 [ ! -e "$theExtractFolder" ] && mkdir -p "$theExtractFolder" >/dev/null 2>&1
 wget -q $theGitHubURL -O $theArchive
-
-
-# # install: extract to root
-# if tar -zxvf $theArchive --directory $theExtractFolder ; 
-# 	then rm -f $theArchive
-# fi
 
 # start udev_mount to create required folders
 . $theExtractFolder/usr/local/KoboCloudSync/udev_mount.sh  >/dev/null 2>&1
