@@ -2,6 +2,9 @@
 
 # this script is used to switch configuration
 # depending on the device-type the script is run on (PC/Kobo)
+#
+# the inkscr function requires fbink to be installed 
+# which installs along with NickelMenu
 
 # KC_HOME = locatoin where script is located
 KC_HOME=$(dirname $0)

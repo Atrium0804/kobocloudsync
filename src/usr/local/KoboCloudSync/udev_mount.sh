@@ -15,9 +15,9 @@ if [ ! -e $UserConfig ]; then
        cp $ConfigTemplate $UserConfig
   else
     echo "generating config file"
-    echo "# Create a config file using rclone config: https://rclone.org/commands/rclone_config/"
-    echo "# Put the contents of the created file in this file"
-    echo "#"
+    echo "# Create a config file using rclone config: https://rclone.org/commands/rclone_config/" > $UserConfig
+    echo "# Put the contents of the created file in this file">> $UserConfig
+    echo "#" >> $UserConfig
     echo  "# Remove the # from the following line to uninstall KoboCloudSync" >> $UserConfig
     echo  "#UNINSTALL" >> $UserConfig
   fi
