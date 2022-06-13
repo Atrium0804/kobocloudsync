@@ -16,14 +16,17 @@
 echo "`$Dt` start" 
 
 # check if Kobocloud contains the line "UNINSTALL"
-# if grep -q '^UNINSTALL$' $UserConfig; then
+# if grep -q '^UNINSTALL$' $rcloneConfig; then
 #     echo "Uninstalling kobocloudsync!"
-#     $KC_HOME/uninstall.sh
+#     $HOME/uninstall.sh
 #     exit 0
 # fi
 
+echo
+echo "$YELLOW ====================================================== $NC"
+
 # check working network connection
-$KC_HOME/checkNetwork.sh
+$SH_HOME/checkNetwork.sh
 hasNetwork=$?
 if [ $hasNetwork -ne 0 ]; 
 then 
@@ -43,15 +46,16 @@ done
 # check network again as the kobo might close the wifi after a while
 # check working network connection
 echo "$CYAN Pruning folders $NC"
-$KC_HOME/checkNetwork.sh
+$SH_HOME/checkNetwork.sh
 hasNetwork=$?
 if [ $hasNetwork -ne 0 ]; 
 then 
     incscr "$RED No network connection, aborting"
     exit 1
 fi
-$KC_HOME/pruneFolders.sh
+$SH_HOME/pruneFolders.sh
 
 # generate covers
 inkscr "Generating Covers"
-$covergen -g $DocumentRoot
+echo $covergen -g "$DocumentRoot"
+$covergen -g "$DocumentRoot"

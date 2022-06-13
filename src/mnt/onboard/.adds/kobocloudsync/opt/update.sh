@@ -18,7 +18,7 @@ else
 fi
 
 # check working network connection
-$KC_HOME/checkNetwork.sh
+$SH_HOME/checkNetwork.sh
 hasNetwork=$?
 if [ $hasNetwork -ne 0 ]; 
 then 

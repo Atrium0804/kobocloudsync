@@ -6,35 +6,38 @@
 # the inkscr function requires fbink to be installed 
 # which installs along with NickelMenu
 
-# KC_HOME = locatoin where script is located
-KC_HOME=$(dirname $0)
-ConfigTemplate=$KC_HOME/kobocloudsync.conf.tmpl
+# home: parent folder of the folder where the scripts are located
+# workdir: = home dir on kobo device, 'data' in repository root on development environment
+SH_HOME=$(dirname "$0")
+HOME="$(cd $(dirname "$0")/..; pwd)"
 
+ConfigTemplate=$SH_HOME/kobocloudsync.conf.tmpl
+
+# load development or kobo config
 if uname -a | grep -q 'Darwin.*ARM64\|Darwin.*X86\|W64_NT'; then 
-    . $KC_HOME/config_dev.sh
+    . $SH_HOME/config_dev.sh
 else
-    . $KC_HOME/config_kobo.sh
+    . $SH_HOME/config_kobo.sh
 fi
 
 # rclone parameters
 rcloneConfig=$WorkDir/rclone.conf
 rcloneLogfile=$WorkDir/rclone.log
 rcloneOptions="--config=$rcloneConfig --log-file=$rcloneLogfile "
-echo ">>rcloneOptions: $rcloneOptions"
-UserConfig=$rcloneConfig
 
 # file locations
 RemoteFileList=$WorkDir/RemoteFilelist.txt
 
 # misc
 kepubRenamePattern='/.kepub.epub$/! s/\.epub$/\.kepub\.epub/i'  
-ExtensionPatterns=$KC_HOME/CompatibleExtensionPatterns.txt
+ExtensionPatterns=$HOME/CompatibleExtensionPatterns.txt
 
+# function to print to kobo-screen
 inkscr(){
   # Prints a line to the screen of the Kobo device
   # Long strings are truncated to prevent text wrapping
   TextToPrint="$1"
-  maxchar=30
+  maxchar=35
   TextToPrint=`echo $TextToPrint | cut -c 1-$maxchar`
   case $device in
   "kobo")  /usr/local/kfmon/bin/fbink -pm -q -y -7 "$TextToPrint";;

@@ -21,12 +21,12 @@ currentShare=$1
 
 # get all remote objects (files/folders)
 theJsonListing=`$rclone lsjson -R  $currentShare:/ $rcloneOptions`
-echo "stap 1: $rclone lsjson -R  $currentShare:/ $rcloneOptions"
+# echo "stap 1: $rclone lsjson -R  $currentShare:/ $rcloneOptions"
 
 # echo "theJsonListing: $theJsonListing"
 # remove directories
 theRemoteFilepaths=`echo "$theJsonListing" | $jq  -c '.[] | select(.IsDir==false).Path' `
-echo "stap 2: echo "$theJsonListing" | $jq  -c '.[] | select(.IsDir==false).Path"
+# echo "stap 2: echo "$theJsonListing" | $jq  -c '.[] | select(.IsDir==false).Path"
 
 # remove double quotes
 theRemoteFilepaths=`echo "$theRemoteFilepaths" | sed "s/\"//g"`
@@ -52,20 +52,26 @@ while IFS= read -r theRemoteFile; do
 	$rclone sha1sum "$currentShare":"$theRemoteFile" --checkfile="$theHashfile" $rcloneOptions  >/dev/null 2>&1
 	hashcompare=$?
 
-	theTargegFilepath="$theLocalFolder/$theTargetFilename" 
-	if [ ! -f "$theTargegFilepath" ]; then
-		echo "file does not exist: $theTargegFilepath"
+	theTargetFilepath="$theLocalFolder/$theTargetFilename" 
+	echo "$CYAN theTargetFilepath: $theTargetFilepath $NC"
+	if [ ! -f "$theTargetFilepath" ]; then
+		echo "$CYAN file does not exist: $theTargetFilepath $NC "
 	fi
+	if [ $hashcompare -eq 1 ]; then
+		echo "$CYAN the hashes are different $NC"
+	fi
+
+
 	
 	# if the hash is different or the local file is missing, download the file
-	if [ $hashcompare -eq 1 ] || [ ! -f "$theTargegFilepath" ];
+	if [ $hashcompare -eq 1 ] || [ ! -f "$theTargetFilepath" ];
 		then
 		inkscr "Downloading: $theFilename"
 		$rclone sync  "$currentShare":"$theRemoteFile" "$theLocalFolder/" $rcloneOptions
 		$rclone sha1sum "$currentShare":"$theRemoteFile" --output-file="$theHashfile" $rcloneOptions
 		if [ "$theFilename" != "$theTargetFilename" ]; then 
 			inkscr "Converting: $theFilename"
-			$kepubify "$theLocalFolder/$theFilename"  -o "$theTargegFilepath" 
+			$kepubify "$theLocalFolder/$theFilename"  -o "$theTargetFilepath" 
 			rm -f "$theLocalFolder/$theFilename"
 		fi
 	else

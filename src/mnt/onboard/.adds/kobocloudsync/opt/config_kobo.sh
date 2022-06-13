@@ -6,9 +6,10 @@
 WorkDir=/mnt/onboard/.adds/kobocloudsync
 DocumentRoot=/mnt/onboard/kobocloudsync
 
-  rclone=$KC_HOME/bin/rclone
-kepubify=$KC_HOME/bin/kepubify
-covergen=$KC_HOME/bin/covergen
+  rclone=$HOME/bin/rclone
+kepubify=$HOME/bin/kepubify
+covergen=$HOME/bin/covergen
+      jq=$HOME/bin/jq
 
 Dt="date +%Y-%m-%d_%H:%M:%S"
 device=kobo

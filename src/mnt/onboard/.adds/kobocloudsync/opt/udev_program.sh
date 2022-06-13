@@ -27,4 +27,4 @@
 
 
 # call main script, output to log
- $KC_HOME/main.sh > $WorkDir/kobocloudsync.log 2>&1 &
+ $HOME/main.sh > $WorkDir/kobocloudsync.log 2>&1 &
