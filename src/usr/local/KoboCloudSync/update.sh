@@ -33,6 +33,6 @@ incsrc "Downloading update"
 wget -q $theGitHubURL -O $theArchive
 
 # start udev_mount to create required folders
-. $theExtractFolder/usr/local/KoboCloudSync/udev_mount.sh  >/dev/null 2>&1
+# . $theExtractFolder/usr/local/KoboCloudSync/udev_mount.sh  >/dev/null 2>&1
 
 incscr "Perform a sync to apply te update."

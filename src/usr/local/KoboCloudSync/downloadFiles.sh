@@ -21,9 +21,12 @@ currentShare=$1
 
 # get all remote objects (files/folders)
 theJsonListing=`$rclone lsjson -R  $currentShare:/ $rcloneOptions`
+echo "stap 1: $rclone lsjson -R  $currentShare:/ $rcloneOptions"
+
 # echo "theJsonListing: $theJsonListing"
 # remove directories
 theRemoteFilepaths=`echo "$theJsonListing" | $jq  -c '.[] | select(.IsDir==false).Path' `
+echo "stap 2: echo "$theJsonListing" | $jq  -c '.[] | select(.IsDir==false).Path"
 
 # remove double quotes
 theRemoteFilepaths=`echo "$theRemoteFilepaths" | sed "s/\"//g"`

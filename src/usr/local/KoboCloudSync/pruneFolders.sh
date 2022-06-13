@@ -1,20 +1,20 @@
-#!/bin/sh
+# #!/bin/sh
 
-# prune the local files: removed files which are deleted or moved on the remote location
-# - get a list of remote files
-# - convert to local filenames
-# - convert local files not on the remote list
-#
-# Possible improvements:
-# - remove code duplication with downloadFiles.sh
-# - add: delete empty folders
-#
-# duplicate code from downloadFiles.sh
-# we first want to create the file list and then start downloading the files
-# this in case of a network connection drop. so we are sure we aren't deleting
-# which are on the server but couldn't be processed due to network outage.
-#
-# Better would be some error handling ;)
+# # prune the local files: removed files which are deleted or moved on the remote location
+# # - get a list of remote files
+# # - convert to local filenames
+# # - convert local files not on the remote list
+# #
+# # Possible improvements:
+# # - remove code duplication with downloadFiles.sh
+# # - add: delete empty folders
+# #
+# # duplicate code from downloadFiles.sh
+# # we first want to create the file list and then start downloading the files
+# # this in case of a network connection drop. so we are sure we aren't deleting
+# # which are on the server but couldn't be processed due to network outage.
+# #
+# # Better would be some error handling ;)
 
 #load config
 . $(dirname $0)/config.sh
@@ -35,14 +35,14 @@ pruneFolder(){
 				exec # do nothing
 				# echo "Pruning: Keep:    $item"
 			else 
-				echo "Pruning: removing: $item"
-				rm -f "$item"
+				echo "removing: $item"
+				# rm -f "$item"
 		fi
 	done 
  	# todo: find and remove empty directories
 }
 
-#proces shares
+# #proces shares
 shares=`$rclone listremotes $rcloneOptions | sed 's/://' `
 echo "$shares" |
 while IFS= read -r currentShare; do

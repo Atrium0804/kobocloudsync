@@ -19,11 +19,11 @@ case $device in
      ;;
 esac
 
-inkscr "$CYAN `$Dt` waiting for internet connection $NC"
+inkscr "$CYAN waiting for internet connection $NC"
 r=1;i=0
 while [ $r != 0 ]; do
     if [ $i -gt $timeout ]; then
-        inkscr "$RED `$Dt` error! no connection detected $NC" 
+        inkscr "$RED error! no connection detected $NC" 
         exit 1
     fi
     echo "$CYAN `$Dt` Pinging $NC"    
