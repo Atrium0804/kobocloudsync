@@ -22,9 +22,8 @@
  fi
 
 #create work dirs
-[ ! -e "$Lib" ] && mkdir -p "$Lib" >/dev/null 2>&1
+[ ! -e "$WorkDir" ] && mkdir -p "$WorkDir" >/dev/null 2>&1
 [ ! -e "$DocumentRoot" ] && mkdir -p "$DocumentRoot" >/dev/null 2>&1
-
 
 # call main script, output to log
  $HOME/main.sh > $WorkDir/kobocloudsync.log 2>&1 &
