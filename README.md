@@ -11,7 +11,7 @@ The kobo starts the installation of the software
 
 A configuration file (rclone.conf) is created in .adds/kobocloudsync.
 
-The sync is started from home screen useing the 'Cloudsync' entry in the NickelMenu.
+The sync is started from home screen using the 'Cloudsync' entry in the NickelMenu.
 
 ## Configuration
 The shares to be synced are to be configured in the ./adds/kobocloudsync/rclone.conf file
