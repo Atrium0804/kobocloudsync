@@ -1,3 +1,7 @@
+## Prerequisites
+Kobocloudsync uses NickelMenu to provide a menu item for starting the sync.
+Please refer to https://pgaskin.net/NickelMenu/ for installation
+
 ## Installation:
 Installation:
 - Connect your Kobo device via USB
@@ -5,7 +9,9 @@ Installation:
 - Eject your device
 The kobo starts the installation of the software
 
-A configuration file (rclone.conf) is created in .adds/kobocloudsync
+A configuration file (rclone.conf) is created in .adds/kobocloudsync.
+
+The sync is started from home screen useing the 'Cloudsync' entry in the NickelMenu.
 
 ## Configuration
 The shares to be synced are to be configured in the ./adds/kobocloudsync/rclone.conf file
@@ -16,5 +22,6 @@ The file can be created by the rclone utility. See the [rclone site](https://rcl
 **Important for Nextcloud users**: Webdav for public folders should be enabled on the nextcloud server, see: https://docs.nextcloud.com/server/20/user_manual/en/files/access_webdav.html#accessing-public-shares-over-webdav for more info.
 
 ## Uninstall
-For uninstallation of the software, replace the contents of the rclone.conf file with the word 'UNINSTALL' on a single line.
-The software will be uninstalled **including** the synced ebooks.
+Uninstall is done by connecting the Kobo device via USB and:
+- delete the hidden folder .adds/kobocloudsync
+- remove the file .adds/nm/kobocloudsync
