@@ -25,6 +25,9 @@ echo "`$Dt` start"
 echo
 echo "$YELLOW ====================================================== $NC"
 
+# clear the rclone logfile
+echo "`$Dt`" > "$rcloneLogfile"
+
 # check working network connection
 $SH_HOME/checkNetwork.sh
 hasNetwork=$?
@@ -37,10 +40,17 @@ fi
 #  get remote shares and download files
 echo "$CYAN get shares $NC"
 shares=`$rclone listremotes $rcloneOptions | sed 's/://' `
+if [ -z $shares ];
+then 
+    echo "$RED No shares in configfile $NC"
+    exit 1
+fi
+
+# download remote files for each share
 echo "$shares" |
 while IFS= read -r currentShare; do
     inkscr "processing share $currentShare"
-    ./downloadFiles.sh "$currentShare"
+     $HOME/opt/downloadFiles.sh "$currentShare"
 done
 
 # check network again as the kobo might close the wifi after a while
@@ -59,3 +69,5 @@ $SH_HOME/pruneFolders.sh
 inkscr "Generating Covers"
 echo $covergen -g "$DocumentRoot"
 $covergen -g "$DocumentRoot"
+
+inkscr "kobocloudsync ready"

@@ -20,27 +20,22 @@ else
     . $SH_HOME/config_kobo.sh
 fi
 
-# rclone parameters
-rcloneConfig=$WorkDir/rclone.conf
-rcloneLogfile=$WorkDir/rclone.log
-rcloneOptions="--config=$rcloneConfig --log-file=$rcloneLogfile "
-
 # file locations
-RemoteFileList=$WorkDir/RemoteFilelist.txt
+RemoteFileList=$SH_HOME/RemoteFilelist
 
 # misc
 kepubRenamePattern='/.kepub.epub$/! s/\.epub$/\.kepub\.epub/i'  
-ExtensionPatterns=$HOME/CompatibleExtensionPatterns.txt
+ExtensionPatterns=$SH_HOME/CompatibleExtensionPatterns
 
 # function to print to kobo-screen
 inkscr(){
   # Prints a line to the screen of the Kobo device
   # Long strings are truncated to prevent text wrapping
   TextToPrint="$1"
-  maxchar=35
+  maxchar=40
   TextToPrint=`echo $TextToPrint | cut -c 1-$maxchar`
   case $device in
-  "kobo")  /usr/local/kfmon/bin/fbink -pm -q -y -7 "$TextToPrint";;
+  "kobo")  /usr/local/kfmon/bin/fbink -pm -q -y -5 "$TextToPrint";;
   "dev") echo "$TextToPrint" ;;
       *) echo "inkscr: error";;
   esac

@@ -11,70 +11,59 @@
 #
 # Usage: downloadFiles.sh sharename
 # where sharename as defined in the rclone.conf file
+#
+# as we are converting epubs to kepubs, we can't use the rclone sync command, as it would download all epubs every time
 
 #load config
 . $(dirname $0)/config.sh
-  
-echo "`$Dt` starting downloadFiles.sh for share '$1'"
+currentShare=$1  
 
-currentShare=$1
+echo "`$Dt` starting downloadFiles.sh for share '$currentShare'"
+
 
 # get all remote objects (files/folders)
-theJsonListing=`$rclone lsjson -R  $currentShare:/ $rcloneOptions`
-# echo "stap 1: $rclone lsjson -R  $currentShare:/ $rcloneOptions"
-
-# echo "theJsonListing: $theJsonListing"
-# remove directories
-theRemoteFilepaths=`echo "$theJsonListing" | $jq  -c '.[] | select(.IsDir==false).Path' `
-# echo "stap 2: echo "$theJsonListing" | $jq  -c '.[] | select(.IsDir==false).Path"
-
-# remove double quotes
-theRemoteFilepaths=`echo "$theRemoteFilepaths" | sed "s/\"//g"`
+# theJsonListing=`$rclone lsjson -R  $currentShare:/ $rcloneOptions`
+theListing=`$rclone lsl $currentShare:/ $rcloneOptions`
 
 # remove incompatible files
-theRemoteFilepaths=`echo "$theRemoteFilepaths" | grep -i -f $ExtensionPatterns`
+theListing=`echo "$theListing" | grep -i -f $ExtensionPatterns`
+echo "$theListing" |
+while IFS= read -r theLine; do
+	echo 
+	theTrimmedLine=`echo "$theLine" | awk '{ sub(/^[ \t]+/, ""); print }' ` 
+	# theFilesize=`echo "$theTrimmedLine"  | cut -d ' ' -f 1`
+	# theModTime=`echo "$theTrimmedLine"  | cut -d ' ' -f 2-3`
+	theRelativePath=`echo "$theTrimmedLine"  | cut -d ' ' -f 4-`					# relative path of the file
+	theFilename=`basename "$theRelativePath"`										# the (remote) filename
 
-# Process the files in the current share
-echo "$theRemoteFilepaths" |
-while IFS= read -r theRemoteFile; do
-	# echo "theRemoteFile: $theRemoteFile"
-	theFilename=`basename "$theRemoteFile"`									# the original filename without path
-	theTargetFilename=`echo "$theFilename" | sed "$kepubRenamePattern"`		# the target filename with .epub renamed to .kepub.epub
-	theLocalFolder=`dirname "$DocumentRoot/$currentShare/$theRemoteFile"`	# the destination folder (including remote subfolders)
-	theHashfile="$theLocalFolder/$theTargetFilename.sha1"
+	theLocalFilepath="$DocumentRoot/$currentShare/$theRelativePath"
+	theTargetFilepath=`echo "$theLocalFilepath" | sed "$kepubRenamePattern"`		# the filename with .epub renamed to .kepub.epub
+	theDestinationFolder=$(dirname "$theTargetFilepath")
 
-	# if the file is not compatible with the device, skip download
-	# if the MD5-hash of the local file is differend from the remote file, the file should be downloaded
-		# download the file
-		# if successfull, download the MD5-hash to file
-	# if the tempfilename is different from the local filename, convert epub to kepub-epub
-	
-	$rclone sha1sum "$currentShare":"$theRemoteFile" --checkfile="$theHashfile" $rcloneOptions  >/dev/null 2>&1
+	# echo "$CYAN theFilename:          $theFilename $NC"
+	# echo "$CYAN theTargetFilepath:    $theTargetFilepath $NC"
+	# echo "$CYAN theDestinationFolder: $theDestinationFolder $NC"
+
+	echo "$CYAN `$Dt` $theRelativePath $NC"
+	echo "Hashcompare:"
+	$rclone sha1sum "$currentShare":"$theRelativePath" --checkfile="$theTargetFilepath.sha1" $rcloneOptions
 	hashcompare=$?
-
-	theTargetFilepath="$theLocalFolder/$theTargetFilename" 
-	echo "$CYAN theTargetFilepath: $theTargetFilepath $NC"
-	if [ ! -f "$theTargetFilepath" ]; then
-		echo "$CYAN file does not exist: $theTargetFilepath $NC "
-	fi
-	if [ $hashcompare -eq 1 ]; then
-		echo "$CYAN the hashes are different $NC"
-	fi
-
-
 	
-	# if the hash is different or the local file is missing, download the file
+
+	# if the hashes are different or the target file does not exist: download the file
 	if [ $hashcompare -eq 1 ] || [ ! -f "$theTargetFilepath" ];
 		then
-		inkscr "Downloading: $theFilename"
-		$rclone sync  "$currentShare":"$theRemoteFile" "$theLocalFolder/" $rcloneOptions
-		$rclone sha1sum "$currentShare":"$theRemoteFile" --output-file="$theHashfile" $rcloneOptions
-		if [ "$theFilename" != "$theTargetFilename" ]; then 
-			inkscr "Converting: $theFilename"
-			$kepubify "$theLocalFolder/$theFilename"  -o "$theTargetFilepath" 
-			rm -f "$theLocalFolder/$theFilename"
+		inkscr "Download $theFilename"
+		$rclone sync "$currentShare":"$theRelativePath" "$theDestinationFolder" $rcloneOptions
+		$rclone sha1sum "$currentShare":"$theRelativePath" --output-file="$theTargetFilepath.sha1" $rcloneOptions
+
+		# convert to kepub if necessary and remove downloaded file
+		if [ "$theFilename" != "$(basename "$theTargetFilepath")" ]; then 
+			echo "convert to kepub"
+			$kepubify "$theDestinationFolder/$theFilename"  -o "$theTargetFilepath" 
+			rm -f "$theLocalFilepath"
 		fi
 	else
-		echo "no change: $theFilename"
+		echo "   no change"
 	fi
 done

@@ -30,11 +30,15 @@ else
   exit 1
 fi
 
+# rclone parameters
+rcloneConfig=$WorkDir/rclone.conf
+rcloneLogfile=$WorkDir/rclone.log
+rcloneOptions="--config=$rcloneConfig --log-file=$rcloneLogfile --log-level INFO"
+
 # set paths to to binaries
   rclone="$repo/bin/$arch/rclone/rclone$ext"
 kepubify="$repo/bin/$arch/kepubify/kepubify$ext"
 covergen="$repo/bin/$arch/kepubify/covergen$ext"
-      jq="$repo/bin/$arch/jq/jq$ext"
 Dt="date +%Y-%m-%d_%H:%M:%S"
 device=dev
 
