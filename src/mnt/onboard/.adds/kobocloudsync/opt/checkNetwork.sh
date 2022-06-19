@@ -19,7 +19,6 @@ case $device in
      ;;
 esac
 
-inkscr "$CYAN waiting for internet connection $NC"
 r=1;i=0
 while [ $r != 0 ]; do
     if [ $i -gt $timeout ]; then
@@ -31,5 +30,6 @@ while [ $r != 0 ]; do
     r=$? # get the exit-status of the previous cmd, 0=successful
     if [ $r != 0 ]; then sleep 1; fi
     i=$(($i + 1))
+    inkscr "$CYAN waiting for internet connection $NC"
 done
 echo "$CYAN `$Dt` internet connection found $NC"
