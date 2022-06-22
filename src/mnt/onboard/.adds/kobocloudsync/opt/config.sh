@@ -22,6 +22,7 @@ fi
 
 # file locations
 RemoteFileList=$SH_HOME/RemoteFilelist
+PIDfile=$WorkDir/kobocloudsync.pid
 
 # misc
 kepubRenamePattern='/.kepub.epub$/! s/\.epub$/\.kepub\.epub/i'  

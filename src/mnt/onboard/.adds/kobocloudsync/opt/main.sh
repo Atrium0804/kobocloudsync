@@ -71,3 +71,6 @@ echo $covergen -g "$DocumentRoot"
 $covergen -g "$DocumentRoot"
 
 inkscr "kobocloudsync ready"
+
+# remove the PID-file
+rm $PIDfile
