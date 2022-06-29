@@ -26,6 +26,9 @@ The file can be created by the rclone utility. See the [rclone site](https://rcl
 
 **Important for Nextcloud users**: Webdav for public folders should be enabled on the nextcloud server, see: https://docs.nextcloud.com/server/20/user_manual/en/files/access_webdav.html#accessing-public-shares-over-webdav for more info.
 
+## Usage
+After installation and configuration, a Cloudsync menu-entry is shown in the NickelMenu-menu. This menu-entry starts the syncing of the configured cloud shares and refreshes the book list.
+
 ## Uninstall
 Uninstall is done by connecting the Kobo device via USB and:
 - delete the hidden folder .adds/kobocloudsync
