@@ -1,3 +1,8 @@
+## Description
+Kobocloudsync syncs documents from cloudservices to your kobodevice.
+The syncing is based on rclone which supports many cloudservices (Nextcloud, Dropbox, Onedrive, WebDAV etc). 
+Kobocloudsync is tested with Nextcloud.
+
 ## Prerequisites
 Kobocloudsync uses NickelMenu to provide a menu item for starting the sync.
 Please refer to https://pgaskin.net/NickelMenu/ for installation
