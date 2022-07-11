@@ -45,7 +45,6 @@ while IFS= read -r theLine; do
 	# echo "$CYAN theDestinationFolder: $theDestinationFolder $NC"
 
 	echo "$CYAN `$Dt` $theRelativePath $NC"
-	echo "Hashcompare:"
 	$rclone sha1sum "$currentShare":"$theRelativePath" --checkfile="$theTargetFilepath.sha1" $rcloneOptions
 	hashcompare=$?
 	

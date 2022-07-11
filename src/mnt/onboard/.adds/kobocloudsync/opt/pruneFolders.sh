@@ -41,10 +41,10 @@ pruneFolder(){
 	# we don't do it recursively,
 	find "$1" -type d |
 	while IFS= read -r theFolder; do
-		if !   ls -1qA "$theFolder" | grep -q . 
+		if !   ls -1A "$theFolder" | grep -q . 
 			then 
 				echo "[rmdir] $theFolder/"
-				rmdir "$theFolder"
+				rmdir "$theFolder" --ignore-fail-on-non-empty
 			else
 				exec
 				# echo "$CYAN [keep] $theFolder/ $NC"
