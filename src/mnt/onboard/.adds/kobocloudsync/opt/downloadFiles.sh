@@ -60,8 +60,13 @@ while IFS= read -r theLine; do
 		then
 		inkscr "Download $theFilename"
 		$rclone sync "$currentShare":"$theRelativePath" "$theDestinationFolder" $rcloneOptions
+		
+		# remove .sha1-file if exists, it might be corrupt
+		[ -f "$theTargetFilepath.sha1" ];
+		then
+			rm -f "$theTargetFilepath.sha1"
+		fi
 		$rclone sha1sum "$currentShare":"$theRelativePath" --output-file="$theTargetFilepath.sha1" $rcloneOptions
-
 		# convert to kepub if necessary and remove downloaded file
 		if [ "$theFilename" != "$(basename "$theTargetFilepath")" ]; then 
 			echo "convert to kepub"
