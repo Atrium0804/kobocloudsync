@@ -20,6 +20,10 @@ currentShare=$1
 
 echo "`$Dt` starting downloadFiles.sh for share '$currentShare'"
 
+remoteHashfilePath="$WorkDir/remotehashes.sha1"
+echo "remoteHashfilePath: $remoteHashfilePath"
+$rclone sha1sum "$currentShare":/ --checkfile="$remoteHashfilePath" $rcloneOptions > /dev/null
+
 
 # get all remote objects (files/folders)
 # theJsonListing=`$rclone lsjson -R  $currentShare:/ $rcloneOptions`
@@ -42,14 +46,8 @@ while IFS= read -r theLine; do
 
 	inkscr "Checking $theFilename"
 		
-
-	# echo "$CYAN theFilename:          $theFilename $NC"
-	# echo "$CYAN theTargetFilepath:    $theTargetFilepath $NC"
-	# echo "$CYAN theDestinationFolder: $theDestinationFolder $NC"
-
 	echo "$CYAN `$Dt` $theRelativePath $NC"
 	$rclone sha1sum "$currentShare":"$theRelativePath" --checkfile="$theTargetFilepath.sha1" $rcloneOptions > /dev/null
-echo   	$rclone sha1sum "$currentShare":"$theRelativePath" --checkfile="$theTargetFilepath.sha1" $rcloneOptions 
 	hashcompare=$?
 
 	if [ ! -f "$theTargetFilepath" ];	then 
