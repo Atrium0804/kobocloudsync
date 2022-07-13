@@ -28,7 +28,7 @@ fi
 
 # download KoboRoot.tgz from GitHub
 echo "Downloading to $theArchive"
-inksrc "Downloading update"
+inkscr "Downloading update"
 [ ! -e "$theExtractFolder" ] && mkdir -p "$theExtractFolder" >/dev/null 2>&1
 wget -q $theGitHubURL -O $theArchive
 
