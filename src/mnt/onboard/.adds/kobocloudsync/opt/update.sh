@@ -28,11 +28,11 @@ fi
 
 # download KoboRoot.tgz from GitHub
 echo "Downloading to $theArchive"
-incsrc "Downloading update"
+inksrc "Downloading update"
 [ ! -e "$theExtractFolder" ] && mkdir -p "$theExtractFolder" >/dev/null 2>&1
 wget -q $theGitHubURL -O $theArchive
 
 # start udev_mount to create required folders
 # . $theExtractFolder/usr/local/KoboCloudSync/udev_mount.sh  >/dev/null 2>&1
 
-incscr "Perform a sync to apply te update."
+inkscr "Perform a sync to apply te update."

@@ -47,6 +47,12 @@ while IFS= read -r theLine; do
 	echo "$CYAN `$Dt` $theRelativePath $NC"
 	$rclone sha1sum "$currentShare":"$theRelativePath" --checkfile="$theTargetFilepath.sha1" $rcloneOptions
 	hashcompare=$?
+
+	echo "hashcompare returns $hashcompare"
+	if  [ ! -f "$theTargetFilepath" ];
+	then 
+		echo "the file does not exist"
+	fi
 	
 
 	# if the hashes are different or the target file does not exist: download the file
