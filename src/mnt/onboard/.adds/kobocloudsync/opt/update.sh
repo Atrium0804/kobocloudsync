@@ -10,7 +10,7 @@ theGitHubURL="https://github.com/Atrium0804/KoboNextcloudsync/raw/main/KoboRoot.
 #load config
 . $(dirname $0)/config.sh
 
-if [ "$device" == "dev"]
+if [ "$device" == "dev" ]
 then
      theArchive="$WorkDir/KoboRoot.tgz"
 else
