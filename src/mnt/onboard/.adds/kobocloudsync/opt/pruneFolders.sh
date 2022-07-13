@@ -25,7 +25,7 @@ echo "$RemoteFileList" > $RemoteFileList
 
 # define function 
 pruneFolder(){
-	echo "Pruning folder $1"
+	echo " Pruning folder $1"
 	find "$1" -type f |
 	while IFS= read -r item; do
 	  	if grep -Fq "$item" "$RemoteFileList"; 
@@ -70,6 +70,5 @@ while IFS= read -r currentShare; do
         echo "$theLocalFilepath" >> $RemoteFileList										# add to file to list
         echo "$theLocalFilepath.sha1" >> $RemoteFileList								# add hashfile to list
     done
-
 	pruneFolder "$destinationFolder"
 done

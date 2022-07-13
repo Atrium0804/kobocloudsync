@@ -40,25 +40,37 @@ while IFS= read -r theLine; do
 	theTargetFilepath=`echo "$theLocalFilepath" | sed "$kepubRenamePattern"`		# the filename with .epub renamed to .kepub.epub
 	theDestinationFolder=$(dirname "$theTargetFilepath")
 
+	inkscr "Checking $theFilename"
+		
+
 	# echo "$CYAN theFilename:          $theFilename $NC"
 	# echo "$CYAN theTargetFilepath:    $theTargetFilepath $NC"
 	# echo "$CYAN theDestinationFolder: $theDestinationFolder $NC"
 
 	echo "$CYAN `$Dt` $theRelativePath $NC"
-	$rclone sha1sum "$currentShare":"$theRelativePath" --checkfile="$theTargetFilepath.sha1" $rcloneOptions
+	$rclone sha1sum "$currentShare":"$theRelativePath" --checkfile="$theTargetFilepath.sha1" $rcloneOptions > /dev/null
+echo   	$rclone sha1sum "$currentShare":"$theRelativePath" --checkfile="$theTargetFilepath.sha1" $rcloneOptions 
 	hashcompare=$?
 
+	if [ ! -f "$theTargetFilepath" ];	then 
+		echo "   file does not exist"
+	elif [ $hashcompare -eq 1 ]; then
+		echo "   remote file change ($hashcompare)"
+	fi
+	
 	# if the hashes are different or the target file does not exist: download the file
 	if [ $hashcompare -eq 1 ] || [ ! -f "$theTargetFilepath" ];
 		then
-		inkscr "Download $theFilename"
-		$rclone sync "$currentShare":"$theRelativePath" "$theDestinationFolder" $rcloneOptions
-		
 		# remove .sha1-file if exists, it might be corrupt
 		if [ -f "$theTargetFilepath.sha1" ];
 		then
 			rm -f "$theTargetFilepath.sha1"
 		fi
+	
+		inkscr "Download $theFilename"
+		$rclone sync "$currentShare":"$theRelativePath" "$theDestinationFolder" $rcloneOptions
+
+		# create hash-file	
 		$rclone sha1sum "$currentShare":"$theRelativePath" --output-file="$theTargetFilepath.sha1" $rcloneOptions
 		# convert to kepub if necessary and remove downloaded file
 		if [ "$theFilename" != "$(basename "$theTargetFilepath")" ]; then 

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+echo "start main.sh"
+
 # Description
 # Syncs remote shares as defined in the rclone.conf file to a local destination
 # Deletes local files removed from server
@@ -67,10 +69,9 @@ $SH_HOME/pruneFolders.sh
 
 # generate covers
 inkscr "Generating Covers"
-echo $covergen -g "$DocumentRoot"
-$covergen -g "$DocumentRoot"
+$covergen "/mnt/onboard"
 
 inkscr "kobocloudsync ready"
 
-# remove the PID-file
-rm $PIDfile
+# remove the PID-file if exists
+rm $PIDfile -f
