@@ -20,9 +20,9 @@ currentShare=$1
 
 echo "`$Dt` starting downloadFiles.sh for share '$currentShare'"
 
+# download the hashes of the remote files
 remoteHashfilePath="$WorkDir/remotehashes.sha1"
-echo "remoteHashfilePath: $remoteHashfilePath"
-$rclone sha1sum "$currentShare":/ --checkfile="$remoteHashfilePath" $rcloneOptions > /dev/null
+$rclone sha1sum "$currentShare":/ --output-file="$remoteHashfilePath" $rcloneOptions 
 
 
 # get all remote objects (files/folders)
@@ -45,19 +45,22 @@ while IFS= read -r theLine; do
 	theDestinationFolder=$(dirname "$theTargetFilepath")
 
 	inkscr "Checking $theFilename"
-		
-	echo "$CYAN `$Dt` $theRelativePath $NC"
-	$rclone sha1sum "$currentShare":"$theRelativePath" --checkfile="$theTargetFilepath.sha1" $rcloneOptions > /dev/null
-	hashcompare=$?
-
-	if [ ! -f "$theTargetFilepath" ];	then 
-		echo "   file does not exist"
-	elif [ $hashcompare -eq 1 ]; then
-		echo "   remote file change ($hashcompare)"
-	fi
 	
+	# check if the remote hash is equal to the local hash
+	theRemoteHashLine=`grep "$theRelativePath" "$remoteHashfilePath"`
+	theRemoteHash=`echo "$theRemoteHashLine" | awk '{split($0,a," "); print a[1]}'`
+	echo "theRemoteHash: $theRemoteHash"
+	if grep -q "$theRemoteHash" "$theTargetFilepath.sha1"
+	then
+		# hash found
+		doDownload=1
+	else
+		# hash not found
+		doDownload=0
+	fi
+
 	# if the hashes are different or the target file does not exist: download the file
-	if [ $hashcompare -eq 1 ] || [ ! -f "$theTargetFilepath" ];
+	if [ $doDownload -eq 1 ] || [ ! -f "$theTargetFilepath" ];
 		then
 		# remove .sha1-file if exists, it might be corrupt
 		if [ -f "$theTargetFilepath.sha1" ];

@@ -38,7 +38,7 @@ if [ ! -e $rcloneConfig ]; then
   fi
 fi
 
-# check if porgram is running
+# check if program is running
 if [ -f "$PIDfile" ] 
 then                         # if a pidfile exists
   pid=`cat $PIDfile`        
