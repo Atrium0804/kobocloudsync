@@ -53,10 +53,10 @@ while IFS= read -r theLine; do
 	if grep -q "$theRemoteHash" "$theTargetFilepath.sha1"
 	then
 		# hash found
-		doDownload=1
+		doDownload=0
 	else
 		# hash not found
-		doDownload=0
+		doDownload=1
 	fi
 
 	# if the hashes are different or the target file does not exist: download the file
