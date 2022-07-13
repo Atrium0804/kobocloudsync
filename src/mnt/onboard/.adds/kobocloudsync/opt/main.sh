@@ -1,7 +1,5 @@
 #!/bin/sh
 
-echo "start main.sh"
-
 # Description
 # Syncs remote shares as defined in the rclone.conf file to a local destination
 # Deletes local files removed from server
@@ -12,20 +10,19 @@ echo "start main.sh"
 # jq:       https://github.com/stedolan/jq  
 # rclone:   https://github.com/rclone/rclone
 
+
+
+
 #load config
 . $(dirname $0)/config.sh
 
-echo "`$Dt` start" 
-
-# check if Kobocloud contains the line "UNINSTALL"
-# if grep -q '^UNINSTALL$' $rcloneConfig; then
-#     echo "Uninstalling kobocloudsync!"
-#     $HOME/uninstall.sh
-#     exit 0
-# fi
-
 echo
 echo "$YELLOW ====================================================== $NC"
+
+echo "`$Dt` start" 
+
+# create pid-file
+echo $! > $PIDfile
 
 # clear the rclone logfile
 echo "`$Dt`" > "$rcloneLogfile"
