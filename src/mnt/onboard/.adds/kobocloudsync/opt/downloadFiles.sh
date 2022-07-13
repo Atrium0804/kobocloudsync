@@ -48,13 +48,6 @@ while IFS= read -r theLine; do
 	$rclone sha1sum "$currentShare":"$theRelativePath" --checkfile="$theTargetFilepath.sha1" $rcloneOptions
 	hashcompare=$?
 
-	echo "hashcompare returns $hashcompare"
-	if  [ ! -f "$theTargetFilepath" ];
-	then 
-		echo "the file does not exist"
-	fi
-	
-
 	# if the hashes are different or the target file does not exist: download the file
 	if [ $hashcompare -eq 1 ] || [ ! -f "$theTargetFilepath" ];
 		then
@@ -62,7 +55,7 @@ while IFS= read -r theLine; do
 		$rclone sync "$currentShare":"$theRelativePath" "$theDestinationFolder" $rcloneOptions
 		
 		# remove .sha1-file if exists, it might be corrupt
-		[ -f "$theTargetFilepath.sha1" ];
+		if [ -f "$theTargetFilepath.sha1" ];
 		then
 			rm -f "$theTargetFilepath.sha1"
 		fi
