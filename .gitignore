@@ -6,3 +6,4 @@ src/usr/local/.DS_Store
 .vscode/launch.json
 src/mnt/onboard/.adds/kobocloudsync/rclone.config
 data
+src/mnt/onboard/.adds/kobocloudsync/opt/RemoteFilelist
