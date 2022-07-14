@@ -72,6 +72,8 @@ inkscr "Generating Covers"
 $covergen "/mnt/onboard"
 
 inkscr "kobocloudsync ready"
+sleep 2
+inkscr " "
 
 # remove the PID-file if exists
 rm $PIDfile -f

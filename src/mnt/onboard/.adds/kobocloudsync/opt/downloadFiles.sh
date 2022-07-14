@@ -21,7 +21,6 @@ currentShare=$1
 echo "`$Dt` starting downloadFiles.sh for share '$currentShare'"
 
 remoteHashfilePath="$WorkDir/remotehashes.sha1"
-echo "remoteHashfilePath: $remoteHashfilePath"
 $rclone sha1sum "$currentShare":/ --checkfile="$remoteHashfilePath" $rcloneOptions > /dev/null
 
 
@@ -43,8 +42,6 @@ while IFS= read -r theLine; do
 	theLocalFilepath="$DocumentRoot/$currentShare/$theRelativePath"
 	theTargetFilepath=`echo "$theLocalFilepath" | sed "$kepubRenamePattern"`		# the filename with .epub renamed to .kepub.epub
 	theDestinationFolder=$(dirname "$theTargetFilepath")
-
-	inkscr "Checking $theFilename"
 		
 	echo "$CYAN `$Dt` $theRelativePath $NC"
 	$rclone sha1sum "$currentShare":"$theRelativePath" --checkfile="$theTargetFilepath.sha1" $rcloneOptions > /dev/null
