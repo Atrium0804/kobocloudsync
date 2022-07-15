@@ -21,12 +21,13 @@ else
 fi
 
 # file locations
-RemoteFileList=$SH_HOME/RemoteFilelist
+RemoteFileList=$WorkDir/RemoteFilelist
 PIDfile=$WorkDir/kobocloudsync.pid
 
 # misc
 kepubRenamePattern='/.kepub.epub$/! s/\.epub$/\.kepub\.epub/i'  
 ExtensionPatterns=$SH_HOME/CompatibleExtensionPatterns
+isBooksDownloaded=0
 
 # function to print to kobo-screen
 inkscr(){

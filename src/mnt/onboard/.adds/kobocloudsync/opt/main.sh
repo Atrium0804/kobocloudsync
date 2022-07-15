@@ -22,7 +22,7 @@ echo "$YELLOW ====================================================== $NC"
 echo "`$Dt` start" 
 
 # create pid-file
-echo $! > $PIDfile
+echo $$ > $PIDfile
 
 # clear the rclone logfile
 echo "`$Dt`" > "$rcloneLogfile"
@@ -65,7 +65,7 @@ fi
 $SH_HOME/pruneFolders.sh
 
 
-if [ isBooksDownloaded -eq 1 ]; then 
+if [ $isBooksDownloaded -eq 1 ]; then 
     # generate covers
     inkscr "Generating Covers"
     $covergen "/mnt/onboard"
@@ -78,4 +78,4 @@ sleep 2
 inkscr " "
 
 # remove the PID-file if exists
-rm $PIDfile -f
+rm -f $PIDfile 

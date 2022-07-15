@@ -25,7 +25,7 @@ while [ $r != 0 ]; do
         inkscr "$RED error! no connection detected $NC" 
         exit 1
     fi
-    echo "$CYAN `$Dt` Pinging $NC"    
+    # echo "$CYAN `$Dt` Pinging $NC"    
     ping -c 1 $waitparm 3 aws.amazon.com >/dev/null 2>&1
     r=$? # get the exit-status of the previous cmd, 0=successful
     if [ $r != 0 ]; then sleep 1; fi
