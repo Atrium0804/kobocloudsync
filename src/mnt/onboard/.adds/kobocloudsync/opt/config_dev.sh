@@ -39,6 +39,7 @@ rcloneOptions="--config=$rcloneConfig --log-file=$rcloneLogfile --log-level INFO
   rclone="$repo/bin/$arch/rclone/rclone$ext"
 kepubify="$repo/bin/$arch/kepubify/kepubify$ext"
 covergen="$repo/bin/$arch/kepubify/covergen$ext"
+seriesmeta="$repo/bin/$arch/kepubify/seriesmeta$ext"
 Dt="date +%Y-%m-%d_%H:%M:%S"
 device=dev
 

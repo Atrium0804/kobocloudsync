@@ -44,8 +44,6 @@ while IFS= read -r theLine; do
 	theTargetFilepath=`echo "$theLocalFilepath" | sed "$kepubRenamePattern"`		# the filename with .epub renamed to .kepub.epub
 	theDestinationFolder=$(dirname "$theTargetFilepath")
 
-	inkscr "Checking $theFilename"
-	
 	# check if the remote hash is equal to the local hash
 	theRemoteHashLine=`grep "$theRelativePath" "$remoteHashfilePath"`
 	theRemoteHash=`echo "$theRemoteHashLine" | awk '{split($0,a," "); print a[1]}'`
@@ -69,6 +67,7 @@ while IFS= read -r theLine; do
 		fi
 	
 		inkscr "Download $theFilename"
+		isBooksDownloaded=1
 		$rclone sync "$currentShare":"$theRelativePath" "$theDestinationFolder" $rcloneOptions
 
 		# create hash-file	
