@@ -47,7 +47,7 @@ while IFS= read -r theLine; do
 	# check if the remote hash is equal to the local hash
 	theRemoteHashLine=`grep "$theRelativePath" "$remoteHashfilePath"`
 	theRemoteHash=`echo "$theRemoteHashLine" | awk '{split($0,a," "); print a[1]}'`
-	echo "theRemoteHash: $theRemoteHash"
+	# echo "theRemoteHash: $theRemoteHash"
 	if grep -q "$theRemoteHash" "$theTargetFilepath.sha1"
 	then
 		# hash found

@@ -64,18 +64,17 @@ then
 fi
 $SH_HOME/pruneFolders.sh
 
-
 if [ $isBooksDownloaded -eq 1 ]; then 
     # generate covers
     inkscr "Generating Covers"
     $covergen "/mnt/onboard"
     inkscr "Series Metadata"
-    $covergen "/mnt/onboard"
+    $seriesmeta "/mnt/onboard"
 fi
 
 inkscr "kobocloudsync ready"
 sleep 2
-inkscr " "
+inkscr "."
 
 # remove the PID-file if exists
 rm -f $PIDfile 
