@@ -38,17 +38,17 @@ if [ ! -e $rcloneConfig ]; then
   fi
 fi
 
-# check if program is running
-if [ -f "$PIDfile" ] ;
-then                         # if a pidfile exists
-  pid=`cat $PIDfile`        
-  echo "pid: $pid"                      
-  if kill -0 $pid 2>/dev/null;                                # check of the process is running
-    then 
-      echo "kobocloudsync is already running"
-      exit 0
-  fi
-fi
+# # check if program is running
+# if [ -f "$PIDfile" ] ;
+# then                         # if a pidfile exists
+#   pid=`cat $PIDfile`        
+#   echo "pid: $pid"                      
+#   if kill -0 $pid 2>/dev/null;                                # check of the process is running
+#     then 
+#       echo "kobocloudsync is already running"
+#       exit 0
+#   fi
+# fi
 
 # start sync script
 timeout 20m  $HOME/opt/main.sh > $WorkDir/kobocloudsync.log 2>&1 &
