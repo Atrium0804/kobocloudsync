@@ -37,7 +37,8 @@ inkscr(){
   maxchar=40
   TextToPrint=`echo $TextToPrint | cut -c 1-$maxchar`
   case $device in
-  "kobo")  /usr/local/kfmon/bin/fbink -pm -q -y -5 "$TextToPrint";;
+#   "kobo")  /usr/local/kfmon/bin/fbink -pm -q -y -5 "$TextToPrint";;
+  "kobo")  /mnt/onboard/.adds/fbink/bin/fbink -pm -q -y -5 "$TextToPrint";;
   "dev") echo "$TextToPrint" ;;
       *) echo "inkscr: error";;
   esac

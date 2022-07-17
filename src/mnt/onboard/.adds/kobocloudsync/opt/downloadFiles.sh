@@ -48,12 +48,18 @@ while IFS= read -r theLine; do
 	theRemoteHashLine=`grep "$theRelativePath" "$remoteHashfilePath"`
 	theRemoteHash=`echo "$theRemoteHashLine" | awk '{split($0,a," "); print a[1]}'`
 	# echo "theRemoteHash: $theRemoteHash"
-	if grep -q "$theRemoteHash" "$theTargetFilepath.sha1"
-	then
-		# hash found
-		doDownload=0
+	if [ -f "$theTargetFilepath.sha1" ]; then
+		# hasfile exists, check hash
+		if grep -q "$theRemoteHash" "$theTargetFilepath.sha1"
+		then
+			# remote/local hashes are identical, no download
+			doDownload=0
+		else
+			# remote/local hashes are different, redownload file
+			doDownload=1
+		fi
 	else
-		# hash not found
+		# hashfile does not exist, dowload the file
 		doDownload=1
 	fi
 
