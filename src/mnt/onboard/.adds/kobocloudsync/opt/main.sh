@@ -10,15 +10,11 @@
 # jq:       https://github.com/stedolan/jq  
 # rclone:   https://github.com/rclone/rclone
 
-
-
-
 #load config
 . $(dirname $0)/config.sh
 
 echo
 echo "$YELLOW ====================================================== $NC"
-
 echo "`$Dt` start" 
 
 # create pid-file
@@ -49,7 +45,7 @@ fi
 echo "$shares" |
 while IFS= read -r currentShare; do
     inkscr "processing share $currentShare"
-     $HOME/opt/downloadFiles.sh "$currentShare"
+    $HOME/opt/downloadFiles.sh "$currentShare"
 done
 
 # check network again as the kobo might close the wifi after a while
