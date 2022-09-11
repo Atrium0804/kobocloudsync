@@ -38,7 +38,9 @@ inkscr(){
   TextToPrint=`echo $TextToPrint | cut -c 1-$maxchar`
   case $device in
 #   "kobo")  /usr/local/kfmon/bin/fbink -pm -q -y -5 "$TextToPrint";;
-  "kobo")  /mnt/onboard/.adds/fbink/bin/fbink -pm -q -y -5 "$TextToPrint"
+  "kobo")  
+        # /mnt/onboard/.adds/fbink/bin/fbink -pm -q -y -5 "$TextToPrint"
+        /usr/local/kfmon/bin/fbink -pm -q -y -5 "$TextToPrint"
            echo "$TextToPrint"
   ;;
   "dev") echo "$TextToPrint" ;;
