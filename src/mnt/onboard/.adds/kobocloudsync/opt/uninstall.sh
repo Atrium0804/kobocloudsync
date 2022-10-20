@@ -10,7 +10,7 @@ then
 	# don't delete when HOME is empty on the KOBOeReader-root
 	echo "home is empty"
 else 
-	incscr "uninstalling (dry-run"
+	incscr "uninstalling (dry-run)"
 	# rm -rf /etc/udev/rules.d/97-kobocloudsync.rules
 	# rm -rf $HOME
 	# rm -rf /mnt/onboard/.adds/nm/kobocloudsync

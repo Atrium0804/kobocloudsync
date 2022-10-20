@@ -17,8 +17,8 @@
 # $@ - all parameters passed to the script
  if [ "$SETSID" != "1" ] && [ "$device" = "kobo" ];
  then
-     SETSID=1 setsid "$0" "$@" &
-     exit
+    SETSID=1 setsid "$0" "$@" &
+    exit
  fi
 
 #create work dirs
@@ -27,30 +27,12 @@
 
 # copy config file from template if exists, else create new 
 if [ ! -e $rcloneConfig ]; then
-  if [ -e $ConfigTemplate ]; then
-       echo "copying config-template"
-       cp $ConfigTemplate $rcloneConfig
-  else
-    echo "generating config file"
-    echo "# Create a config file using rclone config: https://rclone.org/commands/rclone_config/" > $rcloneConfig
-    echo "# Put the created file on this location">> $rcloneConfig
-    echo "#" >> $rcloneConfig
-  fi
+  inkscr "configure a cloud-connection in $rcloneconfig"
+  echo "generating config file"
+  echo "# Create a config file using rclone config: https://rclone.org/commands/rclone_config/" > $rcloneConfig
+  echo "# Put the created file on this location">> $rcloneConfig
+  echo "#" >> $rcloneConfig
 fi
 
-# # check if program is running
-# if [ -f "$PIDfile" ] ;
-# then                         # if a pidfile exists
-#   echo "pid-file exists"
-#   cat $PIDfile
-#   pid=`cat $PIDfile`        
-#   echo "pid: $pid"                      
-#   if kill -0 $pid 2>/dev/null;                                # check of the process is running
-#     then 
-#       echo "kobocloudsync is already running"
-#       exit 0
-#    fi
-# fi
-
-# start sync script
+# start sync script, max 20min
 timeout 20m  $HOME/opt/main.sh > $WorkDir/kobocloudsync.log 2>&1 &

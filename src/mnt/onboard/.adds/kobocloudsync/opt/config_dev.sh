@@ -30,11 +30,6 @@ else
   exit 1
 fi
 
-# rclone parameters
-rcloneConfig=$WorkDir/rclone.conf
-rcloneLogfile=$WorkDir/rclone.log
-rcloneOptions="--config=$rcloneConfig --log-file=$rcloneLogfile --log-level INFO"
-
 # set paths to to binaries
   rclone="$repo/bin/$arch/rclone/rclone$ext"
 kepubify="$repo/bin/$arch/kepubify/kepubify$ext"
@@ -50,4 +45,3 @@ device=dev
       GREEN='\033[0;32m'
        CYAN='\033[0;36m'
      YELLOW='\033[1;33m'
-

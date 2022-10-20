@@ -11,8 +11,6 @@
 SH_HOME=$(dirname "$0")
 HOME="$(cd $(dirname "$0")/..; pwd)"
 
-ConfigTemplate=$SH_HOME/kobocloudsync.conf.tmpl
-
 # load development or kobo config
 if uname -a | grep -q 'Darwin.*ARM64\|Darwin.*X86\|W64_NT'; then 
     . $SH_HOME/config_dev.sh
@@ -23,6 +21,12 @@ fi
 # file locations
 RemoteFileList=$WorkDir/RemoteFilelist
 PIDfile=$WorkDir/kobocloudsync.pid
+booksdownloadedTrigger=$WorkDir/booksdownloaded.trigger
+rcloneConfig=$WorkDir/rclone.config
+rcloneLogfile=$WorkDir/rclone.log
+
+# logging-options
+rcloneOptions="--config=$rcloneConfig --log-file=$rcloneLogfile --no-check-certificate"
 
 # misc
 kepubRenamePattern='/.kepub.epub$/! s/\.epub$/\.kepub\.epub/i'  
@@ -34,14 +38,13 @@ inkscr(){
   # Prints a line to the screen of the Kobo device
   # Long strings are truncated to prevent text wrapping
   TextToPrint="$1"
-  maxchar=40
+  maxchar=60
   TextToPrint=`echo $TextToPrint | cut -c 1-$maxchar`
   case $device in
-#   "kobo")  /usr/local/kfmon/bin/fbink -pm -q -y -5 "$TextToPrint";;
   "kobo")  
         # /mnt/onboard/.adds/fbink/bin/fbink -pm -q -y -5 "$TextToPrint"
-        /usr/local/kfmon/bin/fbink -pm -q -y -5 "$TextToPrint"
-           echo "$TextToPrint"
+        /usr/local/kfmon/bin/fbink -pm -q -y -9 "$TextToPrint"
+        echo "$TextToPrint"
   ;;
   "dev") echo "$TextToPrint" ;;
       *) echo "inkscr: error";;

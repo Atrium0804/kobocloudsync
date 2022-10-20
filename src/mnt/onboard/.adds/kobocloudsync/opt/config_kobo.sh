@@ -13,8 +13,3 @@ seriesmeta=$HOME/bin/seriesmeta
 
 Dt="date +%Y-%m-%d_%H:%M:%S"
 device=kobo
-
-# rclone parameters
-rcloneConfig=$WorkDir/rclone.conf
-rcloneLogfile=$WorkDir/rclone.log
-rcloneOptions="--config=$rcloneConfig --log-file=$rcloneLogfile --no-check-certificate"

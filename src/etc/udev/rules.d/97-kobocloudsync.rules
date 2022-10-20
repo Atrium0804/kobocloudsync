@@ -1,0 +1,3 @@
+KERNEL=="eth*", ACTION=="add", RUN+="/mnt/onboard/.adds/kobocloudsync/opt/udev_program.sh"
+KERNEL=="wlan*", ACTION=="add", RUN+="/mnt/onboard/.adds/kobocloudsync/opt/udev_program.sh"
+KERNEL=="lo", RUN+="/mnt/onboard/.adds/kobocloudsync/opt/udev_mount.sh"

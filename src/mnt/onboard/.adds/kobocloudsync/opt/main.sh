@@ -17,9 +17,6 @@ echo
 echo "$YELLOW ====================================================== $NC"
 echo "`$Dt` start" 
 
-# create pid-file
-echo $$ > $PIDfile
-
 # clear the rclone logfile
 echo "`$Dt`" > "$rcloneLogfile"
 
@@ -37,7 +34,7 @@ echo "$CYAN get shares $NC"
 shares=`$rclone listremotes $rcloneOptions | sed 's/://' `
 if [ -z $shares ];
 then 
-    echo "$RED No shares in configfile $NC"
+    echo "$RED No shares in configfile $rcloneLogfile $NC"
     exit 1
 fi
 
@@ -60,17 +57,14 @@ then
 fi
 $SH_HOME/pruneFolders.sh
 
-if [ $isBooksDownloaded -eq 1 ]; then 
+if [ -f $booksdownloadedTrigger ]; then 
     # generate covers
     inkscr "Generating Covers"
     $covergen "/mnt/onboard"
-    inkscr "Series Metadata"
+    inkscr "Adding series metadata"
     $seriesmeta "/mnt/onboard"
+    rm -f $booksdownloadedTrigger
+    inkscr "kobocloudsync ready, rescan your books."
+else 
+    inkscr "kobocloudsync ready,"
 fi
-
-inkscr "kobocloudsync ready"
-sleep 2
-inkscr "."
-
-# remove the PID-file if exists
-rm -f $PIDfile 

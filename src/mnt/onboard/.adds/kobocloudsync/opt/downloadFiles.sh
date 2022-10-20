@@ -24,7 +24,6 @@ echo "`$Dt` starting downloadFiles.sh for share '$currentShare'"
 remoteHashfilePath="$WorkDir/remotehashes.sha1"
 $rclone sha1sum "$currentShare":/ --output-file="$remoteHashfilePath" $rcloneOptions 
 
-
 # get all remote objects (files/folders)
 # theJsonListing=`$rclone lsjson -R  $currentShare:/ $rcloneOptions`
 theListing=`$rclone lsl $currentShare:/ $rcloneOptions`
@@ -73,7 +72,7 @@ while IFS= read -r theLine; do
 		fi
 	
 		inkscr "Download $theFilename"
-		isBooksDownloaded=1
+		touch "$booksdownloadedTrigger"
 		$rclone sync "$currentShare":"$theRelativePath" "$theDestinationFolder" $rcloneOptions
 
 		# create hash-file	
