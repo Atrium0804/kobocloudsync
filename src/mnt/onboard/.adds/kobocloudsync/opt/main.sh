@@ -59,12 +59,11 @@ $SH_HOME/pruneFolders.sh
 
 if [ -f $booksdownloadedTrigger ]; then 
     # generate covers
-    inkscr "Generating Covers"
-    $covergen "/mnt/onboard"
-    inkscr "Adding series metadata"
-    $seriesmeta "/mnt/onboard"
+    inkscr "Generating Covers"  
+    $covergen "$KoboFolder" > /dev/null
+    $seriesmeta "$KoboFolder" > /dev/null
     rm -f $booksdownloadedTrigger
-    inkscr "kobocloudsync ready, rescan your books."
+    inkscr "kobocloudsync ready, rescan your e-books."
 else 
-    inkscr "kobocloudsync ready,"
+    inkscr "kobocloudsync ready, no new e-books"
 fi

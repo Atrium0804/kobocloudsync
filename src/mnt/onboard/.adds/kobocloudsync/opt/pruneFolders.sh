@@ -68,7 +68,7 @@ while IFS= read -r currentShare; do
         theTargetFilename=`echo "$theRemoteFile" | sed "$kepubRenamePattern"`			# rename to kepub.epub
         theLocalFilepath="$destinationFolder/$theTargetFilename"						# create absolute path
         echo "$theLocalFilepath" >> $RemoteFileList										# add to file to list
-        echo "$theLocalFilepath.sha1" >> $RemoteFileList								# add hashfile to list
+        echo "$theLocalFilepath.metadata" >> $RemoteFileList					   	    # add metadata-file to list
     done
 	pruneFolder "$destinationFolder"
 done

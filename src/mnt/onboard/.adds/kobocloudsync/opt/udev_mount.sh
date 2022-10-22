@@ -10,13 +10,8 @@
 
 # copy config file from template if exists, else create new 
 if [ ! -e $rcloneConfig ]; then
-  if [ -e $ConfigTemplate ]; then
-       echo "copying config-template"
-       cp $ConfigTemplate $rcloneConfig
-  else
     echo "generating config file"
     echo "# Create a config file using rclone config: https://rclone.org/commands/rclone_config/" > $rcloneConfig
     echo "# Put the created file on this location">> $rcloneConfig
     echo "#" >> $rcloneConfig
-  fi
 fi

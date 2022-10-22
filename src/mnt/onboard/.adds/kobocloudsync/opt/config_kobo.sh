@@ -4,7 +4,8 @@
 # as wel as some general configurations
 
 WorkDir=/mnt/onboard/.adds/kobocloudsync
-DocumentRoot=/mnt/onboard/kobocloudsync
+KoboFolder=/mnt/onboard
+DocumentRoot=$KoboFolder/kobocloudsync
 
   rclone=$HOME/bin/rclone
 kepubify=$HOME/bin/kepubify

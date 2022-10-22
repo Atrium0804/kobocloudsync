@@ -9,8 +9,10 @@
 
 
 repo=`echo "$(git rev-parse --show-toplevel)"`
-     WorkDir=$repo/data
-DocumentRoot=$WorkDir/documents
+
+KoboFolder=/$repo/KoboFolder
+DocumentRoot=$KoboFolder
+WorkDir=$KoboFolder/.adds/kobocloudsync
 
 
 if uname -a | grep -q 'Darwin.*ARM64'; then 

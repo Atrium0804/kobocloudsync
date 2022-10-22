@@ -39,11 +39,11 @@ inkscr(){
   # Long strings are truncated to prevent text wrapping
   TextToPrint="$1"
   maxchar=60
-  TextToPrint=`echo $TextToPrint | cut -c 1-$maxchar`
+  TextToPrintShort=`echo $TextToPrint | cut -c 1-$maxchar`
   case $device in
   "kobo")  
         # /mnt/onboard/.adds/fbink/bin/fbink -pm -q -y -5 "$TextToPrint"
-        /usr/local/kfmon/bin/fbink -pm -q -y -9 "$TextToPrint"
+        /usr/local/kfmon/bin/fbink -pm -q -y -5 --font SPLEEN "$TextToPrintShort"
         echo "$TextToPrint"
   ;;
   "dev") echo "$TextToPrint" ;;
