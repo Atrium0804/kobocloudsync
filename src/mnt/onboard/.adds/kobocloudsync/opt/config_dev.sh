@@ -11,7 +11,7 @@
 repo=`echo "$(git rev-parse --show-toplevel)"`
 
 KoboFolder=/$repo/KoboFolder
-DocumentRoot=$KoboFolder
+DocumentRoot=$KoboFolder/kobocloudsync
 WorkDir=$KoboFolder/.adds/kobocloudsync
 
 

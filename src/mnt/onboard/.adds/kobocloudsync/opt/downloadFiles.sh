@@ -65,6 +65,7 @@ while IFS= read -r theLine; do
 
 	# if the hashes are different or the target file does not exist: download the file
 	if [ $doDownload -eq 1 ] || [ ! -f "$theTargetFilepath" ];
+	then
 		inkscr "Downloading $theFilename"
 		rm -f "$theLocalMetadata"
 		$rclone sync "$currentShare":"$theRelativePath" "$theDestinationFolder" $rcloneOptions
