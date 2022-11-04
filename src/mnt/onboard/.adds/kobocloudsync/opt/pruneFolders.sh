@@ -45,6 +45,7 @@ pruneFolder(){
 			then 
 				echo "[rmdir] $theFolder/"
 				rmdir "$theFolder" --ignore-fail-on-non-empty
+				touch "booksdownloadedTrigger"  # trigger 'refresh books' message
 			else
 				exec
 				# echo "$CYAN [keep] $theFolder/ $NC"

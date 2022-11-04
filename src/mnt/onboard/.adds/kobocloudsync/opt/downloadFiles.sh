@@ -56,6 +56,8 @@ while IFS= read -r theLine; do
 		else
 			# remote/local hashes are different, redownload file
 			echo "remote file different to local file"
+			echo "remote metadata: $theRemoteMetadataLine"
+			echo "local  metadata: $theLocalMetadata"
 			doDownload=1
 		fi
 	else

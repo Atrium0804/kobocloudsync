@@ -41,7 +41,7 @@ fi
 # download remote files for each share
 echo "$shares" |
 while IFS= read -r currentShare; do
-    inkscr "processing share $currentShare"
+    echo "processing share $currentShare"
     $HOME/opt/downloadFiles.sh "$currentShare"
 done
 
@@ -52,7 +52,7 @@ $SH_HOME/checkNetwork.sh
 hasNetwork=$?
 if [ $hasNetwork -ne 0 ]; 
 then 
-    incscr "$RED No network connection, aborting"
+    echo "$RED No network connection, aborting"
     exit 1
 fi
 $SH_HOME/pruneFolders.sh
@@ -63,7 +63,7 @@ if [ -f $booksdownloadedTrigger ]; then
     $covergen "$KoboFolder" > /dev/null
     $seriesmeta "$KoboFolder" > /dev/null
     rm -f $booksdownloadedTrigger
-    inkscr "kobocloudsync ready, rescan your e-books."
+    inkscr "cloudsync: rescan your e-books."
 else 
-    inkscr "kobocloudsync ready, no new e-books"
+    echo "kobocloudsync ready, no new e-books"
 fi
