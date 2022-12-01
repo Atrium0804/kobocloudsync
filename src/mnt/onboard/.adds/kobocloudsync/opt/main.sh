@@ -25,7 +25,7 @@ $SH_HOME/checkNetwork.sh
 hasNetwork=$?
 if [ $hasNetwork -ne 0 ]; 
 then 
-    inkscr "$RED No network connection, aborting"
+    echo "$RED No network connection, aborting"
     exit 1
 fi
 
