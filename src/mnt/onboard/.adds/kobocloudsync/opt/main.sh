@@ -59,7 +59,7 @@ $SH_HOME/pruneFolders.sh
 
 if [ -f $booksdownloadedTrigger ]; then 
     # generate covers
-    inkscr "Generating Covers"  
+    echo "Generating Covers"  
     $covergen "$KoboFolder" > /dev/null
     $seriesmeta "$KoboFolder" > /dev/null
     rm -f $booksdownloadedTrigger
