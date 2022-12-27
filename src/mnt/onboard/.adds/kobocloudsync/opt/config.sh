@@ -12,7 +12,7 @@ SH_HOME=$(dirname "$0")
 HOME="$(cd $(dirname "$0")/..; pwd)"
 
 # load development or kobo config
-if uname -a | grep -q 'Darwin.*ARM64\|Darwin.*X86\|W64_NT'; then 
+if uname -a | grep -q 'WSL\|Darwin.*ARM64\|Darwin.*X86\|W64_NT'; then 
     . $SH_HOME/config_dev.sh
 else
     . $SH_HOME/config_kobo.sh
@@ -26,7 +26,8 @@ rcloneConfig=$WorkDir/rclone.config
 rcloneLogfile=$WorkDir/rclone.log
 
 # logging-options
-rcloneOptions="--config=$rcloneConfig --log-file=$rcloneLogfile --no-check-certificate"
+rcloneOptions="--config=$rcloneConfig --log-file=$rcloneLogfile --no-check-certificate --drive-shared-with-me"
+# rcloneOptions="--config=$rcloneConfig  --no-check-certificate --drive-shared-with-me"
 
 # misc
 kepubRenamePattern='/.kepub.epub$/! s/\.epub$/\.kepub\.epub/i'  
@@ -36,18 +37,20 @@ isBooksDownloaded=0
 # function to print to kobo-screen
 inkscr(){
   # Prints a line to the screen of the Kobo device
-  # Long strings are truncated to prevent text wrapping
-  TextToPrint="$1"
-  maxchar=60
-  TextToPrintShort=`echo $TextToPrint | cut -c 1-$maxchar`
-  case $device in
-  "kobo")  
-    
-        /usr/local/kfmon/bin/fbink -pm -q -y -5 "$TextToPrintShort"
-        # /mnt/onboard/.adds/fbink/bin/fbink  -pm -q -y -5 --font THIN "$TextToPrintShort"
-        echo "$TextToPrint"
-  ;;
-  "dev") echo "$TextToPrint" ;;
-      *) echo "inkscr: error";;
-  esac
+# Long strings are truncated to prevent text wrapping
+TextToPrint="$1"
+maxchar=60
+TextToPrintShort=`echo $TextToPrint | cut -c 1-$maxchar`
+case $device in
+"kobo")  
+
+    # /usr/bin/fbink -pm -q -y -5 "$TextToPrintShort"
+
+    # /mnt/onboard/.adds/fbink/bin/fbink -pm -q -y -5 "$TextToPrintShort"
+    /mnt/onboard/.adds/fbink/bin/fbink  -pm -q -y -5 --font THIN "$TextToPrintShort"
+    echo "$TextToPrint"
+;;
+"dev") echo "inkscr: $TextToPrint" ;;
+    *) echo "inkscr: error";;
+esac
 }

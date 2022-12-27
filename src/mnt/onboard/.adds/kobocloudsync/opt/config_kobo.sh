@@ -6,11 +6,11 @@
 WorkDir=/mnt/onboard/.adds/kobocloudsync
 KoboFolder=/mnt/onboard
 DocumentRoot=$KoboFolder/kobocloudsync
-
-  rclone=$HOME/bin/rclone
+rclone=$HOME/bin/rclone
 kepubify=$HOME/bin/kepubify
 covergen=$HOME/bin/covergen
 seriesmeta=$HOME/bin/seriesmeta
 
 Dt="date +%Y-%m-%d_%H:%M:%S"
 device=kobo
+echo ' config_kobo.sh loaded'

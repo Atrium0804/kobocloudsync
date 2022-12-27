@@ -7,17 +7,21 @@
 #  Apple Mac M1
 #  Windowss 64bit
 
-
 repo=`echo "$(git rev-parse --show-toplevel)"`
 
 KoboFolder=/$repo/KoboFolder
 DocumentRoot=$KoboFolder/kobocloudsync
 WorkDir=$KoboFolder/.adds/kobocloudsync
+WorkDir=/$repo/src/mnt/onboard/.adds/kobocloudsync
 
 
 if uname -a | grep -q 'Darwin.*ARM64'; then 
   # Mac M1
   arch="osx-arm64"
+  ext=""
+elif uname -a | grep -q 'WSL'; then 
+  # Mac M1
+  arch="linux-amd64"
   ext=""
 elif uname -a | grep -q 'Darwin.*X86' ; then
   # Mac Intel
@@ -47,3 +51,4 @@ device=dev
       GREEN='\033[0;32m'
        CYAN='\033[0;36m'
      YELLOW='\033[1;33m'
+echo ' config_dev.sh loaded'

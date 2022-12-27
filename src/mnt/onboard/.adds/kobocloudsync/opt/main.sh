@@ -16,6 +16,7 @@
 echo
 echo "$YELLOW ====================================================== $NC"
 echo "`$Dt` start" 
+inkscr  "starting" 
 
 # clear the rclone logfile
 echo "`$Dt`" > "$rcloneLogfile"
@@ -47,23 +48,24 @@ done
 
 # check network again as the kobo might close the wifi after a while
 # check working network connection
-echo "$CYAN Pruning folders $NC"
-$SH_HOME/checkNetwork.sh
-hasNetwork=$?
-if [ $hasNetwork -ne 0 ]; 
-then 
-    echo "$RED No network connection, aborting"
-    exit 1
-fi
-$SH_HOME/pruneFolders.sh
+# echo "$CYAN Pruning folders $NC"
+# $SH_HOME/checkNetwork.sh
+# hasNetwork=$?
+# if [ $hasNetwork -ne 0 ]; 
+# then 
+    # echo "$RED No network connection, aborting"
+    # exit 1
+# fi
+# $SH_HOME/pruneFolders.sh
 
 if [ -f $booksdownloadedTrigger ]; then 
     # generate covers
-    echo "Generating Covers"  
-    $covergen "$KoboFolder" > /dev/null
-    $seriesmeta "$KoboFolder" > /dev/null
+    # echo "Generating Covers"  
+    # $covergen "$KoboFolder" > /dev/null
+    # $seriesmeta "$KoboFolder" > /dev/null
     rm -f $booksdownloadedTrigger
     inkscr "cloudsync: rescan your e-books."
 else 
+    inkscr "kobocloudsync ready, no new e-books"
     echo "kobocloudsync ready, no new e-books"
 fi
