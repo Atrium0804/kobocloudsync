@@ -24,7 +24,12 @@ This file stores the name of the share, the remote location and the credentials 
 
 The file can be created by the rclone utility. See the [rclone site](https://rclone.org/docs/) for more details and instructions
 
-**Important for Nextcloud users**: Webdav for public folders should be enabled on the nextcloud server, see: https://docs.nextcloud.com/server/20/user_manual/en/files/access_webdav.html#accessing-public-shares-over-webdav for more info.
+Start the rclone configuration and specify the output location for the config file, eg:
+```rclone config --config="c:\rclone.conf".
+
+**Important for Nextcloud users**:
+Select the WebDav option when configuring rclone.
+Webdav for public folders should be enabled on the nextcloud server, see: https://docs.nextcloud.com/server/20/user_manual/en/files/access_webdav.html#accessing-public-shares-over-webdav for more info.
 
 ## Usage
 After installation and configuration, a Cloudsync menu-entry is shown in the NickelMenu-menu. This menu-entry starts the syncing of the configured cloud shares and refreshes the book list.
