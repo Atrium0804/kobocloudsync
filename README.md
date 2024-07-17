@@ -25,7 +25,7 @@ This file stores the name of the share, the remote location and the credentials 
 The file can be created by the rclone utility. See the [rclone site](https://rclone.org/docs/) for more details and instructions
 
 Start the rclone configuration and specify the output location for the config file, eg:
-```rclone config --config="c:\rclone.conf".
+`rclone config --config="c:\rclone.conf".`
 
 **Important for Nextcloud users**:
 Select the WebDav option when configuring rclone.
