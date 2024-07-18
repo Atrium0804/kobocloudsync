@@ -25,7 +25,7 @@
 [ ! -e "$WorkDir" ] && mkdir -p "$WorkDir" >/dev/null 2>&1
 [ ! -e "$DocumentRoot" ] && mkdir -p "$DocumentRoot" >/dev/null 2>&1
 
-# copy config file from template if exists, else create new 
+# copy config file from template if exists, else create new
 if [ ! -e $rcloneConfig ]; then
   inkscr "configure a cloud-connection in $rcloneconfig"
   echo "generating config file"

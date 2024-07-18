@@ -1,0 +1,1 @@
+ /mnt/onboard/.adds/fbink/bin/fbink -pm -q -y -5 "test"

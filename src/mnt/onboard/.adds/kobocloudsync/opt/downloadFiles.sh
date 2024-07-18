@@ -16,12 +16,12 @@
 
 #load config
 . $(dirname $0)/config.sh
-currentShare=$1  
+currentShare=$1
 
 echo "`$Dt` starting downloadFiles.sh for share '$currentShare'"
 
 # get remote metdata and store in file
-remoteMetadataListing="$WorkDir/remote_metadata.txt" 
+remoteMetadataListing="$WorkDir/remote_metadata"
 $rclone lsl "$currentShare":/ $rcloneOptions  > $remoteMetadataListing
 
 # get all remote objects (files/folders) and remove incompatible files
@@ -31,12 +31,12 @@ theRemoteFileListing=`echo "$theRemoteFileListing" | grep -i -f $ExtensionPatter
 # process remote files
 echo "$theRemoteFileListing" |
 while IFS= read -r theLine; do
-	theTrimmedLine=`echo "$theLine" | awk '{ sub(/^[ \t]+/, ""); print }' ` 
+	theTrimmedLine=`echo "$theLine" | awk '{ sub(/^[ \t]+/, ""); print }' `
 	# theFilesize=`echo "$theTrimmedLine"  | cut -d ' ' -f 1`
 	# theModTime=`echo "$theTrimmedLine"  | cut -d ' ' -f 2-3`
 	theRelativePath=`echo "$theTrimmedLine"  | cut -d ' ' -f 4-`					# relative path of the file
 	theFilename=`basename "$theRelativePath"`										# the (remote) filename
-	echo "$GREEN === $theRelativePath === $NC"
+	echo "$GREEN === $theRelativePath ==="
 
 	# calculate target filename (.kepub.epub)
 	theLocalFilepath="$DocumentRoot/$currentShare/$theRelativePath"
@@ -44,7 +44,7 @@ while IFS= read -r theLine; do
 	theDestinationFolder=$(dirname "$theTargetFilepath")
 	theLocalMetadata="$theTargetFilepath.metadata"
 
-	# retrieve the (remote) metadata for the file 
+	# retrieve the (remote) metadata for the file
 	theRemoteMetadataLine=`grep "$theRelativePath" "$remoteMetadataListing"`
 
 	# Download file if the metadata has changed
@@ -77,12 +77,12 @@ while IFS= read -r theLine; do
 			grep "$theRelativePath" "$remoteMetadataListing" > $theLocalMetadata
 			# store triggerfile for triggering the processing of  downloads later on
 			touch "$booksdownloadedTrigger"
-		else 
-			echo "$RED ERROR Downloading file" 
+		else
+			echo "ERROR Downloading file"
 		fi
 
 		# convert to kepub if necessary and remove downloaded file
-		if [ "$theFilename" != "$(basename "$theTargetFilepath")" ]; then 
+		if [ "$theFilename" != "$(basename "$theTargetFilepath")" ]; then
 			echo "Converting to kepub"
 			$kepubify "$theDestinationFolder/$theFilename"  -o "$theTargetFilepath" > /dev/null
 			rm -f "$theLocalFilepath"
@@ -91,3 +91,6 @@ while IFS= read -r theLine; do
 		echo "   no change"
 	fi
 done
+
+# delete remote file listing
+rm "$WorkDir/remote_metadata"

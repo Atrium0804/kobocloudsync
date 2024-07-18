@@ -15,7 +15,7 @@ DocumentRoot=$KoboFolder/kobocloudsync
 WorkDir=$KoboFolder/.adds/kobocloudsync
 
 
-if uname -a | grep -q 'Darwin.*ARM64'; then 
+if uname -a | grep -q 'Darwin.*ARM64'; then
   # Mac M1
   arch="osx-arm64"
   ext=""
@@ -39,11 +39,3 @@ covergen="$repo/bin/$arch/kepubify/covergen$ext"
 seriesmeta="$repo/bin/$arch/kepubify/seriesmeta$ext"
 Dt="date +%Y-%m-%d_%H:%M:%S"
 device=dev
-
-# bash colors
-    NOCOLOR='\033[0m'
-         NC='\033[0m'
-        RED='\033[0;31m'
-      GREEN='\033[0;32m'
-       CYAN='\033[0;36m'
-     YELLOW='\033[1;33m'

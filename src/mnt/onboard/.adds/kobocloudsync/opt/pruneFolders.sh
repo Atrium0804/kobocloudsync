@@ -18,37 +18,37 @@
 
 #load config
 . $(dirname $0)/config.sh
-  
+
 # prevent file list from being deleted
 echo "$RemoteFileList" > $RemoteFileList
 
 
-# define function 
+# define function
 pruneFolder(){
 	echo " Pruning folder $1"
 	find "$1" -type f |
 	while IFS= read -r item; do
-	  	if grep -Fq "$item" "$RemoteFileList"; 
-			then 
+	  	if grep -Fq "$item" "$RemoteFileList";
+			then
 				exec # do nothing
-				#  echo "$CYAN [Keep] $item $NC"
-			else 
+				#  echo "[Keep] $item $NC"
+			else
 				echo "   [rm] $item"
 				rm -f "$item"
 		fi
-	done 
+	done
  	# remove empty directories
 	# we don't do it recursively,
 	find "$1" -type d |
 	while IFS= read -r theFolder; do
-		if !   ls -1A "$theFolder" | grep -q . 
-			then 
+		if !   ls -1A "$theFolder" | grep -q .
+			then
 				echo "[rmdir] $theFolder/"
 				rmdir "$theFolder" --ignore-fail-on-non-empty
 				touch "booksdownloadedTrigger"  # trigger 'refresh books' message
 			else
 				exec
-				# echo "$CYAN [keep] $theFolder/ $NC"
+				# echo "[keep] $theFolder/ $NC"
 		fi
 	done
 }
@@ -57,15 +57,15 @@ pruneFolder(){
 # create a list with remote files
 # #proces shares
 shares=`$rclone listremotes $rcloneOptions | sed 's/://' `
-echo "$shares" | 
+echo "$shares" |
 while IFS= read -r currentShare; do
-    echo "$YELLOW pruning share: $currentShare $NC"    
+    echo "$YELLOW pruning share: $currentShare $NC"
     destinationFolder=$DocumentRoot/$currentShare
 	theRemoteFiles=`$rclone lsf -R $currentShare:/ $rcloneOptions | grep -v '.*\/$' `	# keep files only
-	echo "$theRemoteFiles" | 
+	echo "$theRemoteFiles" |
     while IFS= read -r theRemoteFile; do
         # same code as in downloadFiles.sh
-		# echo "$CYAN [remote file] $theRemoteFile $NC"
+		# echo "[remote file] $theRemoteFile $NC"
         theTargetFilename=`echo "$theRemoteFile" | sed "$kepubRenamePattern"`			# rename to kepub.epub
         theLocalFilepath="$destinationFolder/$theTargetFilename"						# create absolute path
         echo "$theLocalFilepath" >> $RemoteFileList										# add to file to list

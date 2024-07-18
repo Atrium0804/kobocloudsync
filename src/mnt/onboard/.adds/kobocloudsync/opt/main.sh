@@ -7,15 +7,15 @@
 #
 # uses:
 # kepubify: https://github.com/pgaskin/kepubify
-# jq:       https://github.com/stedolan/jq  
+# jq:       https://github.com/stedolan/jq
 # rclone:   https://github.com/rclone/rclone
 
 #load config
 . $(dirname $0)/config.sh
 
 echo
-echo "$YELLOW ====================================================== $NC"
-echo "`$Dt` start" 
+echo "$YELLOW ======================================================"
+echo "`$Dt` start"
 
 # clear the rclone logfile
 echo "`$Dt`" > "$rcloneLogfile"
@@ -23,18 +23,18 @@ echo "`$Dt`" > "$rcloneLogfile"
 # check working network connection
 $SH_HOME/checkNetwork.sh
 hasNetwork=$?
-if [ $hasNetwork -ne 0 ]; 
-then 
-    echo "$RED No network connection, aborting"
+if [ $hasNetwork -ne 0 ];
+then
+    echo "No network connection, aborting"
     exit 1
 fi
 
 #  get remote shares and download files
-echo "$CYAN get shares $NC"
+echo "get shares"
 shares=`$rclone listremotes $rcloneOptions | sed 's/://' `
 if [ -z $shares ];
-then 
-    echo "$RED No shares in configfile $rcloneLogfile $NC"
+then
+    echo "No shares in configfile $rcloneConfig"
     exit 1
 fi
 
@@ -47,23 +47,23 @@ done
 
 # check network again as the kobo might close the wifi after a while
 # check working network connection
-echo "$CYAN Pruning folders $NC"
+echo "Pruning folders"
 $SH_HOME/checkNetwork.sh
 hasNetwork=$?
-if [ $hasNetwork -ne 0 ]; 
-then 
-    echo "$RED No network connection, aborting"
+if [ $hasNetwork -ne 0 ];
+then
+    echo "No network connection, aborting"
     exit 1
 fi
 $SH_HOME/pruneFolders.sh
 
-if [ -f $booksdownloadedTrigger ]; then 
+if [ -f $booksdownloadedTrigger ]; then
     # generate covers
-    echo "Generating Covers"  
+    echo "Generating Covers"
     $covergen "$KoboFolder" > /dev/null
     $seriesmeta "$KoboFolder" > /dev/null
     rm -f $booksdownloadedTrigger
     inkscr "cloudsync: rescan your e-books."
-else 
+else
     echo "kobocloudsync ready, no new e-books"
 fi
