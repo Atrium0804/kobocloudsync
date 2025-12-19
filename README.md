@@ -28,6 +28,8 @@ Start the rclone configuration and specify the output location for the config fi
 
 `./rclone config --config="rclone.conf"`
 
+Instructions for syncing a nextcloud share can be found here https://github.com/Atrium0804/kobocloudsync/blob/main/configuration_nextcloud.md
+
 **Important for Nextcloud users**:
 Select the WebDav option when configuring rclone.
 For host use the URL like: `https://example.com/nextcloud/public.php/webdav`
