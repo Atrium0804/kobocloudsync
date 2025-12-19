@@ -20,6 +20,26 @@ echo "`$Dt` start"
 # clear the rclone logfile
 echo "`$Dt`" > "$rcloneLogfile"
 
+# validate rclone configuration
+echo "Validating rclone configuration..."
+if [ -f "$rcloneConfig" ]; then
+    # Check for URLs without protocol scheme (http:// or https://)
+    invalidUrls=$(grep -E "^url = [^h]" "$rcloneConfig" | grep -v "^url = http")
+    if [ ! -z "$invalidUrls" ]; then
+        echo "$RED ERROR: Invalid URL format in rclone.conf"
+        echo "URLs must start with http:// or https://"
+        echo "Found invalid entries:"
+        echo "$invalidUrls"
+        inkscr "Config error: URLs need http:// or https://"
+        exit 1
+    fi
+    echo "Configuration validated successfully"
+else
+    echo "$RED ERROR: rclone.conf not found at $rcloneConfig"
+    inkscr "Config file not found"
+    exit 1
+fi
+
 # check working network connection
 $SH_HOME/checkNetwork.sh
 hasNetwork=$?

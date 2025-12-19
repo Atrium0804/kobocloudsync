@@ -13,9 +13,18 @@
 case $device in
 "kobo") waitparm='-w'
         timeout=30
+        pingcmd="ping -c 1 $waitparm 3"
     ;;
-     *) waitparm='-i'
-        timeout=2
+     *) if uname -a | grep -q 'W64_NT'; then
+            # Windows ping syntax
+            timeout=2
+            pingcmd="ping -n 1 -w 3000"
+        else
+            # Mac/Linux ping syntax
+            waitparm='-i'
+            timeout=2
+            pingcmd="ping -c 1 $waitparm 3"
+        fi
      ;;
 esac
 
@@ -26,7 +35,7 @@ while [ $r != 0 ]; do
         exit 1
     fi
     # echo "`$Dt` Pinging"
-    ping -c 1 $waitparm 3 aws.amazon.com >/dev/null 2>&1
+    $pingcmd aws.amazon.com >/dev/null 2>&1
     r=$? # get the exit-status of the previous cmd, 0=successful
     if [ $r != 0 ]; then sleep 1; fi
     i=$(($i + 1))
