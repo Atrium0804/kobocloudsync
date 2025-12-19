@@ -28,12 +28,12 @@ Start the rclone configuration and specify the output location for the config fi
 
 `./rclone config --config="rclone.conf"`
 
-Instructions for syncing a nextcloud share can be found here https://github.com/Atrium0804/kobocloudsync/blob/main/configuration_nextcloud.md
+Instructions for syncing a nextcloud share can be found [here](https://github.com/Atrium0804/kobocloudsync/blob/main/configuration_nextcloud.md)
 
 **Important for Nextcloud users**:
 Select the WebDav option when configuring rclone.
 For host use the URL like: `https://example.com/nextcloud/public.php/webdav`
-Webdav for public folders should be enabled on the nextcloud server, see: https://docs.nextcloud.com/server/20/user_manual/en/files/access_webdav.html#accessing-public-shares-over-webdav for more info.
+Webdav for public folders should be enabled on the nextcloud server, see: [nextcloud docs](https://docs.nextcloud.com/server/20/user_manual/en/files/access_webdav.html#accessing-public-shares-over-webdav) for more info.
 
 ## Usage
 After installation and configuration, a Cloudsync menu-entry is shown in the NickelMenu-menu. This menu-entry starts the syncing of the configured cloud shares and refreshes the book list.
