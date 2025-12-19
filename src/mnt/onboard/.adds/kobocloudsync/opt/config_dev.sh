@@ -8,11 +8,14 @@
 #  Windowss 64bit
 
 
-repo=`echo "$(git rev-parse --show-toplevel)"`
+repo=`git rev-parse --show-toplevel`
 
-KoboFolder=/$repo/KoboFolder
+KoboFolder=$repo/KoboFolder
 DocumentRoot=$KoboFolder/kobocloudsync
 WorkDir=$KoboFolder/.adds/kobocloudsync
+
+# Create WorkDir if it doesn't exist
+mkdir -p "$WorkDir"
 
 
 if uname -a | grep -q 'Darwin.*ARM64'; then
