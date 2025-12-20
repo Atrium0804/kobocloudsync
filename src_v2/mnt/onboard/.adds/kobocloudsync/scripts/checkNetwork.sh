@@ -6,8 +6,8 @@
 #  0 - network connection available
 #  1 - no network connection found
 
-#load config
-. $(dirname $0)/config.sh
+# #load config
+# . $(dirname $0)/config.sh
 
 # set device specific wait-parameter
 case $device in
@@ -34,11 +34,11 @@ while [ $r != 0 ]; do
         inkscr "error! no connection detected"
         exit 1
     fi
-    # echo "`$Dt` Pinging"
+    # echo "Pinging"
     $pingcmd aws.amazon.com >/dev/null 2>&1
     r=$? # get the exit-status of the previous cmd, 0=successful
     if [ $r != 0 ]; then sleep 1; fi
     i=$(($i + 1))
     # inkscr "waiting for internet connection"
 done
-echo "`$Dt` internet connection found"
+echo "internet connection found"
