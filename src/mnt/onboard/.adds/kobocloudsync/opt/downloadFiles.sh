@@ -21,22 +21,41 @@ currentShare=$1
 echo "`$Dt` starting downloadFiles.sh for share '$currentShare'"
 
 # get remote metdata and store in file
+echo "  Fetching remote metadata..."
 remoteMetadataListing="$WorkDir/remote_metadata"
 $rclone lsl "$currentShare":/ $rcloneOptions  > $remoteMetadataListing
+if [ $? -ne 0 ]; then
+    echo "$RED  [ERROR] Failed to fetch remote metadata$NC"
+    exit 1
+fi
+echo "  [OK] Remote metadata retrieved"
 
 # get all remote objects (files/folders) and remove incompatible files
 theRemoteFileListing=`$rclone lsl $currentShare:/ $rcloneOptions`
 theRemoteFileListing=`echo "$theRemoteFileListing" | grep -i -f $ExtensionPatterns`
 
+# Print remote file list
+fileCount=$(echo "$theRemoteFileListing" | grep -c .)
+echo "$YELLOW--- Remote files found for '$currentShare': $fileCount file(s) ---$NC"
+if [ -z "$theRemoteFileListing" ]; then
+	echo "  (no compatible files found)"
+else
+	echo "$theRemoteFileListing" | sed 's/^/  /'
+fi
+echo "$YELLOW--- Processing files ---$NC"
+
 # process remote files
+fileNum=0
 echo "$theRemoteFileListing" |
 while IFS= read -r theLine; do
+	fileNum=$((fileNum + 1))
 	theTrimmedLine=`echo "$theLine" | awk '{ sub(/^[ \t]+/, ""); print }' `
 	# theFilesize=`echo "$theTrimmedLine"  | cut -d ' ' -f 1`
 	# theModTime=`echo "$theTrimmedLine"  | cut -d ' ' -f 2-3`
 	theRelativePath=`echo "$theTrimmedLine"  | cut -d ' ' -f 4-`					# relative path of the file
-	theFilename=`basename "$theRelativePath"`										# the (remote) filename
-	echo "$GREEN === $theRelativePath ==="
+	theFilename=`basename "$theRelativePath"`									# the (remote) filename
+	echo ""
+	echo "$GREEN[$fileNum/$fileCount] === $theRelativePath ===$NC"
 
 	# calculate target filename (.kepub.epub)
 	theLocalFilepath="$DocumentRoot/$currentShare/$theRelativePath"
@@ -52,43 +71,54 @@ while IFS= read -r theLine; do
 		if grep -q "$theRemoteMetadataLine" "$theLocalMetadata"
 		then
 			# remote/local metadata is identical, no download
+			echo "  [SKIP] File unchanged (metadata match)"
 			doDownload=0
 		else
 			# remote/local hashes are different, redownload file
-			echo "remote file different to local file"
-			echo "remote metadata: $theRemoteMetadataLine"
-			echo "local  metadata: $theLocalMetadata"
+			echo "  [UPDATE] Remote file different from local"
+			echo "    Remote: $theRemoteMetadataLine"
+			echo "    Local:  $(cat "$theLocalMetadata")"
 			doDownload=1
 		fi
 	else
-	#	echo "no local metadata stored"
+		echo "  [NEW] No local copy found"
 		doDownload=1
 	fi
 
 	# if the hashes are different or the target file does not exist: download the file
 	if [ $doDownload -eq 1 ] || [ ! -f "$theTargetFilepath" ];
 	then
+		echo "  [DOWNLOAD] Starting download..."
 		inkscr "Downloading $theFilename"
+		# Create destination folder if it doesn't exist
+		mkdir -p "$theDestinationFolder"
+		echo "    Destination: $theDestinationFolder"
 		rm -f "$theLocalMetadata"
 		$rclone sync "$currentShare":"$theRelativePath" "$theDestinationFolder" $rcloneOptions
 		if [ $? -eq 0 ];
 		then
+			echo "  $GREEN[OK] Download successful$NC"
 			# download successfull, store the  metadata of the current file in separate file
 			grep "$theRelativePath" "$remoteMetadataListing" > $theLocalMetadata
 			# store triggerfile for triggering the processing of  downloads later on
 			touch "$booksdownloadedTrigger"
 		else
-			echo "ERROR Downloading file"
+			echo "  $RED[ERROR] Download failed$NC"
 		fi
 
 		# convert to kepub if necessary and remove downloaded file
 		if [ "$theFilename" != "$(basename "$theTargetFilepath")" ]; then
-			echo "Converting to kepub"
+			echo "  [CONVERT] Converting to kepub format..."
 			$kepubify "$theDestinationFolder/$theFilename"  -o "$theTargetFilepath" > /dev/null
-			rm -f "$theLocalFilepath"
+			if [ $? -eq 0 ]; then
+				echo "  $GREEN[OK] Conversion successful$NC"
+				# Remove original epub file after conversion
+				echo "  [CLEANUP] Removing original epub..."
+				rm -f "$theDestinationFolder/$theFilename"
+			else
+				echo "  $RED[ERROR] Conversion failed$NC"
+			fi
 		fi
-	else
-		echo "   no change"
 	fi
 done
 

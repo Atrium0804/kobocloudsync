@@ -15,14 +15,22 @@
 
 echo
 echo "$YELLOW ======================================================"
-echo "`$Dt` start"
+echo "`$Dt` start - version  2025-12-20T2037"
+echo ""
+echo "Configuration:"
+echo "  WorkDir:      $WorkDir"
+echo "  KoboFolder:   $KoboFolder"
+echo "  DocumentRoot: $DocumentRoot"
+echo "======================================================$NC"
 
 # clear the rclone logfile
 echo "`$Dt`" > "$rcloneLogfile"
 
 # validate rclone configuration
-echo "Validating rclone configuration..."
+echo "$YELLOW--- Validating rclone configuration ---$NC"
+echo "  Config file: $rcloneConfig"
 if [ -f "$rcloneConfig" ]; then
+    echo "  [OK] Config file exists"
     # Check for URLs without protocol scheme (http:// or https://)
     invalidUrls=$(grep -E "^url = [^h]" "$rcloneConfig" | grep -v "^url = http")
     if [ ! -z "$invalidUrls" ]; then
@@ -33,7 +41,7 @@ if [ -f "$rcloneConfig" ]; then
         inkscr "Config error: URLs need http:// or https://"
         exit 1
     fi
-    echo "Configuration validated successfully"
+    echo "  [OK] URL formats valid"
 else
     echo "$RED ERROR: rclone.conf not found at $rcloneConfig"
     inkscr "Config file not found"
@@ -41,49 +49,75 @@ else
 fi
 
 # check working network connection
+echo ""
+echo "$YELLOW--- Checking network connection ---$NC"
 $SH_HOME/checkNetwork.sh
 hasNetwork=$?
 if [ $hasNetwork -ne 0 ];
 then
-    echo "No network connection, aborting"
+    echo "$RED[ERROR] No network connection, aborting$NC"
     exit 1
 fi
+echo "$GREEN[OK] Network connection verified$NC"
 
 #  get remote shares and download files
-echo "get shares"
+echo ""
+echo "$YELLOW--- Discovering remote shares ---$NC"
 shares=`$rclone listremotes $rcloneOptions | sed 's/://' `
 if [ -z $shares ];
 then
-    echo "No shares in configfile $rcloneConfig"
+    echo "$RED[ERROR] No shares in configfile $rcloneConfig$NC"
     exit 1
 fi
 
+shareCount=$(echo "$shares" | wc -l)
+echo "$GREEN[OK] Found $shareCount share(s):$NC"
+echo "$shares" | sed 's/^/  - /'
+echo ""
+
 # download remote files for each share
+echo "$YELLOW--- Processing shares ---$NC"
+shareNum=0
 echo "$shares" |
 while IFS= read -r currentShare; do
-    echo "processing share $currentShare"
+    shareNum=$((shareNum + 1))
+    echo ""
+    echo "$YELLOW[$shareNum/$shareCount] Processing share: $currentShare$NC"
     $HOME/opt/downloadFiles.sh "$currentShare"
+    echo "$GREEN[$shareNum/$shareCount] Completed share: $currentShare$NC"
 done
 
 # check network again as the kobo might close the wifi after a while
-# check working network connection
-echo "Pruning folders"
+echo ""
+echo "$YELLOW--- Pruning deleted files ---$NC"
+echo "  Verifying network connection..."
 $SH_HOME/checkNetwork.sh
 hasNetwork=$?
 if [ $hasNetwork -ne 0 ];
 then
-    echo "No network connection, aborting"
+    echo "$RED[ERROR] No network connection, aborting pruning$NC"
     exit 1
 fi
+echo "  [OK] Network active"
 $SH_HOME/pruneFolders.sh
 
+echo ""
+echo "$YELLOW--- Post-processing ---$NC"
 if [ -f $booksdownloadedTrigger ]; then
-    # generate covers
-    echo "Generating Covers"
+    echo "  New books detected, generating covers and metadata..."
+    echo "  Running covergen..."
     $covergen "$KoboFolder" > /dev/null
+    echo "  Running seriesmeta..."
     $seriesmeta "$KoboFolder" > /dev/null
     rm -f $booksdownloadedTrigger
+    echo "$GREEN[OK] Post-processing complete$NC"
     inkscr "cloudsync: rescan your e-books."
 else
-    echo "kobocloudsync ready, no new e-books"
+    echo "  No new books downloaded"
+    echo "$GREEN[OK] kobocloudsync ready, no new e-books$NC"
 fi
+
+echo ""
+echo "$GREEN======================================================"
+echo "`$Dt` kobocloudsync completed successfully"
+echo "======================================================$NC"
