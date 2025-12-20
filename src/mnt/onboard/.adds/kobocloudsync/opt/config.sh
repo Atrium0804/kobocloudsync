@@ -42,9 +42,11 @@ inkscr(){
   TextToPrintShort=`echo $TextToPrint | cut -c 1-$maxchar`
   case $device in
   "kobo")
-
-        /usr/local/kfmon/bin/fbink -pm -q -y -5 "$TextToPrintShort"
-         # /mnt/onboard/.adds/fbink/bin/fbink  -pm -q -y -5 --font THIN "$TextToPrintShort"
+        # Check if fbink exists before trying to use it
+        if [ -x "/usr/local/kfmon/bin/fbink" ]; then
+            /usr/local/kfmon/bin/fbink -pm -q -y -5 "$TextToPrintShort"
+        fi
+        # /mnt/onboard/.adds/fbink/bin/fbink  -pm -q -y -5 --font THIN "$TextToPrintShort"
         echo "$TextToPrint"
   ;;
   "dev") echo "$TextToPrint" ;;
