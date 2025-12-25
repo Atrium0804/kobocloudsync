@@ -47,6 +47,7 @@ while IFS= read -r currentShare; do
     echo ""
     echo "Fetching remote metadata for $currentShare..."
     $rclone lsl "$currentShare":/ --config="$rclone_config_file" > $filename_metadata_remote
+
     if [ $? -ne 0 ]; then
         echo "  [ERROR] Failed to fetch remote metadata for $currentShare"
         exit 1
@@ -54,13 +55,48 @@ while IFS= read -r currentShare; do
         # remove incompatible/unwanted files from remote file listing
         theRemoteFileListing=`cat "$filename_metadata_remote" | grep -i -f $scripts_folder/extensionPatterns.txt`
     fi
-
+    # echo "  [OK] Remote metadata retrieved for $currentShare"
     theLocalFileListing=`cat "$filename_metadata_local" `
 
 #################################################
-# process deletions: check for local files that are not present remotely anymore
+# update local metadata file: remove entries for files that no longer exist remotely
 #################################################
-print "Processing deletes for $currentShare..."
+# if a user deleted a local file manually on the kobo device, the local metadata file
+# may contain entries for files that no longer exist remotely.
+# In this case, we need to remove these entries from the local metadata file
+echo "---"
+echo "Processing local metadata cleanup for $currentShare..."
+    # for each line in the local file listing: determine the file name and path
+    # the filename is the 4th field onwards
+    echo "$theLocalFileListing" |
+    while IFS= read -r theLocalLine; do
+        # Remove leading whitespace
+        theTrimmedLine=`echo "$theLocalLine" | awk '{sub(/^[ \t]+/, ""); print}'`
+        theRelativePath=`echo "$theTrimmedLine" | cut -d ' ' -f 4-`
+        theFilename=`basename "$theRelativePath"`
+        # epubs are converted to kepub.epub, calculate kepub filename from epub filename
+        theLocalFilepath="$document_folder/$currentShare/$theRelativePath"
+        theKepubFilepath=`echo "$theLocalFilepath" | sed 's/\.epub$/.kepub.epub/i'`
+        theMetadataFile="${theKepubFilepath}.metadata"
+
+
+        # if the local line does not exist in the remote file listing, remove it from local metadata
+        if echo "$theRemoteFileListing" | grep -q "$theLocalLine"
+        then
+            # remote/local metadata is identical, keep the line
+            :
+        else
+            # metadata changed or file deleted remotely:
+            # remove theLine from filename_metadata_local
+            sed -i.bak "/$theRelativePath/d" "$filename_metadata_local"
+            echo "  [UPDATE] Removed local metadata for missing file: $theRelativePath"
+        fi
+    done
+
+#################################################
+# process deletions: delete files that are changed or deleted remotely
+#################################################
+echo "Processing deletes for ..."
     # for each line in the local file listing: determine the file name and path
     # the filename is the 4th field onwards
     echo "$theLocalFileListing" |
@@ -74,11 +110,11 @@ print "Processing deletes for $currentShare..."
         if echo "$theRemoteFileListing" | grep -q "$theLocalLine"
         then
             # remote/local metadata is identical, keep the file
-            echo "  [SKIP] File unchanged (metadata match) $theRelativePath"
+            echo "  [SKIP] File unchanged (metadata match) $theFilename"
         else
             # metadata changed or file deleted remotely:
-              # delete the local file
-              # remote theLine from filename_metadata_local
+            # delete the local file
+            # remove theLine from filename_metadata_local
             theLocalFilepath="$document_folder/$currentShare/$theRelativePath"
             theKepubFilepath=`echo "$theLocalFilepath" | sed 's/\.epub$/.kepub.epub/i'`
             theMetadataFile="${theKepubFilepath}.metadata"
@@ -106,12 +142,14 @@ print "Processing deletes for $currentShare..."
             echo "  [UPDATE] Removed local metadata for deleted file: $theRelativePath"
         fi
     done
+
 #################################################
 # process downloads/updates: check for remote files that are new or changed
 #################################################
 # for each line in the remote file listing: check if the line exists in the local metadata
 # download the file when no line is found
-print "Processing downloads/updates for $currentShare..."
+echo "---"
+echo "Processing downloads/updates for $currentShare..."
     echo "$theRemoteFileListing" |
     while IFS= read -r theRemoteLine; do
         # Remove leading whitespace
