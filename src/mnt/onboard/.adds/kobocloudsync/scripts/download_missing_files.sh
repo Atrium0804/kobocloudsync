@@ -41,7 +41,7 @@ download_missing_files() {
                 echo "  [DOWNLOAD] Fetching missing file: $filePath"
                 # Create destination folder if needed
                 mkdir -p "$(dirname "$localFile")"
-                $rclone copy "$currentShare:/$filePath" "$(dirname "$localFile")" --config="$rclone_config_file"
+                $rclone copy "$currentShare:/$filePath" "$(dirname "$localFile")" $rcloneOptions
                 if [ $? -ne 0 ]; then
                     echo "    [ERROR] Failed to download file: $filePath"
                 else

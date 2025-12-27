@@ -43,6 +43,10 @@ fi
 
 scripts_folder=$(dirname $0)
 rclone_config_file=$installation_folder/rclone.conf
+rcloneLogfile=$installation_folder/rclone.log
+
+# Default rclone options
+rcloneOptions="--config=$rclone_config_file --log-file=$rcloneLogfile --no-check-certificate"
 
 # Constants for metadata file naming
 METADATA_LOCAL_SUFFIX="_metadata_local.txt"

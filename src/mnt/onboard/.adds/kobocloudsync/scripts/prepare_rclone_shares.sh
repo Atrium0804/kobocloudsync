@@ -66,7 +66,7 @@ fi
 # Function: Fetch list of remote shares from rclone config
 fetch_rclone_shares() {
     local shares
-    shares=$("$rclone" listremotes --config="$rclone_config_file" | sed 's/://')
+    shares=$("$rclone" listremotes $rcloneOptions | sed 's/://')
 
     if [ -z "$shares" ]; then
         echo "ERROR: No shares found in config file: $rclone_config_file"
@@ -142,7 +142,7 @@ download_remote_metadata() {
     local metadata_file="$2"
 
     echo "  Fetching remote metadata for $share..."
-    "$rclone" lsl "$share":/ --config="$rclone_config_file" > "$metadata_file"
+    "$rclone" lsl "$share":/ $rcloneOptions > "$metadata_file"
 
     if [ $? -ne 0 ]; then
         echo "  [ERROR] Failed to fetch remote metadata for $share"
