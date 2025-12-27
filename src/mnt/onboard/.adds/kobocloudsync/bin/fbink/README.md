@@ -11,7 +11,7 @@ Housed [here on GitHub](https://github.com/NiLuJe/FBInk).
 This is intended to fill the void felt by Kobo developers and tinkerers when they realize they do not have a builtin way to print stuff on the device's screen!  
 It's especially cruel when moving to a Kobo, after being used to the ubiquity of `eips` on Kindle...
 
-In short, it prints messages or images on your screen, handling the low-level tinkering with both the Linux framebuffer interface, and the i.MX EPDC.  
+In short, it prints messages or images on your screen, handling the low-level tinkering with both the Linux framebuffer interface, and the i.MX EPDC (as well as the MTK one on Kindle, and the sunxi one on Kobo).  
 It's been tested on Kobo, Kindle, BQ Cervantes, reMarkable and PocketBook, but porting it to other Linux, i.MX eInk devices should be trivial (hell, even Sipix support shouldn't be too hard).
 [#64](https://github.com/NiLuJe/FBInk/pull/64) proved that we can even bend sunxi APIs to our will, if you don't care too much about losing your sanity in the process ;).
 
@@ -133,7 +133,7 @@ It also demonstrates how to deal effectively with pen input & drawing on the Eli
 
 Kindle support covers the full Kindle lineup, starting from the K2.
 
-Kobo support covers the full Kobo lineup, starting from the Kobo Touch A/B/C.
+Kobo support covers the full Kobo lineup, starting from the Kobo Touch A/B/C (NOTE: some features are unavailable on sunxi SoCs, c.f., API docs).
 
 BQ Cervantes support has been contributed by [@pazos](https://github.com/pazos) ([#17](https://github.com/NiLuJe/FBInk/pull/17)), and should handle the current lineup.
 
@@ -141,7 +141,8 @@ reMarkable support has been contributed by [@tcrs](https://github.com/tcrs) ([#4
 
 PocketBook support was tested by [@ezdiy](https://github.com/ezdiy) ([#47](https://github.com/NiLuJe/FBInk/pull/47)), and should support the same set of devices as KOReader.
 
-If, instead of *writing* to the framebuffer, you want to *grab* a PNG snapshot of it (which can come in handy), I have a heavily modified version of [FBGrab](http://trac.ak-team.com/trac/browser/niluje/Configs/trunk/Kindle/Misc/FBGrab) that should sanely deal with the various quirks of eInk framebuffers ;).
+If, instead of *writing* to the framebuffer, you want to *grab* a PNG snapshot of it (which can come in handy), I have a heavily modified version of [FBGrab](https://svn.ak-team.com/svn/Configs/trunk/Kindle/Misc/FBGrab) that should sanely deal with the various quirks of eInk framebuffers ;).
+If you don't actually need a PNG file and just want to play with in-memory fb dumps, look into the whole `fbink_dump` & `fbink_restore` API calls.
 
 ## Bindings in other languages
 
