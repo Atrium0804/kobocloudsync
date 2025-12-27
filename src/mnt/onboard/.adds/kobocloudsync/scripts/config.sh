@@ -44,9 +44,16 @@ fi
 scripts_folder=$(dirname $0)
 rclone_config_file=$installation_folder/rclone.conf
 rcloneLogfile=$installation_folder/rclone.log
+scriptLogfile=$installation_folder/kobocloudsync.log
 
 # Default rclone options
 rcloneOptions="--config=$rclone_config_file --log-file=$rcloneLogfile --no-check-certificate"
+
+# Logging function - prints to screen and log file
+log() {
+    echo "$@"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') $@" >> "$scriptLogfile"
+}
 
 # Constants for metadata file naming
 METADATA_LOCAL_SUFFIX="_metadata_local.txt"

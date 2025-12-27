@@ -7,9 +7,9 @@
 # remove the line from local metadata
 
 delete_removed_files() {
-    echo ""
-    echo "----------------------------"
-    echo "Deleting local files that were removed or changed remotely..."
+    log ""
+    log "----------------------------"
+    log "Deleting local files that were removed or changed remotely..."
 
     # Load configuration to get document_folder path
     scripts_folder=$(dirname $0)
@@ -23,8 +23,8 @@ delete_removed_files() {
     echo "$shares" |
     while IFS= read -r currentShare; do
         shareNum=$((shareNum + 1))
-        echo ""
-        echo "[$shareNum/$shareCount] Processing share: $currentShare"
+        log ""
+        log "[$shareNum/$shareCount] Processing share: $currentShare"
         filename_metadata_local="$document_folder/${currentShare}${METADATA_LOCAL_SUFFIX}"
         filename_metadata_remote="$document_folder/${currentShare}${METADATA_REMOTE_SUFFIX}"
         tempLocalMetadataFile="$document_folder/temp_${currentShare}${METADATA_LOCAL_SUFFIX}"
@@ -40,7 +40,7 @@ delete_removed_files() {
                 originalFile="$document_folder/$currentShare/$filePath"
                 kepubFile="${originalFile%.epub}.kepub.epub"
                 rm -f "$originalFile" "$kepubFile"
-                echo "  [DELETE] Removed local file(s) for missing remote file: $filePath"
+                log "  [DELETE] Removed local file(s) for missing remote file: $filePath"
             fi
         done < "$filename_metadata_local"
         mv "$tempLocalMetadataFile" "$filename_metadata_local"

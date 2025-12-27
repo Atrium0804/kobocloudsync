@@ -41,4 +41,4 @@ while [ $r != 0 ]; do
     i=$(($i + 1))
     # inkscr "waiting for internet connection"
 done
-echo "internet connection found"
+log "internet connection found"

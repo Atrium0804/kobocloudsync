@@ -9,9 +9,9 @@
 #           - remove metadata if neither original nor kepubified file exists locally
 
 prune_local_metadata() {
-    echo ""
-    echo "----------------------------"
-    echo "Pruning local metadata files..."
+    log ""
+    log "----------------------------"
+    log "Pruning local metadata files..."
     # Load configuration to get document_folder path
     scripts_folder=$(dirname $0)
     . $scripts_folder/config.sh
@@ -26,8 +26,8 @@ prune_local_metadata() {
     echo "$shares" |
     while IFS= read -r currentShare; do
         shareNum=$((shareNum + 1))
-        echo ""
-        echo "[$shareNum/$shareCount] Processing share: $currentShare"
+        log ""
+        log "[$shareNum/$shareCount] Processing share: $currentShare"
         # get the filename from local metadata file
         filename_metadata_local="$document_folder/${currentShare}${METADATA_LOCAL_SUFFIX}"
 
@@ -46,7 +46,7 @@ prune_local_metadata() {
                 echo "$line" >> "$tempLocalMetadataFile"
             else
                 # remove the metadata entry (do not write it to temp file)
-                echo "  [REMOVE] Pruning metadata for missing file: $filePath"
+                log "  [REMOVE] Pruning metadata for missing file: $filePath"
             fi
         done < "$filename_metadata_local"
         mv "$tempLocalMetadataFile" "$filename_metadata_local"

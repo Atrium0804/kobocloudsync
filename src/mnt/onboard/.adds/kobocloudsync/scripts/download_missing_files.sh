@@ -4,9 +4,9 @@
 # update local metadata accordingly
 
 download_missing_files() {
-    echo ""
-    echo "----------------------------"
-    echo "Downloading missing files from remote shares..."
+    log ""
+    log "----------------------------"
+    log "Downloading missing files from remote shares..."
     # Load configuration to get document_folder path
     scripts_folder=$(dirname $0)
     . $scripts_folder/config.sh
@@ -19,8 +19,8 @@ download_missing_files() {
     echo "$shares" |
     while IFS= read -r currentShare; do
         shareNum=$((shareNum + 1))
-        echo ""
-        echo "[$shareNum/$shareCount] Processing share: $currentShare"
+        log ""
+        log "[$shareNum/$shareCount] Processing share: $currentShare"
         target_folder="$document_folder/$currentShare"
         # for each line in the remote metadata, check if the file exists locally
         # take into account kepubified files
@@ -38,19 +38,19 @@ download_missing_files() {
                 :
             else
                 # file does not exist locally, download it
-                echo "  [DOWNLOAD] Fetching missing file: $filePath"
+                log "  [DOWNLOAD] Fetching missing file: $filePath"
                 # Create destination folder if needed
                 mkdir -p "$(dirname "$localFile")"
                 $rclone copy "$currentShare:/$filePath" "$(dirname "$localFile")" $rcloneOptions
                 if [ $? -ne 0 ]; then
-                    echo "    [ERROR] Failed to download file: $filePath"
+                    log "    [ERROR] Failed to download file: $filePath"
                 else
-                    echo "    [OK] Downloaded: $filePath"
+                    log "    [OK] Downloaded: $filePath"
                     # Update local metadata: remove old entry if exists and add new one
                     grep -v -F "$filePath" "$filename_metadata_local" > "${filename_metadata_local}.tmp" 2>/dev/null || touch "${filename_metadata_local}.tmp"
                     echo "$line" >> "${filename_metadata_local}.tmp"
                     mv "${filename_metadata_local}.tmp" "$filename_metadata_local"
-                    echo "    [UPDATE] Local metadata updated"
+                    log "    [UPDATE] Local metadata updated"
                 fi
             fi
         done < "$filename_metadata_remote"

@@ -6,19 +6,19 @@
 # - check for working network-connection
 
 # check if dependencies are installed
-echo ""
-echo "----------------------------"
-echo "Checking start conditions..."
+log ""
+log "----------------------------"
+log "Checking start conditions..."
 for cmd in "$rclone" "$kepubify" "$covergen" "$seriesmeta"; do
     if [ ! -x "$cmd" ]; then
-        echo "ERROR: required binary $cmd not found or not executable"
+        log "ERROR: required binary $cmd not found or not executable"
         exit 1
     fi
 done
 
 # check if rclone config file exists and valid
 if [ ! -f "$rclone_config_file" ]; then
-    echo "ERROR: rclone config file $rclone_config_file not found"
+    log "ERROR: rclone config file $rclone_config_file not found"
     exit 1
 fi
 
@@ -27,8 +27,8 @@ fi
 hasNetwork=$?
 if [ $hasNetwork -ne 0 ];
 then
-    echo "ERROR: No network connection, aborting"
+    log "ERROR: No network connection, aborting"
     exit 1
 fi
 
-echo "All start conditions met, proceeding"
+log "All start conditions met, proceeding"

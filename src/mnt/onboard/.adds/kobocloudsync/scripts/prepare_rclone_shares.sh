@@ -34,32 +34,32 @@
 # Usage:
 #   . $(dirname $0)/prepare_rclone_shares.sh
 
-echo ""
-echo "----------------------------"
-echo "Preparing rclone shares..."
+log ""
+log "----------------------------"
+log "Preparing rclone shares..."
 
 SCRIPT_DIR="$(dirname "$0")"
 
 # Load configuration
 if [ ! -f "$SCRIPT_DIR/config.sh" ]; then
-    echo "ERROR: config.sh not found in $SCRIPT_DIR"
+    log "ERROR: config.sh not found in $SCRIPT_DIR"
     exit 1
 fi
 . "$SCRIPT_DIR/config.sh"
 
 # Validate configuration
 if [ -z "$rclone" ] || [ ! -x "$rclone" ]; then
-    echo "ERROR: rclone binary not found or not executable: $rclone"
+    log "ERROR: rclone binary not found or not executable: $rclone"
     exit 1
 fi
 
 if [ -z "$rclone_config_file" ] || [ ! -f "$rclone_config_file" ]; then
-    echo "ERROR: rclone config file not found: $rclone_config_file"
+    log "ERROR: rclone config file not found: $rclone_config_file"
     exit 1
 fi
 
 if [ -z "$document_folder" ]; then
-    echo "ERROR: document_folder not set in config"
+    log "ERROR: document_folder not set in config"
     exit 1
 fi
 
@@ -69,7 +69,7 @@ fetch_rclone_shares() {
     shares=$("$rclone" listremotes $rcloneOptions | sed 's/://')
 
     if [ -z "$shares" ]; then
-        echo "ERROR: No shares found in config file: $rclone_config_file"
+        log "ERROR: No shares found in config file: $rclone_config_file"
         exit 1
     fi
 
@@ -80,10 +80,10 @@ fetch_rclone_shares() {
 cleanup_obsolete_folders() {
     local shares="$1"
 
-    echo "Checking for obsolete target folders..."
+    log "Checking for obsolete target folders..."
 
     if [ ! -d "$document_folder" ]; then
-        echo "  [INFO] Document folder does not exist yet: $document_folder"
+        log "  [INFO] Document folder does not exist yet: $document_folder"
         return 0
     fi
 
@@ -96,14 +96,14 @@ cleanup_obsolete_folders() {
             :
         else
             # Folder does not exist in shares, delete it and associated metadata
-            echo "  [DELETE] Removing target folder for deleted share: $folder_name"
+            log "  [DELETE] Removing target folder for deleted share: $folder_name"
             rm -rf "$local_dir"
             rm -f "$document_folder/${folder_name}${METADATA_LOCAL_SUFFIX}"
             rm -f "$document_folder/${folder_name}${METADATA_REMOTE_SUFFIX}"
         fi
     done
 
-    echo "  [OK] Target folder cleanup complete"
+    log "  [OK] Target folder cleanup complete"
 }
 
 # Function: Create target folder if it doesn't exist
@@ -111,10 +111,10 @@ ensure_target_folder() {
     local target_folder="$1"
 
     if [ ! -d "$target_folder" ]; then
-        echo "  Creating target folder: $target_folder"
+        log "  Creating target folder: $target_folder"
         mkdir -p "$target_folder"
         if [ $? -ne 0 ]; then
-            echo "  [ERROR] Failed to create target folder: $target_folder"
+            log "  [ERROR] Failed to create target folder: $target_folder"
             return 1
         fi
     fi
@@ -126,10 +126,10 @@ ensure_local_metadata_file() {
     local metadata_file="$1"
 
     if [ ! -f "$metadata_file" ]; then
-        echo "  Creating empty local metadata file: $metadata_file"
+        log "  Creating empty local metadata file: $metadata_file"
         touch "$metadata_file"
         if [ $? -ne 0 ]; then
-            echo "  [ERROR] Failed to create metadata file: $metadata_file"
+            log "  [ERROR] Failed to create metadata file: $metadata_file"
             return 1
         fi
     fi
@@ -141,33 +141,33 @@ download_remote_metadata() {
     local share="$1"
     local metadata_file="$2"
 
-    echo "  Fetching remote metadata for $share..."
+    log "  Fetching remote metadata for $share..."
     "$rclone" lsl "$share":/ $rcloneOptions > "$metadata_file"
 
     if [ $? -ne 0 ]; then
-        echo "  [ERROR] Failed to fetch remote metadata for $share"
+        log "  [ERROR] Failed to fetch remote metadata for $share"
         return 1
     fi
 
-    echo "  [OK] Remote metadata retrieved for $share"
+    log "  [OK] Remote metadata retrieved for $share"
     return 0
 }
 
 # Main function: Prepare all rclone shares
 prepare_rclone_shares() {
-    echo ""
-    echo "Fetching remote shares from rclone config file..."
+    log ""
+    log "Fetching remote shares from rclone config file..."
 
     local shares
     shares=$(fetch_rclone_shares)
 
-    echo "Found the following shares:"
-    echo "$shares" | sed 's/^/  - /'
-    echo ""
+    log "Found the following shares:"
+    log "$shares" | sed 's/^/  - /'
+    log ""
 
     # Clean up obsolete folders for shares that no longer exist
     cleanup_obsolete_folders "$shares"
-    echo ""
+    log ""
 
     # Process each share
     local share_count
@@ -177,8 +177,8 @@ prepare_rclone_shares() {
     echo "$shares" | while IFS= read -r current_share; do
         share_num=$((share_num + 1))
 
-        echo ""
-        echo "[$share_num/$share_count] Processing share: $current_share"
+        log ""
+        log "[$share_num/$share_count] Processing share: $current_share"
 
         local target_folder="$document_folder/$current_share"
         local file_metadata_local="$document_folder/${current_share}${METADATA_LOCAL_SUFFIX}"
@@ -186,25 +186,25 @@ prepare_rclone_shares() {
 
         # Create target folder
         if ! ensure_target_folder "$target_folder"; then
-            echo "[ERROR] Failed to prepare share: $current_share"
+            log "[ERROR] Failed to prepare share: $current_share"
             exit 1
         fi
 
         # Create local metadata file
         if ! ensure_local_metadata_file "$file_metadata_local"; then
-            echo "[ERROR] Failed to prepare share: $current_share"
+            log "[ERROR] Failed to prepare share: $current_share"
             exit 1
         fi
 
         # Download remote metadata
         if ! download_remote_metadata "$current_share" "$file_metadata_remote"; then
-            echo "[ERROR] Failed to prepare share: $current_share"
+            log "[ERROR] Failed to prepare share: $current_share"
             exit 1
         fi
     done
 
-    echo ""
-    echo "[OK] All shares prepared successfully"
+    log ""
+    log "[OK] All shares prepared successfully"
 }
 
 # Run main function only if executed directly (not sourced)

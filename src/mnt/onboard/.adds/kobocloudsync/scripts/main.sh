@@ -26,7 +26,7 @@
 # using rclone for file transfer and kepubify for converting epubs to kepub-epubs
 # requires rclone and kepubify to be installed
 
-echo "\nStarting KoboCloudSync download script\n"
+log "\nStarting KoboCloudSync download script\n"
 verbose=true
 
 # 1 Load the configuration which sets paths to binaries
@@ -35,15 +35,15 @@ scripts_folder=$(dirname $0)
 
 # print config if verbose = true
 if [ "$verbose" = "true" ]; then
-    echo "Configuration loaded:"
-    echo " Environment:        $environment"
-    echo " Installation folder:$installation_folder"
-    echo " Document folder:    $document_folder"
-    echo " rclone:            $rclone"
-    echo " kepubify:          $kepubify"
-    echo " covergen:          $covergen"
-    echo " seriesmeta:        $seriesmeta"
-    echo ""
+    log "Configuration loaded:"
+    log " Environment:        $environment"
+    log " Installation folder:$installation_folder"
+    log " Document folder:    $document_folder"
+    log " rclone:            $rclone"
+    log " kepubify:          $kepubify"
+    log " covergen:          $covergen"
+    log " seriesmeta:        $seriesmeta"
+    log ""
 fi
 
 
