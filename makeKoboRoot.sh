@@ -25,7 +25,7 @@ find src -type f -name '*.sh' -exec chmod +x {} \;
 
 # Create tar package
 echo "Creating KoboRoot.tgz..."
-tar -cvzf KoboRoot.tgz --exclude '.DS_Store' -C src mnt
+tar -cvzf KoboRoot.tgz --exclude '.DS_Store' -C src mnt usr
 
 if [ $? -eq 0 ]; then
     echo ""
