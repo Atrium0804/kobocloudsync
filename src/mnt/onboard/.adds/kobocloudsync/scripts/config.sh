@@ -43,17 +43,26 @@ fi
 
 scripts_folder=$(dirname $0)
 rclone_config_file=$installation_folder/rclone.conf
-rcloneLogfile=$installation_folder/rclone.log
-scriptLogfile=$installation_folder/kobocloudsync.log
+rcloneLogfile=$installation_folder/rclone_$(date '+%Y%m%d_%H%M%S').log
+scriptLogfile=$installation_folder/kobocloudsync_$(date '+%Y%m%d_%H%M%S').log
 
 # Default rclone options
 rcloneOptions="--config=$rclone_config_file --log-file=$rcloneLogfile --no-check-certificate"
+
+# Clean up log files older than 3 days
+cleanup_old_logs() {
+    find "$installation_folder" -maxdepth 1 -name "kobocloudsync_*.log" -mtime +3 -delete 2>/dev/null
+    find "$installation_folder" -maxdepth 1 -name "rclone_*.log" -mtime +3 -delete 2>/dev/null
+}
 
 # Logging function - prints to screen and log file
 log() {
     echo "$@"
     echo "$(date '+%Y-%m-%d %H:%M:%S') $@" >> "$scriptLogfile"
 }
+
+# Run cleanup on startup
+cleanup_old_logs
 
 # Constants for metadata file naming
 METADATA_LOCAL_SUFFIX="_metadata_local.txt"
