@@ -41,6 +41,7 @@ delete_removed_files() {
                 kepubFile="${originalFile%.epub}.kepub.epub"
                 rm -f "$originalFile" "$kepubFile"
                 log "  [DELETE] Removed local file(s) for missing remote file: $filePath"
+                isRefreshLibrary=true
             fi
         done < "$filename_metadata_local"
         mv "$tempLocalMetadataFile" "$filename_metadata_local"

@@ -21,6 +21,8 @@ download_missing_files() {
         shareNum=$((shareNum + 1))
         log ""
         log "[$shareNum/$shareCount] Processing share: $currentShare"
+        fbink_print "[$shareNum/$shareCount] Downloading: share $currentShare"
+
         target_folder="$document_folder/$currentShare"
         # for each line in the remote metadata, check if the file exists locally
         # take into account kepubified files
@@ -39,6 +41,7 @@ download_missing_files() {
             else
                 # file does not exist locally, download it
                 log "  [DOWNLOAD] Fetching missing file: $filePath"
+                fbink "Downloading $filePath" 2
                 # Create destination folder if needed
                 mkdir -p "$(dirname "$localFile")"
                 $rclone copy "$currentShare:/$filePath" "$(dirname "$localFile")" $rcloneOptions
@@ -51,6 +54,7 @@ download_missing_files() {
                     echo "$line" >> "${filename_metadata_local}.tmp"
                     mv "${filename_metadata_local}.tmp" "$filename_metadata_local"
                     log "    [UPDATE] Local metadata updated"
+                    isRefreshLibrary=true
                 fi
             fi
         done < "$filename_metadata_remote"

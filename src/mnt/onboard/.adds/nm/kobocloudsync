@@ -1,6 +1,7 @@
 # sync nextcloud
 menu_item       :main     :Cloudsync       :nickel_wifi      :enable
-  chain_success                            :cmd_output         :1000:quiet:/mnt/onboard/.adds/kobocloudsync/opt/udev_program.sh
+  chain_success                            :cmd_output         :1000:quiet:/mnt/onboard/.adds/kobocloudsync/scripts/main.sh
+  chain_success                            :nickel_misc       :rescan_books
 menu_item     :main     :Rescan Books      :nickel_misc       :rescan_books
 # update KoboCloudSync
 #  menu_item   :main     :Update Cloudsync :nickel_wifi       :enable

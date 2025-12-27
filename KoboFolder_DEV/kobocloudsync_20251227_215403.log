@@ -1,0 +1,62 @@
+2025-12-27 21:54:03 Configuration loaded:
+2025-12-27 21:54:03  Environment:        dev
+2025-12-27 21:54:03  Installation folder:C:/git/kobocloudsync/KoboFolder_DEV
+2025-12-27 21:54:03  Document folder:    C:/git/kobocloudsync/KoboFolder_DEV/ebooks
+2025-12-27 21:54:03  rclone:            C:/git/kobocloudsync/bin/win-amd64/rclone/rclone.exe
+2025-12-27 21:54:03  kepubify:          C:/git/kobocloudsync/bin/win-amd64/kepubify/kepubify.exe
+2025-12-27 21:54:03  covergen:          C:/git/kobocloudsync/bin/win-amd64/kepubify/covergen.exe
+2025-12-27 21:54:03  seriesmeta:        C:/git/kobocloudsync/bin/win-amd64/kepubify/seriesmeta.exe
+2025-12-27 21:54:03 
+2025-12-27 21:54:03 
+2025-12-27 21:54:03 ----------------------------
+2025-12-27 21:54:03 Checking start conditions...
+2025-12-27 21:54:04 internet connection found
+2025-12-27 21:54:04 All start conditions met, proceeding
+2025-12-27 21:54:04 
+2025-12-27 21:54:04 Preparing rclone shares:
+2025-12-27 21:54:04 Fetching remote shares from rclone config file...
+2025-12-27 21:54:07 Found the following shares:
+2025-12-27 21:54:07 kobotest_a
+kobotest_b
+2025-12-27 21:54:07 
+2025-12-27 21:54:07 Checking for obsolete target folders...
+2025-12-27 21:54:07   [OK] Target folder cleanup complete
+2025-12-27 21:54:07 
+2025-12-27 21:54:08 
+2025-12-27 21:54:08 [1/2] Processing share: kobotest_a
+2025-12-27 21:54:08   Fetching remote metadata for kobotest_a...
+2025-12-27 21:54:08   [OK] Remote metadata retrieved for kobotest_a
+2025-12-27 21:54:08 
+2025-12-27 21:54:08 [2/2] Processing share: kobotest_b
+2025-12-27 21:54:08   Fetching remote metadata for kobotest_b...
+2025-12-27 21:54:09   [OK] Remote metadata retrieved for kobotest_b
+2025-12-27 21:54:09 
+2025-12-27 21:54:09 [OK] All shares prepared successfully
+2025-12-27 21:54:09 
+2025-12-27 21:54:09 ----------------------------
+2025-12-27 21:54:09 Pruning local metadata files...
+2025-12-27 21:54:10 
+2025-12-27 21:54:10 [1/2] Processing share: kobotest_a
+2025-12-27 21:54:10 
+2025-12-27 21:54:10 [2/2] Processing share: kobotest_b
+2025-12-27 21:54:11 
+2025-12-27 21:54:11 ----------------------------
+2025-12-27 21:54:11 Deleting local files that were removed or changed remotely...
+2025-12-27 21:54:12 
+2025-12-27 21:54:12 [1/2] Processing share: kobotest_a
+2025-12-27 21:54:12 
+2025-12-27 21:54:12 [2/2] Processing share: kobotest_b
+2025-12-27 21:54:12 
+2025-12-27 21:54:12 ----------------------------
+2025-12-27 21:54:12 Downloading missing files from remote shares...
+2025-12-27 21:54:13 
+2025-12-27 21:54:13 [1/2] Processing share: kobotest_a
+2025-12-27 21:54:13 
+2025-12-27 21:54:13 [2/2] Processing share: kobotest_b
+2025-12-27 21:54:14 
+2025-12-27 21:54:14 ----------------------------
+2025-12-27 21:54:14 Kepubifying downloaded files...
+2025-12-27 21:54:15 
+2025-12-27 21:54:15 [1/2] Processing share: kobotest_a
+2025-12-27 21:54:15 
+2025-12-27 21:54:15 [2/2] Processing share: kobotest_b

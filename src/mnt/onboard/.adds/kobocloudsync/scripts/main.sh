@@ -26,12 +26,14 @@
 # using rclone for file transfer and kepubify for converting epubs to kepub-epubs
 # requires rclone and kepubify to be installed
 
-log "\nStarting KoboCloudSync download script\n"
 verbose=true
+isRefreshLibrary=false
 
 # 1 Load the configuration which sets paths to binaries
 scripts_folder=$(dirname $0)
 . $scripts_folder/config.sh
+
+log "\nStarting KoboCloudSync download script\n"
 
 # print config if verbose = true
 if [ "$verbose" = "true" ]; then
@@ -69,3 +71,8 @@ download_missing_files
 
 # 7 process each share: kepubify downloaded files
 . $scripts_folder/kepubify_downloaded_files.sh
+
+if [ "$isRefreshLibrary" = "true" ]; then
+    fbink_print "Completed - Refresh your library..."
+    log "\nCompleted - Refresh your library..."
+fi

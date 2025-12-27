@@ -34,34 +34,34 @@
 # Usage:
 #   . $(dirname $0)/prepare_rclone_shares.sh
 
-log ""
-log "----------------------------"
-log "Preparing rclone shares..."
+# log ""
+# log "----------------------------"
+# log "Preparing rclone shares..."
 
-SCRIPT_DIR="$(dirname "$0")"
+# SCRIPT_DIR="$(dirname "$0")"
 
-# Load configuration
-if [ ! -f "$SCRIPT_DIR/config.sh" ]; then
-    log "ERROR: config.sh not found in $SCRIPT_DIR"
-    exit 1
-fi
-. "$SCRIPT_DIR/config.sh"
+# # Load configuration
+# if [ ! -f "$SCRIPT_DIR/config.sh" ]; then
+#     log "ERROR: config.sh not found in $SCRIPT_DIR"
+#     exit 1
+# fi
+# . "$SCRIPT_DIR/config.sh"
 
-# Validate configuration
-if [ -z "$rclone" ] || [ ! -x "$rclone" ]; then
-    log "ERROR: rclone binary not found or not executable: $rclone"
-    exit 1
-fi
+# # Validate configuration
+# if [ -z "$rclone" ] || [ ! -x "$rclone" ]; then
+#     log "ERROR: rclone binary not found or not executable: $rclone"
+#     exit 1
+# fi
 
-if [ -z "$rclone_config_file" ] || [ ! -f "$rclone_config_file" ]; then
-    log "ERROR: rclone config file not found: $rclone_config_file"
-    exit 1
-fi
+# if [ -z "$rclone_config_file" ] || [ ! -f "$rclone_config_file" ]; then
+#     log "ERROR: rclone config file not found: $rclone_config_file"
+#     exit 1
+# fi
 
-if [ -z "$document_folder" ]; then
-    log "ERROR: document_folder not set in config"
-    exit 1
-fi
+# if [ -z "$document_folder" ]; then
+#     log "ERROR: document_folder not set in config"
+#     exit 1
+# fi
 
 # Function: Fetch list of remote shares from rclone config
 fetch_rclone_shares() {
@@ -156,6 +156,7 @@ download_remote_metadata() {
 # Main function: Prepare all rclone shares
 prepare_rclone_shares() {
     log ""
+    log "Preparing rclone shares:"
     log "Fetching remote shares from rclone config file..."
 
     local shares
