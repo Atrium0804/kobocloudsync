@@ -1,3 +1,4 @@
+#!/bin/sh
 # 7 process each share: kepubify downloaded files
 # process all epub (not: .kepub.epub) files in the document folder for each share
 # convert to kepub.epub with kepubify
@@ -28,6 +29,7 @@ while IFS= read -r currentShare; do
     # find all .epub files (not .kepub.epub) in the share folder
     find "$shareFolder" -type f -name "*.epub" ! -name "*.kepub.epub" |
     while IFS= read -r epubFile; do
+        fbink_print "[$shareNum/$shareCount] Converting epub: share $currentShare"
         log "  [KEPUBIFY] Processing file: $epubFile"
         # convert to kepub.epub
         kepubFile="${epubFile%.epub}.kepub.epub"

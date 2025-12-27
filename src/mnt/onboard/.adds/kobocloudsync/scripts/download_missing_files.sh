@@ -41,7 +41,6 @@ download_missing_files() {
             else
                 # file does not exist locally, download it
                 log "  [DOWNLOAD] Fetching missing file: $filePath"
-                fbink "Downloading $filePath" 2
                 # Create destination folder if needed
                 mkdir -p "$(dirname "$localFile")"
                 $rclone copy "$currentShare:/$filePath" "$(dirname "$localFile")" $rcloneOptions

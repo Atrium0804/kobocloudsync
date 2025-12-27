@@ -87,8 +87,8 @@ if [ -z "$KOBOCLOUDSYNC_CONFIG_LOADED" ]; then
 fi
 
 # Constants for metadata file naming
-METADATA_LOCAL_SUFFIX="_metadata_local.txt"
-METADATA_REMOTE_SUFFIX="_metadata_remote.txt"
+METADATA_LOCAL_SUFFIX="_metadata.local"
+METADATA_REMOTE_SUFFIX="_metadata.remote"
 
 # create document_folder if it doesn't exist
 mkdir -p "$document_folder"
