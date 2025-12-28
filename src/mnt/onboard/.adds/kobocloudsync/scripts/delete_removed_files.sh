@@ -20,7 +20,6 @@ delete_removed_files() {
     # process each share
     shareCount=$(echo "$shares" | wc -l)
     shareNum=0
-    echo "$shares" |
     while IFS= read -r currentShare; do
         shareNum=$((shareNum + 1))
         log ""
@@ -45,7 +44,9 @@ delete_removed_files() {
             fi
         done < "$filename_metadata_local"
         mv "$tempLocalMetadataFile" "$filename_metadata_local"
-    done
+    done <<EOF
+$shares
+EOF
 }
 
 # Run the function if script is executed directly

@@ -23,7 +23,6 @@ prune_local_metadata() {
     # prune local metadata for each share
     shareCount=$(echo "$shares" | wc -l)
     shareNum=0
-    echo "$shares" |
     while IFS= read -r currentShare; do
         shareNum=$((shareNum + 1))
         log ""
@@ -50,7 +49,9 @@ prune_local_metadata() {
             fi
         done < "$filename_metadata_local"
         mv "$tempLocalMetadataFile" "$filename_metadata_local"
-    done
+    done <<EOF
+$shares
+EOF
 }
 
 # Run the function if script is executed directly

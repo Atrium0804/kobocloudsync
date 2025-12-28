@@ -20,7 +20,6 @@ shares=$(fetch_rclone_shares)
 # process each share
 shareCount=$(echo "$shares" | wc -l)
 shareNum=0
-echo "$shares" |
 while IFS= read -r currentShare; do
     shareNum=$((shareNum + 1))
     log ""
@@ -41,4 +40,6 @@ while IFS= read -r currentShare; do
             log "    [ERROR] Failed to kepubify: $epubFile"
         fi
     done
-done
+done <<EOF
+$shares
+EOF

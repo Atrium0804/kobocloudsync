@@ -16,7 +16,6 @@ download_missing_files() {
     # process each share
     shareCount=$(echo "$shares" | wc -l)
     shareNum=0
-    echo "$shares" |
     while IFS= read -r currentShare; do
         shareNum=$((shareNum + 1))
         log ""
@@ -57,7 +56,9 @@ download_missing_files() {
                 fi
             fi
         done < "$filename_metadata_remote"
-    done
+    done <<EOF
+$shares
+EOF
 }
 
 # Run the function if script is executed directly

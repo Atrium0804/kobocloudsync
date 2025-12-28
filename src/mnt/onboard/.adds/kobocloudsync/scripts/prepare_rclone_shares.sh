@@ -175,7 +175,7 @@ prepare_rclone_shares() {
     share_count=$(echo "$shares" | wc -l)
     local share_num=0
 
-    echo "$shares" | while IFS= read -r current_share; do
+    while IFS= read -r current_share; do
         share_num=$((share_num + 1))
 
         log ""
@@ -202,7 +202,9 @@ prepare_rclone_shares() {
             log "[ERROR] Failed to prepare share: $current_share"
             exit 1
         fi
-    done
+    done <<EOF
+$shares
+EOF
 
     log ""
     log "[OK] All shares prepared successfully"
