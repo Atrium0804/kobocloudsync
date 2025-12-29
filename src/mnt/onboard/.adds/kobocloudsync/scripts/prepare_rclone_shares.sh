@@ -91,16 +91,42 @@ ensure_local_metadata_file() {
 download_remote_metadata() {
     local share="$1"
     local metadata_file="$2"
+    local extension_patterns="$installation_folder/extensionpatterns.cfg"
 
     log "  Fetching remote metadata for $share..."
-    "$rclone" lsl "$share":/ $rcloneOptions > "$metadata_file"
+    "$rclone" lsl "$share":/ --config="$rclone_config_file" --no-check-certificate 2>/dev/null > "${metadata_file}.tmp"
 
     if [ $? -ne 0 ]; then
-        log "[ERROR] Failed to fetch remote metadata for $share" 1
+        log "  [ERROR] Failed to fetch remote metadata for $share" 1
+        rm -f "${metadata_file}.tmp"
         return 1
     fi
 
-    log "[OK] Remote metadata retrieved for $share"
+    # Filter by compatible extensions if config exists
+    if [ -f "$extension_patterns" ]; then
+        local theListing=$(cat "${metadata_file}.tmp")
+
+        # Log files that will be filtered out
+        local removed_files=$(echo "$theListing" | grep -v -i -f "$extension_patterns")
+        if [ -n "$removed_files" ]; then
+            local removed_count=$(echo "$removed_files" | wc -l)
+            log "  [FILTER] Removing $removed_count incompatible file(s) from metadata" 2
+            echo "$removed_files" | while IFS= read -r removed_line; do
+                local removed_file=$(echo "$removed_line" | awk '{for (i=4; i<=NF; i++) printf $i " "; print ""}' | sed 's/ *$//')
+                log "    [SKIP] $removed_file" 4
+            done
+        fi
+
+        # Filter to keep only compatible files
+        theListing=$(echo "$theListing" | grep -i -f "$extension_patterns")
+        echo "$theListing" > "$metadata_file"
+        rm -f "${metadata_file}.tmp"
+        log "  [OK] Remote metadata filtered by extension patterns"
+    else
+        mv "${metadata_file}.tmp" "$metadata_file"
+        log "  [OK] Remote metadata retrieved (no filtering)"
+    fi
+
     return 0
 }
 

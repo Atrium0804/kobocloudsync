@@ -44,6 +44,12 @@ else
     exit 1
 fi
 
+log_folder=$installation_folder/logs
+
+# create document_folders if they don't exist
+mkdir -p "$document_folder"
+mkdir -p "$log_folder"
+
 scripts_folder=$(dirname $0)
 rclone_config_file=$installation_folder/rclone.conf
 
@@ -53,7 +59,7 @@ if [ -z "$rcloneLogfile" ]; then
 fi
 
 if [ -z "$scriptLogfile" ]; then
-    scriptLogfile=$installation_folder/kobocloudsync_$(date '+%Y%m%d_%H%M%S').log
+    scriptLogfile=$log_folder/kobocloudsync_$(date '+%Y%m%d_%H%M%S').log
 fi
 
 # Default rclone options (rclone uses -v for verbose logging, output to stdout/stderr)
@@ -61,9 +67,8 @@ rcloneOptions="--config=$rclone_config_file --no-check-certificate -v"
 
 # Clean up log files older than 3 days
 cleanup_old_logs() {
-    find "$installation_folder" -maxdepth 1 -name "kobocloudsync_*.log" -mtime +3 -delete 2>/dev/null
+    find "$log_folder" -maxdepth 1 -name "kobocloudsync_*.log" -mtime +3 -delete 2>/dev/null
 }
-
 
 
 # Run cleanup only once (on first load)
@@ -76,8 +81,6 @@ fi
 METADATA_LOCAL_SUFFIX="_metadata.local"
 METADATA_REMOTE_SUFFIX="_metadata.remote"
 
-# create document_folder if it doesn't exist
-mkdir -p "$document_folder"
 
 ##### dependencies #####
 # set paths to binaries
