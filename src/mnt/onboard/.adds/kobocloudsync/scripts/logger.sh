@@ -25,7 +25,7 @@ log() {
     # Print to device screen using fbink if level is error and on kobo
     if [ "$level" -le 1 ] && [ "$environment" = "kobo" ]; then
         if which fbink >/dev/null 2>&1; then
-            fbink -q -y -5 --font THIN "$message"
+            fbink -r -q -y -5 --font THIN "$message"
         fi
     fi
 
@@ -64,7 +64,7 @@ progress() {
     if [ "$environment" = "kobo" ]; then
         # Check if fbink is available in PATH
         if which fbink >/dev/null 2>&1; then
-            fbink -q -y -5 --font THIN "$text"
+            fbink -r -q -y -5 --font THIN "$text"
         fi
     fi
 }

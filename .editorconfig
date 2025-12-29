@@ -1,0 +1,25 @@
+root = true
+
+# Default settings
+[*]
+charset = utf-8
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Shell scripts must use Unix line endings (LF)
+[*.sh]
+end_of_line = lf
+
+# YAML files
+[*.{yml,yaml}]
+indent_style = space
+indent_size = 2
+end_of_line = lf
+
+# Markdown
+[*.md]
+trim_trailing_whitespace = false
+
+# Config files
+[*.{cfg,conf,toml}]
+end_of_line = lf
