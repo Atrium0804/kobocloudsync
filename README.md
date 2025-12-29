@@ -5,7 +5,11 @@ Kobocloudsync is tested with Nextcloud.
 
 ## Prerequisites
 Kobocloudsync uses NickelMenu to provide a menu item for starting the sync.
-Please refer to https://pgaskin.net/NickelMenu/ for installation
+Please refer to https://pgaskin.net/NickelMenu/ for installation.
+
+When FBink is installed,  messages will be printed to screen.  Refer to: https://www.mobileread.com/forums/showthread.php?t=299110
+
+
 
 ## Installation:
 Installation:

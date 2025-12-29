@@ -1,0 +1,252 @@
+commit 02f04b08bd26b50dfbfb07672c926e49bd070573
+Author: Nick Craig-Wood <nick@craig-wood.com>
+Date:   Fri Apr 29 12:15:41 2022 +0100
+
+    Version v1.58.1
+
+commit 04a20350f7caf147fd5c1ecaf4ff0a26f8fd90f5
+Author: Zsolt Ero <zsolt.ero@gmail.com>
+Date:   Wed Apr 27 19:40:39 2022 +0200
+
+    docs: Add --multi-thread-streams note to --transfers.
+
+commit 90ca184338efdb59f93bb5fd7c606b8aecf466a8
+Author: Nick Craig-Wood <nick@craig-wood.com>
+Date:   Tue Apr 26 08:58:31 2022 +0100
+
+    webdav: don't override Referer if user sets it - fixes #6040
+
+commit 02f7da4b0c113709cca8a4531c74aa1232a8cd20
+Author: Nick Craig-Wood <nick@craig-wood.com>
+Date:   Thu Apr 21 20:28:09 2022 +0100
+
+    mount: fix --devname and fusermount: unknown option 'fsname' when mounting via rc
+    
+    In this commit
+    
+    f4c40bf79ddfd17c mount: add --devname to set the device name sent to FUSE for mount display
+    
+    The --devname parameter was added. However it was soon noticed that
+    attempting to mount via the rc gave this error:
+    
+        mount helper error: fusermount: unknown option 'fsname'
+        mount FAILED: fusermount: exit status 1
+    
+    This was because the DeviceName (and VolumeName) parameter was never
+    being initialised when the mount was called via the rc.
+    
+    The fix for this was to refactor the rc interface so it called the
+    same Mount method as the command line mount which initialised the
+    DeviceName and VolumeName parameters properly.
+    
+    This also fixes the cmd/mount tests which were breaking in the same
+    way but since they aren't normally run on the CI we didn't notice.
+    
+    Fixes #6044
+
+commit 4ba1944186ba19c6eeeb120961febbfbf83ff6c5
+Author: Nick Craig-Wood <nick@craig-wood.com>
+Date:   Mon Apr 25 12:07:24 2022 +0100
+
+    vfs: remove wording which suggests VFS is only for mounting
+    
+    See: https://forum.rclone.org/t/solved-rclone-serve-read-only/30377/2
+
+commit 5aa15459c98e04d8e6e7a431644522a575b0b9d4
+Author: albertony <12441419+albertony@users.noreply.github.com>
+Date:   Fri Apr 22 13:52:00 2022 +0200
+
+    jottacloud: fix scope in token request
+    
+    The existing code in rclone set the value "offline_access+openid",
+    when encoded in body it will become "offline_access%2Bopenid". I think
+    this is wrong. Probably an artifact of "double urlencoding" mixup -
+    either in rclone or in the jottacloud cli tool version it was sniffed
+    from? It does work, though. The token received will have scopes "email
+    offline_access" in it, and the same is true if I change to only
+    sending "offline_access" as scope.
+    
+    If a proper space delimited list of "offline_access openid"
+    is used in the request, the response also includes openid scope:
+    "openid email offline_access". I think this is more correct and this
+    patch implements this.
+    
+    See: #6107
+
+commit 20343a7001aac5371982e76ba2c5c34c93c40032
+Author: Sơn Trần-Nguyễn <github@sntran.com>
+Date:   Sun Apr 17 14:11:36 2022 -0500
+
+    fs/rc/js: correct RC method names
+
+commit dc46c76e800ee0e5238ecf9d0af30904482f3486
+Author: Nick Craig-Wood <nick@craig-wood.com>
+Date:   Fri Apr 15 17:35:50 2022 +0100
+
+    storj: fix bucket creation on Move picked up by integration tests
+
+commit c125792a782e06a57b7e4985e53333abaf86133c
+Author: Nick Craig-Wood <nick@craig-wood.com>
+Date:   Wed Apr 13 10:14:45 2022 +0100
+
+    build: update github.com/billziss-gh to github.com/winfsp
+
+commit bc63bdd6080b9193aa9e580cb1e831fe761c1b8b
+Author: albertony <12441419+albertony@users.noreply.github.com>
+Date:   Thu Apr 7 14:25:48 2022 +0200
+
+    docs: fix some links to command pages
+
+commit 7c0e00a0c79ba6314188da02d1f3bccd98f2213d
+Author: Adrien Rey-Jarthon <jobs@adrienjarthon.com>
+Date:   Tue Apr 5 12:11:52 2022 +0200
+
+    docs: Note that Scaleway C14 is deprecating SFTP in favor of S3
+    
+    This updates the documentation to reflect the new C14 Cold Storage API
+    works with S3 and not with SFTP any more.
+    
+    See: https://github.com/rclone/rclone/issues/1080#issuecomment-1082088870
+
+commit 68ca748227c62adf89b5ff6d1f7af7ea7430d1f0
+Author: Nil Alexandrov <nalexand@akamai.com>
+Date:   Tue Apr 12 21:49:02 2022 -0400
+
+    netstorage: add support contacts to netstorage doc
+
+commit 3cddf996bb410c9cc544ca42097fe5d8c7ea0865
+Author: rafma0 <int.main@gmail.com>
+Date:   Sun Apr 3 17:14:46 2022 -0300
+
+    putio: fix multithread download and other ranged requests
+    
+    Before this change the 206 responses from putio Range requests were being
+    returned as errors.
+    
+    This change checks for 200 and 206 in the GET response now.
+
+commit d54b99d101c01a35dd8144bc39ac7429b221386a
+Author: GH <geeklihui@foxmail.com>
+Date:   Sun Apr 3 19:43:23 2022 +0800
+
+    onedrive: note that sharepoint also changes web files (.html, .aspx)
+
+commit f19f939abea50e8870a1135dc95085f8a0f89082
+Author: KARBOWSKI Piotr <piotr.karbowski@gmail.com>
+Date:   Fri Apr 1 12:30:32 2022 +0200
+
+    sftp: Fix OpenSSH 8.8+ RSA keys incompatibility (#6076)
+    
+    Updates golang.org/x/crypto to v0.0.0-20220331220935-ae2d96664a29.
+    
+    Fixes the issues with connecting to OpenSSH 8.8+ remotes in case the
+    client uses RSA key pair due to OpenSSH dropping support for SHA1 based
+    ssh-rsa signature.
+    
+    Bug: https://github.com/rclone/rclone/issues/6076
+    Bug: https://github.com/golang/go/issues/37278
+    Signed-off-by: KARBOWSKI Piotr <piotr.karbowski@gmail.com>
+
+commit a64a37fb834b06f696bdcca27d2f965fe4ffd190
+Author: Nick Craig-Wood <nick@craig-wood.com>
+Date:   Thu Mar 31 18:11:37 2022 +0100
+
+    netstorage: make levels of headings consistent
+
+commit 4061b12a95650e82feaa64c4dd6817b664f1f47b
+Author: Nick Craig-Wood <nick@craig-wood.com>
+Date:   Thu Mar 31 17:55:30 2022 +0100
+
+    s3: sync providers in config description with providers
+
+commit 92b77eb3344d70847db167b7ae15b7500e972ea0
+Author: Berkan Teber <berkan@berkanteber.com>
+Date:   Tue Mar 22 11:40:49 2022 +0300
+
+    putio: handle rate limit errors
+    
+    For rate limit errors, "x-ratelimit-reset" header is now respected.
+
+commit 5cdb6678ab1c9c07fdb535dc21696f578edeb003
+Author: Nick Craig-Wood <nick@craig-wood.com>
+Date:   Mon Mar 28 11:47:27 2022 +0100
+
+    filter: fix timezone of --min-age/-max-age from UTC to local as documented
+    
+    Before this change if the timezone was omitted in a
+    --min-age/--max-age time specifier then rclone defaulted to a UTC
+    timezone.
+    
+    This is documented as using the local timezone if the time zone
+    specifier is omitted which is a much more useful default and this
+    patch corrects the implementation to agree with the documentation.
+    
+    See: https://forum.rclone.org/t/problem-utc-windows-europe-1-summer-problem/29917
+
+commit 76d5f02b2c5a3737b0e739b1b64a61cd74224fbd
+Author: GuoXingbin <101376330+guoxingbin@users.noreply.github.com>
+Date:   Thu Mar 24 19:57:00 2022 +0800
+
+    s3: Add ChinaMobile EOS to provider list
+    
+    China Mobile Ecloud Elastic Object Storage (EOS) is a cloud object storage service, and is fully compatible with S3.
+    
+    Fixes #6054
+
+commit f4fd910c9ad28da219922f94ee1cce1b49a715ac
+Author: Nick Craig-Wood <nick@craig-wood.com>
+Date:   Mon Mar 21 11:34:42 2022 +0000
+
+    dropbox: fix retries of multipart uploads with incorrect_offset error
+    
+    Before this fix, rclone retries chunks of multipart uploads. However
+    if they had been partially received dropbox would reply with an
+    incorrect_offset error which rclone was ignoring.
+    
+    This patch parses the new offset from the error response and uses it
+    to adjust the data that rclone sends so it is the same as what dropbox
+    is expecting.
+    
+    See: https://forum.rclone.org/t/dropbox-rate-limiting-for-upload/29779
+
+commit 5074bd0d51229fa281de17c45b67aef4bdca63d5
+Author: Nick Craig-Wood <nick@craig-wood.com>
+Date:   Fri Mar 25 08:58:39 2022 +0000
+
+    googlecloudstorage: use the s3 pacer to speed up transactions
+    
+    This commit switches Google Cloud Storage from the drive pacer to the
+    s3 pacer. The main difference between them is that the s3 pacer does
+    not limit transactions in the non-error case. This is appropriate for
+    a cloud storage backend where you pay for each transaction.
+
+commit 9fabf40fc5f0686691d61c0714e250fa43b03e19
+Author: Nick Craig-Wood <nick@craig-wood.com>
+Date:   Fri Mar 25 08:55:17 2022 +0000
+
+    pacer: default the Google pacer to a burst of 100 to fix gcs pacing
+    
+    Before this change the pacer defaulted to a burst of 1 which mean that
+    it kept being activated unecessarily.
+    
+    This affected Google Cloud Storage and Google Photos.
+    
+    See: https://forum.rclone.org/t/no-traverse-too-slow-with-lot-of-files/29886/12
+
+commit 0832b932ef3fe1452528c38a658ef3cb7e5909f4
+Author: Nick Craig-Wood <nick@craig-wood.com>
+Date:   Tue Mar 22 16:32:29 2022 +0000
+
+    azureblob: fix lint error with golangci-lint 1.45.0
+
+commit 1c4f79060991164ff4a945b4c8a67a9a94651163
+Author: Nick Craig-Wood <nick@craig-wood.com>
+Date:   Fri Mar 18 14:40:12 2022 +0000
+
+    netstorage: fix unescaped HTML in documentation
+
+commit ea8a4f24bde68a017e40f19c33ba595a485abc82
+Author: Nick Craig-Wood <nick@craig-wood.com>
+Date:   Fri Mar 18 14:43:37 2022 +0000
+
+    Start v1.58.1-DEV development
