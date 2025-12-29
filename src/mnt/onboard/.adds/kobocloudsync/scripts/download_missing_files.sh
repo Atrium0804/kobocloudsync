@@ -48,6 +48,7 @@ download_missing_files() {
             kepubFile="${localFile%.epub}.kepub.epub"
 
             progress 5 7 "Download [$shareNum/$shareCount-$bookNum/$bookCount]"
+
             # check if either the original file or the kepubified file exists locally
             if [ -f "$localFile" ] || [ -f "$kepubFile" ]; then
                 # file exists locally, skip download

@@ -45,13 +45,13 @@ progress() {
     local empty=""
     local i=1
 
-    # Create filled blocks
+    # Create the required ammount of filled blocks
     while [ $i -le $stepCount ]; do
         filled="${filled}▓"
         i=$((i + 1))
     done
 
-    # Create empty blocks
+    # Create the required ammount of empty blocks
     i=$((stepCount + 1))
     while [ $i -le $stepTotal ]; do
         empty="${empty}░"
