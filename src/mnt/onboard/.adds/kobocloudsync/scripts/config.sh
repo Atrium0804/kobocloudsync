@@ -1,6 +1,9 @@
 #!/bin/sh
-
-# Configuration for KoboCloudSync
+#
+# KoboCloudSync - Configuration
+#
+# Detects environment (dev/kobo), sets paths for binaries and folders,
+# configures rclone options, and manages log file creation/cleanup.
 
 # determine if on development environment or kobo device
 if uname -a | grep -q 'Darwin.*ARM64\|Darwin.*X86\|W64_NT'; then
@@ -61,24 +64,7 @@ cleanup_old_logs() {
     find "$installation_folder" -maxdepth 1 -name "kobocloudsync_*.log" -mtime +3 -delete 2>/dev/null
 }
 
-# Logging function - prints to screen and log file
-log() {
-    echo "$@"
-    echo "$(date '+%Y-%m-%d %H:%M:%S') $@" >> "$scriptLogfile"
-}
 
-# FBInk function - prints to device screen if fbink is available
-fbink_print() {
-    local text="$1"
-
-    # Only attempt fbink on kobo device
-    if [ "$environment" = "kobo" ]; then
-        # Check if fbink is available in PATH
-        if which fbink >/dev/null 2>&1; then
-            fbink -pm -q -y -5 --font THIN "$text"
-        fi
-    fi
-}
 
 # Run cleanup only once (on first load)
 if [ -z "$KOBOCLOUDSYNC_CONFIG_LOADED" ]; then

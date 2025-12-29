@@ -1,0 +1,85 @@
+2025-12-29 09:34:37 [3] \nStarting KoboCloudSync download script\n
+2025-12-29 09:34:37 [4] Configuration loaded:
+2025-12-29 09:34:37 [4]  Environment:        kobo
+2025-12-29 09:34:37 [4]  Installation folder:/mnt/onboard/.adds/kobocloudsync
+2025-12-29 09:34:37 [4]  Document folder:    /mnt/onboard/.adds/kobocloudsync/ebooks
+2025-12-29 09:34:37 [4]  rclone:            /mnt/onboard/.adds/kobocloudsync/bin/rclone/rclone
+2025-12-29 09:34:37 [4]  kepubify:          /mnt/onboard/.adds/kobocloudsync/bin/kepubify/kepubify
+2025-12-29 09:34:37 [4]  covergen:          /mnt/onboard/.adds/kobocloudsync/bin/kepubify/covergen
+2025-12-29 09:34:37 [4]  seriesmeta:        /mnt/onboard/.adds/kobocloudsync/bin/kepubify/seriesmeta
+2025-12-29 09:34:38 [4] 
+2025-12-29 09:34:38 [3] 
+2025-12-29 09:34:38 [3] ----------------------------
+2025-12-29 09:34:38 [3] Checking start conditions...
+2025-12-29 09:34:38 [3] Checking dependencies...
+2025-12-29 09:34:38 [3] All dependencies found
+2025-12-29 09:34:38 [3] Checking rclone config...
+2025-12-29 09:34:38 [3] Rclone config found
+2025-12-29 09:34:38 [3] Checking network connection...
+2025-12-29 09:34:38 [3] Network connection found
+2025-12-29 09:34:38 [3] All start conditions met, proceeding
+2025-12-29 09:34:38 [3] 
+2025-12-29 09:34:38 [3] Preparing rclone shares:
+2025-12-29 09:34:38 [3] Fetching remote shares from rclone config file...
+2025-12-29 09:34:38 [3] Found the following shares:
+2025-12-29 09:34:38 [3] Nextcloud Ivo
+kobotest_a
+kobotest_b
+2025-12-29 09:34:38 [3] 
+2025-12-29 09:34:38 [3] Checking for obsolete target folders...
+2025-12-29 09:34:38 [3]   [OK] Target folder cleanup complete
+2025-12-29 09:34:38 [3] 
+2025-12-29 09:34:38 [3] 
+2025-12-29 09:34:38 [3] [1/3] Processing share: Nextcloud Ivo
+2025-12-29 09:34:38 [3]   Fetching remote metadata for Nextcloud Ivo...
+2025-12-29 09:34:39 [3]   [OK] Remote metadata retrieved for Nextcloud Ivo
+2025-12-29 09:34:39 [3] 
+2025-12-29 09:34:39 [3] [2/3] Processing share: kobotest_a
+2025-12-29 09:34:39 [3]   Fetching remote metadata for kobotest_a...
+2025-12-29 09:34:39 [3]   [OK] Remote metadata retrieved for kobotest_a
+2025-12-29 09:34:39 [3] 
+2025-12-29 09:34:39 [3] [3/3] Processing share: kobotest_b
+2025-12-29 09:34:39 [3]   Fetching remote metadata for kobotest_b...
+2025-12-29 09:34:40 [3]   [OK] Remote metadata retrieved for kobotest_b
+2025-12-29 09:34:40 [3] 
+2025-12-29 09:34:40 [3] [OK] All shares prepared successfully
+2025-12-29 09:34:40 [3] 
+2025-12-29 09:34:40 [3] ----------------------------
+2025-12-29 09:34:40 [3] Pruning local metadata files...
+2025-12-29 09:34:41 [3] 
+2025-12-29 09:34:41 [3] [1/3] Processing share: Nextcloud Ivo
+2025-12-29 09:34:41 [3] 
+2025-12-29 09:34:41 [3] [2/3] Processing share: kobotest_a
+2025-12-29 09:34:41 [3] 
+2025-12-29 09:34:41 [3] [3/3] Processing share: kobotest_b
+2025-12-29 09:34:41 [3] 
+2025-12-29 09:34:41 [3] ----------------------------
+2025-12-29 09:34:41 [3] Deleting local files that were removed or changed remotely...
+2025-12-29 09:34:41 [3] 
+2025-12-29 09:34:41 [3] [1/3] Processing share: Nextcloud Ivo
+2025-12-29 09:34:41 [3] 
+2025-12-29 09:34:41 [3] [2/3] Processing share: kobotest_a
+2025-12-29 09:34:41 [3] 
+2025-12-29 09:34:41 [3] [3/3] Processing share: kobotest_b
+2025-12-29 09:34:41 [3] 
+2025-12-29 09:34:41 [3] ----------------------------
+2025-12-29 09:34:41 [3] Downloading missing files from remote shares...
+2025-12-29 09:34:42 [3] 
+2025-12-29 09:34:42 [3] [1/3] Processing share: Nextcloud Ivo
+2025-12-29 09:34:42 [3] 
+2025-12-29 09:34:42 [3] [2/3] Processing share: kobotest_a
+2025-12-29 09:34:42 [3] 
+2025-12-29 09:34:42 [3] [3/3] Processing share: kobotest_b
+2025-12-29 09:34:42 [3] 
+2025-12-29 09:34:42 [3] ----------------------------
+2025-12-29 09:34:42 [3] Kepubifying downloaded files...
+2025-12-29 09:34:42 [3] 
+2025-12-29 09:34:42 [3] [1/3] Processing share: Nextcloud Ivo
+2025-12-29 09:34:42 [3] 
+2025-12-29 09:34:42 [3] [2/3] Processing share: kobotest_a
+2025-12-29 09:34:42 [3] 
+2025-12-29 09:34:42 [3] [3/3] Processing share: kobotest_b
+2025-12-29 09:34:42 [3]   [KEPUBIFY] Processing file: /mnt/onboard/.adds/kobocloudsync/ebooks/kobotest_b/Artikelen werk/Patrick Cuba - Data Vault and Domain Driven Design/Patrick Cuba - 1. Data Vault and Domain Driven Design - Patrick Cuba - Medium.epub
+2025-12-29 09:34:42 [1]     [ERROR] Failed to kepubify: /mnt/onboard/.adds/kobocloudsync/ebooks/kobotest_b/Artikelen werk/Patrick Cuba - Data Vault and Domain Driven Design/Patrick Cuba - 1. Data Vault and Domain Driven Design - Patrick Cuba - Medium.epub
+2025-12-29 09:34:42 [3]   [KEPUBIFY] Processing file: /mnt/onboard/.adds/kobocloudsync/ebooks/kobotest_b/Artikelen werk/Patric Cuba/Patrick Cuba - Rules for an (almost) unbreakable Data Vault - The Modern Scientist - Medium.epub
+2025-12-29 09:34:42 [1]     [ERROR] Failed to kepubify: /mnt/onboard/.adds/kobocloudsync/ebooks/kobotest_b/Artikelen werk/Patric Cuba/Patrick Cuba - Rules for an (almost) unbreakable Data Vault - The Modern Scientist - Medium.epub

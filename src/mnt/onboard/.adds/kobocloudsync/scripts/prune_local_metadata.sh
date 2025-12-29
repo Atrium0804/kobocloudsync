@@ -1,12 +1,16 @@
 #!/bin/sh
-# prune_local_metadata.sh
 #
-# Prune local metadata entries for files that no longer exist remotely,
-# taking into account kepubified files.
-## This script processes each rclone share defined in the rclone config file.
-## For each share, it updates the local metadata file by removing entries for files
-# that no longer exist remotely, unless a kepubified version of the file exists locally.
-#           - remove metadata if neither original nor kepubified file exists locally
+# KoboCloudSync - Prune Local Metadata
+#
+# Updates local metadata by removing entries for files that no longer exist
+# remotely, while preserving entries for locally kepubified files.
+# Only removes metadata when neither original nor kepubified file exists.
+
+
+# Load configuration to get document_folder path
+scripts_folder=$(dirname $0)
+. $scripts_folder/config.sh
+. $scripts_folder/logger.sh
 
 prune_local_metadata() {
     log ""
@@ -45,7 +49,7 @@ prune_local_metadata() {
                 echo "$line" >> "$tempLocalMetadataFile"
             else
                 # remove the metadata entry (do not write it to temp file)
-                log "  [REMOVE] Pruning metadata for missing file: $filePath"
+                log "[REMOVE] Pruning metadata for missing file: $filePath"
             fi
         done < "$filename_metadata_local"
         mv "$tempLocalMetadataFile" "$filename_metadata_local"
